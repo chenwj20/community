@@ -22,6 +22,7 @@ public class QuestionDTO {
     private Integer commentCount;
     private Integer likeCount;
     private String category;
+    private Integer categoryI;
     private String experience;
     private Integer isShow;
     private Integer status;

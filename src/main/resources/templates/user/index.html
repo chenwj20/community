@@ -74,7 +74,7 @@
         <div class="layui-tab-item layui-show">
           <ul class="mine-view jie-row" th:each="question:${myQuestions.list}">
             <li>
-              <a class="jie-title" th:href="${'/question/'+question.id+'page/1'}" th:text="${question.title}" target="_blank"></a>
+              <a class="jie-title" th:href="${'/question/'+question.id+'/page/1'}" th:text="${question.title}" target="_blank"></a>
               <i th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></i>
               <a class="mine-edit" th:href="${'/publish/'+question.id}" >编辑</a>
               <em th:text="${question.viewCount+'阅/'+question.commentCount+'答'}"></em>

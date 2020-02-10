@@ -9,6 +9,7 @@ import cn.cwj.community.model.User;
 import cn.cwj.community.model.UserTag;
 import cn.cwj.community.service.UserService;
 import cn.cwj.community.service.UserTagService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,15 @@ public class UserTagController {
         User user = (User)request.getSession().getAttribute("user");
          if (user == null){
              return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
+         }
+         if (StringUtils.isBlank(tag.getTag())){
+             return ResultDTO.errorOf(CustomizeErrorCode.TAG_NOT_BLANK);
+         }
+         if (StringUtils.isBlank(tag.getBio())){
+             return ResultDTO.errorOf(CustomizeErrorCode.TAGBIO_NOT_BLANK);
+         }
+         if (StringUtils.isBlank(tag.getTag())){
+             return ResultDTO.okOf(CommonEnum.LV_LOWER);
          }
          User lvUser = userService.findLvById(user.getId());
          if (lvUser.getLv()<3){

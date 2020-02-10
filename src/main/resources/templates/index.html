@@ -31,7 +31,7 @@
                         <img th:src="${topQuestion.user.avatarUrl}" alt="贤心">
                     </a>
                     <h2>
-                        <a th:text="${topQuestion.category}" class="layui-badge"></a>
+                        <a th:text="${topQuestion.category}" th:class="${topQuestion.category == 1?'layui-badge layui-bg-green':'layui-badge'}" ></a>
                         <a th:href="@{'/question/'+ ${topQuestion.id}+'/page/1'}" th:text="${topQuestion.title}"></a>
                     </h2>
                     <div class="fly-list-info">
@@ -78,7 +78,7 @@
                       <img th:src="${questionDTO.user.avatarUrl}" alt="cwj">
                   </a>
                   <h2>
-                      <a class="layui-badge"><span th:text="${questionDTO.category}"></span></a>
+                      <a th:class="${questionDTO.category == 1?'layui-badge layui-bg-green':'layui-badge'}"><span th:text="${questionDTO.category}"></span></a>
                       <a th:href="@{'/question/'+ ${questionDTO.id}+'/page/1'}"><span th:text="${questionDTO.title}"></span></a>
                   </h2>
                   <div class="fly-list-info">
@@ -88,7 +88,7 @@
                       </a>
                       <span th:text="${#dates.format(questionDTO.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
 
-                  <span class="fly-list-like layui-hide-xs" title="悬赏米币">
+                  <span class="fly-list-like layui-hide-xs" style="color:#FFB800;" title="悬赏米币">
                     <i class="layui-icon" >&#xe65e;</i>
                     <span th:text="${questionDTO.experience}"></span>
                 </span>
@@ -167,6 +167,7 @@
         <!-- 无数据时 -->
         <div th:if="commentCountQuestions ==null" class="fly-none">没有相关数据</div>
       </dl>
+
 
       <div class="fly-panel">
         <div class="fly-panel-title">

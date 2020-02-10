@@ -27,7 +27,9 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     TAG_ONE(2023,"最少添加一个标签"),
     NOW_PASSWORD_EEROR(2024,"当前密码输入错误"),
     PASSWORD_FORMAT_EEROR(2025,"请输入正确的密码格式"),
-    PASSWORD_DIFFERENCE_EEROR(2026,"密码不一致");
+    PASSWORD_DIFFERENCE_EEROR(2026,"密码不一致"),
+    TAG_NOT_BLANK(2027,"标签不能为空"),
+    TAGBIO_NOT_BLANK(2028,"标签描述不能为空");
 
     @Override
     public String getMessage() {

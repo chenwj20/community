@@ -104,6 +104,7 @@ public class QuestionService {
         QuestionDTO questionDTO = new QuestionDTO();
         User user = userMapper.selectByPrimaryKey(question.getCreator());
         BeanUtils.copyProperties(question,questionDTO);
+        questionDTO.setCategoryI(question.getCategory());
         questionDTO.setUser(user);
         return questionDTO;
     }
@@ -298,7 +299,8 @@ public class QuestionService {
     public List<QuestionDTO> findByStatus(Integer status) {
         Example example = new Example(Question.class);
         example.createCriteria()
-                .andEqualTo("status",status);
+                .andEqualTo("status",status)
+                .andEqualTo("isShow",1);
         PageHelper.startPage(1,3);
         List<Question> questions = questionMapper.selectByExample(example);
         ArrayList<QuestionDTO> statusQuestionList = new ArrayList<>();

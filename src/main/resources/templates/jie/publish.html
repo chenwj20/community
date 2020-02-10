@@ -21,17 +21,17 @@
   <script th:src="@{/layui/layui.js}"></script>
 </head>
 <body>
-<form id="tag-create"  style="display:none;" class="layui-form layui-form-pane" action="">
+<form id="tag-create"  style="display:none;" class="layui-form layui-form-pane" >
   <div class="layui-form-item layui-form-text">
     <label class="layui-form-label">标签名称</label>
     <div class="layui-input-block">
-      <input type="text" id="newTag"  name="tag" autocomplete="off" placeholder="请输入标题" class="layui-input">
+      <input type="text" required lay-verify="required" id="newTag"  name="tag" autocomplete="off" placeholder="请输入标题" class="layui-input">
     </div>
   </div>
   <div class="layui-form-item layui-form-text">
-    <label class="layui-form-label">标签简介</label>
+    <label  class="layui-form-label">标签简介</label>
     <div class="layui-input-block">
-      <textarea id="tagbio" placeholder="请输入内容" class="layui-textarea"></textarea>
+      <textarea required lay-verify="required" id="tagbio" placeholder="请输入内容" class="layui-textarea"></textarea>
     </div>
   </div>
 </form>
@@ -54,12 +54,12 @@
                   <div class="layui-input-block">
                     <select lay-verify="required" name="category" lay-filter="column">
                       <option></option>
-                      <option value="1">公告</option>
-                      <option value="2">提问</option>
-                      <option value="3">分享</option>
-                      <option value="4">讨论</option>
-                      <option value="5">建议</option>
-                      <option value="6">新闻</option>
+                      <option th:if="${session.user != null && session.user.role == 1}" th:selected="${questionEdit!=null && questionEdit.category == 1}" value="1">公告</option>
+                      <option th:selected="${questionEdit!=null && questionEdit.categoryI == 2}" value="2">提问</option>
+                      <option th:selected="${questionEdit!=null && questionEdit.categoryI == 3}" value="3">分享</option>
+                      <option th:selected="${questionEdit!=null && questionEdit.categoryI == 4}" value="4">讨论</option>
+                      <option th:selected="${questionEdit!=null && questionEdit.categoryI == 5}" value="5">建议</option>
+                      <option th:selected="${questionEdit!=null && questionEdit.categoryI == 6}" value="6">新闻</option>
                     </select>
                   </div>
                 </div>
@@ -74,7 +74,7 @@
               </div>
               <div   class="layui-form-item layui-form-text">
                 <div id="editor">
-                  <textarea name="description" id="description" th:text="${questionEdit != null ?questionEdit.description:''}" style="display:none;"></textarea>
+                  <textarea required lay-verify="required" name="description" id="description" th:text="${questionEdit != null ?questionEdit.description:''}" style="display:none;"></textarea>
                 </div>
               </div>
               <blockquote class="layui-elem-quote ">
@@ -159,7 +159,7 @@
               $("#myTag").parent().val(myTag);
             }else {
               layer.close(index);
-              layer.msg(res.msg);
+              layer.msg(res.msg,{shift:6});
             }
           }
         })
@@ -242,6 +242,12 @@
             element = layui.element;
     form.render();
     form.on('submit(post)',function (data) {
+      var tags = $("#tag").val();
+      if (tags.length == 0){
+        layer.msg("最少添加一个标签",{shift:6}) ;
+        return;
+      }
+
       $.ajax({
         url: '/publish',
         type: 'post',
