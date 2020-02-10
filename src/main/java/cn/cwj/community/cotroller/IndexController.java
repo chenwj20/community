@@ -39,7 +39,7 @@ public class IndexController {
         List<Question> commentCountQuestions = questionService.findByComments(1,10);
         model.addAttribute("commentCountQuestions",commentCountQuestions);
         PageInfo<QuestionDTO> pageInfo = questionService.questionList(1, 20, null,null);
-        List<QuestionDTO> topList = questionService.findByStatus(2);
+        List<QuestionDTO> topList = questionService.findByStatus(1);
         model.addAttribute("topList",topList);
         model.addAttribute("newUrl","/all/new/page/"+1);
         model.addAttribute("hotUrl","/all/hot/page/"+1);

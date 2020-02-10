@@ -90,7 +90,7 @@
         }
         function topQuestion(id) {
             $.ajax({
-                url: "question/top/"+id,
+                url: "/question/top/"+id,
                 type: 'get',
                 dataType: 'json',
                 success: function (res) {
