@@ -1,0 +1,190 @@
+<script xmlns:th="http://www.thymeleaf.org" th:inline="javascript" th:fragment="questionjs">
+    var user = [[${session.user}]];
+
+    if ([[${isQuestionZan}]]){
+        $("#star1").attr("checked","checked");
+    }
+    $("#zan-question").click(function () {
+        if (user){
+            var questionId = [[${questionDTO.id}]];
+            var zanQuestionUrl='';
+            if($('#star1').prop('checked')){
+                zanQuestionUrl = "/zan/remove/1/"+questionId;
+            }else {
+                zanQuestionUrl = "/zan/add/1/"+questionId;
+            }
+            $.ajax({
+                url: zanQuestionUrl,
+                type: 'get',
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code == 1004){
+                        layer.msg(res.msg);
+                        $("#star1").attr("checked","checked");
+                    }else if (res.code == 1005) {
+                        layer.msg(res.msg);
+                        $("#star1").removeAttr("checked");
+                    }else {
+                        layer.msg(res.msg);
+                    }
+
+                }
+
+            })
+        }else {
+            layer.msg("登录才能点赞",{shift: 6});
+        }
+
+    });
+
+        $(".collect").click(function () {
+            if ($("#collect-flag").val() == "0") {
+                add();
+            } else {
+                remove();
+            }
+        });
+
+        function remove() {
+            $.ajax({
+                type: "get",
+                url: "/collect/remove",
+                data: {
+                    questionId: $("#question_id").val()
+                },
+                dataType: "JSON",
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.msg("取消成功");
+                        $(".collect").text("收藏此贴");
+                        $(".collect").attr('id', 'collect');
+                        $(".collect").removeClass("layui-btn-warm");
+                        $("#collect-flag").val("0");
+                    } else {
+                        layer.msg("取消失败");
+                    }
+                }
+            });
+        }
+
+        function add() {
+            $.ajax({
+                type: "get",
+                url: "/collect/add",
+                data: {
+                    questionId: $("#question_id").val()
+                },
+                dataType: "JSON",
+                success: function (res) {
+                    if (res.code == 200) {
+                        layer.msg("收藏成功");
+                        $(".collect").text("取消收藏");
+                        $(".collect").attr('id', 'remove-collect');
+                        $(".collect").addClass("layui-btn-warm");
+                        $("#collect-flag").val("1");
+                    } else {
+                        layer.msg("收藏失败");
+                    }
+                }
+            });
+        }
+        function topQuestion(id) {
+            $.ajax({
+                url: "question/top/"+id,
+                type: 'get',
+                dataType: 'json',
+                success: function (res) {
+                    layer.msg(res.msg)
+                }
+            })
+        }
+        function zanComment(id) {
+            if (user) {
+                var zanthis = $("#zan" + id);
+                var ok = zanthis.hasClass('zanok');
+                //取消点赞
+                if (ok) {
+                    url = '/zan/remove/' + 2 + '/' + id;
+                    //点赞
+                } else {
+                    url = '/zan/add/' + 2 + '/' + id;
+                }
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (res) {
+                        var zans = zanthis.find('em').html() | 0;
+                        zanthis[ok ? 'removeClass' : 'addClass']('zanok');
+                        zanthis.find('em').html(ok ? (--zans) : (++zans));
+                        layer.msg(res.msg);
+                    }
+                })
+            }else {
+                layer.msg("登录才能点赞",{shift: 6});
+            }
+        }
+        function questionDel(id) {
+            layer.confirm('确定删除吗？', function(){
+                $.ajax({
+                    url:'/question/remove/'+id,
+                    type:'get',
+                    dataType:'json',
+                    success:function (res) {
+                        if (res.code == 1003){
+                            layer.msg(res.msg);
+                            window.location.href = "/";
+                        } else {
+                            layer.msg("删除失败");
+                        }
+                    }
+                });
+            })
+
+        }
+        function commentDel(id) {
+            layer.confirm('确定删除吗？', function(){
+                $.ajax({
+                    url:'/comment/remove/'+id,
+                    type:'get',
+                    data: {
+                        parentId: $("#question_id").val()
+                    },
+                    dataType:'json',
+                    success:function (res) {
+                        if (res.code == 1003){
+                            $("#delComment"+id).remove();
+                            var count = $("#comment-count").text();
+                            $("#comment-count").text(--count);
+                            layer.msg(res.msg);
+                        }else {
+                            layer.msg("删除失败");
+                        }
+                    }
+                });
+            })
+
+        }
+
+
+        function reply(name,id) {
+            if (user) {
+                var comment = '<div  id="comment-kk" style="padding: 10px; background-color: #F2F2F2;">\n' +
+                    '            <span>\n' + "@" + name + ' ' +
+                    '            </span>\n' +
+
+                    '        <a class="layui-badge layui-bg-gray" onclick="removeComment()" style="float:right;cursor:pointer; " >✗</a> ' +
+                    '          </div>';
+                $("#comment-info").html(comment);
+                $("#to_comment_id").val(id);
+                $("#L_content").focus();
+            }else {
+                layer.msg("登入后回复",{shift: 6})
+            }
+        }
+        function removeComment() {
+            $("#comment-kk").remove();
+            $("#to_comment_id").val(-1);
+        }
+
+</script>

@@ -1,0 +1,26 @@
+<div class="fly-panel fly-column" th:fragment="column" xmlns:th="http://www.thymeleaf.org">
+  <div  class="layui-container">
+    <ul id="class" class="layui-clear">
+      <li th:class="${type == null?'layui-this':''}"><a href="/">首页</a></li>
+      <li th:class="${type == 1?'layui-this':''}"><a href="/category/1/page/1">公告</a></li>
+      <li th:class="${type == 2?'layui-this':''}"><a href="/category/2/page/1">提问</a></li>
+      <li th:class="${type == 3?'layui-this':''}"><a href="/category/3/page/1">分享<span class="layui-badge-dot"></span></a></li>
+      <li th:class="${type == 4?'layui-this':''}"><a href="/category/4/page/1">讨论</a></li>
+      <li th:class="${type == 5?'layui-this':''}"><a href="/category/5/page/1">建议</a></li>
+      <li th:class="${type == 6?'layui-this':''}"><a href="/category/6/page/1">新闻</a></li>
+      <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li> 
+      
+      <!-- 用户登入后显示 -->
+      <li th:if="${session.user!=null}" class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="/user/question">我发表的贴</a></li>
+      <li th:if="${session.user!=null}" class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="/user/question/#collection">我收藏的贴</a></li>
+    </ul> 
+    
+    <div th:if="${session.user != null}" class="fly-column-right layui-hide-xs">
+      <span class="fly-search"><i class="layui-icon"></i></span>
+      <a href="/publish" class="layui-btn">发表新帖</a>
+    </div> 
+    <div th:if="${session.user != null}" class="layui-hide-sm layui-show-xs-block" style="margin-top: -10px; padding-bottom: 10px; text-align: center;">
+      <a href="/publish" class="layui-btn">发表新帖</a>
+    </div> 
+  </div>
+</div>

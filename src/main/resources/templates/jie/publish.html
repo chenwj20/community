@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>发表问题 编辑问题 公用</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="FreeMI社区">
+  <meta name="description" content="FreeMI社区">
+  <link rel='icon' href='/images/freemi.ico' type='image/x-ico' />
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  <link rel="stylesheet" href="/css/editormd.min.css">
+  <link rel="stylesheet" href="/css/editormd.preview.min.css">
+  <link rel="stylesheet" href="/css/tag.css">
+  <script th:src="@{/js/editormd.min.js}" type="application/javascript"></script>
+  <script th:src="@{/js/moment.js}" type="application/javascript"></script>
+  <script th:src="@{/js/lib/marked.min.js}"></script>
+  <script th:src="@{/js/lib/prettify.min.js}"></script>
+  <script th:src="@{/layui/layui.js}"></script>
+</head>
+<body>
+<form id="tag-create"  style="display:none;" class="layui-form layui-form-pane" action="">
+  <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">标签名称</label>
+    <div class="layui-input-block">
+      <input type="text" id="newTag"  name="tag" autocomplete="off" placeholder="请输入标题" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">标签简介</label>
+    <div class="layui-input-block">
+      <textarea id="tagbio" placeholder="请输入内容" class="layui-textarea"></textarea>
+    </div>
+  </div>
+</form>
+<div th:replace="~{common/header :: head}"></div>
+<div class="layui-container fly-marginTop">
+  <div class="fly-panel" pad20 style="padding-top: 5px;">
+    <!--<div class="fly-none">没有权限</div>-->
+    <div class="layui-form layui-form-pane">
+      <div class="layui-tab layui-tab-brief" lay-filter="user">
+        <ul class="layui-tab-title">
+          <li class="layui-this">发表新帖<!-- 编辑帖子 --></li>
+        </ul>
+        <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+          <div class="layui-tab-item layui-show">
+            <form   method="post">
+
+              <div class="layui-row layui-col-space15 layui-form-item">
+                <div class="layui-col-md3">
+                  <label class="layui-form-label">所在专栏</label>
+                  <div class="layui-input-block">
+                    <select lay-verify="required" name="category" lay-filter="column">
+                      <option></option>
+                      <option value="1">公告</option>
+                      <option value="2">提问</option>
+                      <option value="3">分享</option>
+                      <option value="4">讨论</option>
+                      <option value="5">建议</option>
+                      <option value="6">新闻</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="layui-col-md9">
+                  <label for="L_title" class="layui-form-label">标题</label>
+                  <div class="layui-input-block">
+                    <input type="text" id="L_title" name="title"  th:value="${questionEdit != null?questionEdit.title:''}" required lay-verify="required" autocomplete="off" class="layui-input">
+                    <!-- <input type="hidden" name="id" value="{{d.edit.id}}"> -->
+                    <input name="id" type="hidden" th:value="${questionEdit != null ?questionEdit.id:''}">
+                  </div>
+                </div>
+              </div>
+              <div   class="layui-form-item layui-form-text">
+                <div id="editor">
+                  <textarea name="description" id="description" th:text="${questionEdit != null ?questionEdit.description:''}" style="display:none;"></textarea>
+                </div>
+              </div>
+              <blockquote class="layui-elem-quote ">
+                添加标签：
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span  style="text-align: center;line-height:18px;">找不到标签？
+                  <a href="javascript:void(0);" id="createTag"><strong >创建</strong></a>
+                </span>
+              </blockquote>
+              </blockquote>
+              <div id="selected-tags">
+                  <div  th:if="${questionEdit != null}" th:remove="tag">
+              <span th:each="editTag:${questionEdit.tag.split(',')}" class="layui-badge selected-tag">
+                <span th:text="${editTag}" th:remove="tag"></span>
+                <a href="javascript:void(0);" onclick="removeTag(this)">&nbsp;&nbsp;&nbsp;✗</a>
+              </span>
+                  </div>
+                </div>
+              <!--点击标签区域-->
+              <div  class="layui-tab layui-tab-brief " lay-filter="docDemoTabBrief">
+                <ul  class="layui-tab-title">
+                  <li  th:each="tagDTO,tagDTOStat:${tags}" th:text="${tagDTO.categoryName}"   th:class="${tagDTOStat.first ? 'layui-this':''}"></li>
+                </ul>
+
+                <div class="layui-tab-content">
+                  <div  th:each="tagDTO,tagDTOStat:${tags}" th:class="${tagDTOStat.first ? 'layui-tab-item layui-show':'layui-tab-item'}"  >
+
+                    <a href="javascript:"; th:if="${tagDTO.list != null && tagDTO.list.size() > 0}" th:each="tag:${tagDTO.list}">
+                      <span class="layui-badge  tag" th:text="${tag}"></span>
+                    </a>
+
+                    <span id="myTag" th:if="${tagDTO.list == null || tagDTO.list.size() == 0}" style="text-align: center;display:block">您还没有自定义标签</span>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="layui-form-item">
+                  <input id="tag" th:value="${questionEdit != null ?questionEdit.tag:''}" name="tag" type="hidden" >
+                <button class="layui-btn" lay-filter="post" lay-submit>立即发布</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fly-footer">
+  <p><a href="http://fly.layui.com/" target="_blank">Fly社区</a> 2017 &copy; <a href="http://www.layui.com/" target="_blank">layui.com 出品</a></p>
+  <p>
+    <a href="http://fly.layui.com/jie/3147/" target="_blank">付费计划</a>
+    <a href="http://www.layui.com/template/fly/" target="_blank">获取Fly社区模版</a>
+    <a href="http://fly.layui.com/jie/2461/" target="_blank">微信公众号</a>
+  </p>
+</div>
+
+<script>
+  $("#createTag").click(function () {
+    layer.open({
+      type:1,
+      area:['500px','400px'],
+      title: '创建标签'
+      ,content: $("#tag-create"),
+      btn: ['提交', '取消']
+      ,btn1: function(index,layero){
+        var tag =$("#newTag").val();
+        var bio = $("#tagbio").val();
+
+        $.ajax({
+          url: '/userTag/add',
+          type: 'post',
+          data: {tag:tag,bio:bio},
+          dataType: 'json',
+          success: function (res) {
+            if (res.code == 1006) {
+              layer.close(index);
+              layer.msg(res.msg);
+              var myTag = '<span class="layui-badge selected-tag">'+tag +
+                      '<a href="javascript:void(0);" onclick="removeTag(this)">&nbsp;&nbsp;&nbsp;✗</a>' +
+                      '</span>';
+              $("#myTag").parent().val(myTag);
+            }else {
+              layer.close(index);
+              layer.msg(res.msg);
+            }
+          }
+        })
+
+      },
+      btn2: function(index,layero){
+        layer.close(index);
+        return false;
+      },
+      cancel: function(layero){
+        layer.closeAll();
+      }
+
+    });
+  })
+    $(".tag").click(function () {
+        var rtags = $("#tag").val();
+        var othis = $(this).text();
+        if (rtags.indexOf(othis)>=0){
+          layer.msg("标签已添加",{shift: 6});
+          return;
+        }
+        var html = '<span class="layui-badge selected-tag">'+othis +
+            '<a href="javascript:void(0);" onclick="removeTag(this)">&nbsp;&nbsp;&nbsp;✗</a>' +
+            '</span>';
+        $("#selected-tags").prepend(html);
+
+        var tags = $("#tag").val();
+        $("#tag").val(tags+','+othis);
+
+    });
+
+    function removeTag(obj) {
+        var rtag = $(obj).parent().prop ('firstChild').nodeValue;
+        var rtags = $("#tag").val();
+        var rtext = rtags.replace(','+rtag,'');
+        $("#tag").val(rtext);
+        $(obj).parent().remove();
+    }
+
+</script>
+<script type="text/javascript">
+
+  $(function() {
+    var editor = editormd("editor", {
+      height:360,
+      toolbarAutoFixed     : true,
+      placeholder:"请在此处编辑...",
+      codeFold : true,
+      syncScrolling : "single",
+      saveHTMLToTextarea : false,
+      searchReplace : true,
+      watch : false,
+      path: "/js/lib/",
+      htmlDecode : "style,script|on*",
+      tex : true,
+      emoji : true,
+      flowChart : true,
+      taskList : true,
+      sequenceDiagram : true,
+      previewTheme :'dark',// 开启时序/序列图支持，默认关闭,
+      imageUpload : true,
+      imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+      imageUploadURL: "/file/upload",
+      watch: false,
+      toolbarIcons: function () {
+        return ["undo", "redo", "quote", "|", "bold", "hr", "italic", "del", "ucwords", "|", "h1", "h2", "h3", "h4", "h5", "h6", "list-ul", "list-ol", "code-block"
+          , "table", "clear", "search", "|",   "emoji", "link", "file", "faicon", "||", "watch", "preview", "image"]
+      },
+
+    });
+    });
+
+</script>
+<!--<script src="/layui/layui.js"></script>-->
+<script>
+  layui.use(['layer', 'form','element'],function () {
+    var form = layui.form;
+    var layer = layui.layer,
+            element = layui.element;
+    form.render();
+    form.on('submit(post)',function (data) {
+      $.ajax({
+        url: '/publish',
+        type: 'post',
+        data: data.field,
+        dataType: 'json',
+        success: function (res) {
+          if (res.code == 200) {
+            window.location.href = "/";
+          }else {
+            layer.msg(res.msg,{shift:6})
+          }
+        }
+      })
+      return false;
+    })
+
+  })
+</script>
+<script>
+  layui.config({
+    version: "3.0.0"
+    ,base: '/mods/'
+  }).extend({
+    fly: 'index'
+  }).use('fly');
+</script>
+
+</body>
+</html>

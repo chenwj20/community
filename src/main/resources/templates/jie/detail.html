@@ -1,0 +1,360 @@
+ 
+ 
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <meta charset="utf-8">
+  <title>FreeMi社区</title>
+  <link rel='icon' href='/images/freemi.ico' type='image/x-ico' />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="FreeMi社区">
+  <meta name="description" th:content="${questionDTO.title}">
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/noLogin.css">
+  <link rel="stylesheet" href="/css/editormd.min.css">
+  <link rel="stylesheet" href="/css/editormd.preview.min.css"><link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,500,700&amp;display=swap'>
+  <link rel="stylesheet" href="/css/zan-style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+  <script th:src="@{/layui/layui.js}"></script>
+  <script th:src="@{/js/editormd.min.js}" type="application/javascript"></script>
+  <script th:src="@{/js/moment.js}" type="application/javascript"></script>
+  <script th:src="@{/js/lib/marked.min.js}"></script>
+  <script th:src="@{/js/lib/prettify.min.js}"></script>
+
+</head>
+<body>
+
+<div th:replace="~{common/header :: head}"></div>
+
+<div th:replace="~{common/column :: column}"></div>
+<div class="layui-container">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md8 content detail">
+      <div class="fly-panel detail-box">
+
+        <div class="fly-detail-info">
+          <!-- <span class="layui-badge">审核中</span> -->
+          <span class="layui-badge layui-bg-green fly-detail-column" th>动态</span>
+          
+          <span class="layui-badge" style="background-color: #999;">未结</span>
+          <!-- <span class="layui-badge" style="background-color: #5FB878;">已结</span> -->
+          
+          <span class="layui-badge layui-bg-black">置顶</span>
+          <span class="layui-badge layui-bg-red">精帖</span>
+
+          <div class="fly-admin-box" th:data-id="${questionDTO.id}">
+            <span th:if="${session.user.role == 1}" th:onclick="topQuestion([[${questionDTO.id}]])" class="layui-btn layui-btn-xs jie-admin layui-bg-orange" type="set" field="stick" rank="1">置顶</span>
+
+        </div>
+
+          <span class="fly-list-nums"> 
+            <a href="#comment">
+                <i class="iconfont" title="回答">
+                &#xe60c;</i> <span id="comment-count" th:text="${questionDTO.commentCount}"></span>
+            </a>
+            <i class="iconfont" title="人气">&#xe60b;</i> <span th:text="${questionDTO.viewCount}"></span>
+          </span>
+        </div>
+        <div class="detail-about">
+          <a class="fly-avatar" th:href="${'/user/home/'+questionDTO.user.id}">
+            <img th:src="${questionDTO.user.avatarUrl}" alt="cwj">
+          </a>
+          <div class="fly-detail-user">
+            <a href="../user/home.html" class="fly-link">
+              <cite th:text="${questionDTO.user.name}"></cite>
+              <i class="layui-badge fly-badge-vip" th:text="${'LV'+ questionDTO.user.lv}"></i>
+            </a>
+            <span th:text="${#dates.format(questionDTO.gmtCreate,'yyyy-MM-dd HH:mm')}" ></span>
+          </div>
+          <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
+            <span style="padding-right: 10px; color: #FF7200">悬赏：<span th:text="${questionDTO.experience}"></span>米币</span>
+            <span class="layui-btn layui-btn-xs jie-admin" type="edit" th:if="${session.user!= null && questionDTO.creator == session.user.id}"><a th:href="${'/publish/'+questionDTO.id}">编辑此贴</a></span>
+<!--            <button type="button" class="layui-btn layui-btn-sm">小型按钮</button>-->
+            <button  type="button" id="collect" class="collect layui-btn layui-btn-xs" th:if="${session.user!= null && collect == '0'}">收藏此帖</button>
+            <button  type="button" id="remove-collect" class=" collect layui-btn layui-btn-warm layui-btn-xs" th:if="${session.user!= null && collect == '1'}">取消收藏</button>
+            <button  type="button" th:if="${session.user!= null && questionDTO.creator == session.user.id}" th:onclick="questionDel([[${questionDTO.id}]])" style="float: right" class="layui-btn layui-btn-xs layui-btn-danger">删除此贴</button>
+          </div>
+        </div>
+        <div id="question-view" style="margin:10px 0px;padding: 0px;overflow-y: hidden;">
+          <!--内容-->
+            <textarea style="display:none;" th:text="${questionDTO.description}"></textarea>
+        </div>
+
+          <div style="text-align: center">
+          <div  class="anim-icon anim-icon-md star">
+              <input id="star1"  type="checkbox" disabled />
+              <label style="cursor:pointer;" id="zan-question" for="star1"></label>
+          </div>
+          </div>
+          <div>
+              <small style="font-size: 12px;color: #999999;">相关标签：</small>
+              <span layui-badge th:each="tag:${questionDTO.tag.split(',')}"   >
+                <a th:href="${'/tag/'+tag+'/page/1'}" class="layui-badge layui-bg-gray " th:text="${tag}"></a>
+                    &nbsp;
+              </span>
+          </div>
+        <br/>
+        <small class="copyright" style="color: #999;">注意：本文归作者所有，未经作者允许，不得转载</small>
+      </div>
+
+      <div  class="fly-panel detail-box" id="flyReply">
+        <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
+          <legend>回帖</legend>
+        </fieldset>
+
+        <ul  class="jieda" id="jieda" >
+          <li data-id="111" th:if="${commentDTOS.list != null && commentDTOS.size >0}" th:each="comment,commentStat : ${commentDTOS.list}" th:id="${'delComment'+comment.id}" class="jieda-daan">
+            <a th:name="${'item-'+comment.id}" ></a>
+            <div class="detail-about detail-about-reply">
+              <a class="fly-avatar" th:href="${'/user/home/'+comment.user.id}">
+                <img th:src="${comment.user.avatarUrl}" alt=" cwj">
+              </a>
+              <div class="fly-detail-user">
+                <a th:href="${'/user/home/'+comment.user.id}" class="fly-link">
+                  <cite th:text="${comment.user.name}"></cite>
+                  <i class="layui-badge fly-badge-vip  layui-bg-gray" th:text="${'LV'+comment.user.lv}"></i>
+                </a>
+
+                <span style="color:#5FB878" th:if="${comment.user.id == questionDTO.user.id}">(楼主)</span>
+                <span th:if="${comment.user.role == 1}" style="color:#FF9E3F">(管理员)</span>
+                <span th:text="${'('+commentStat.count}+'楼)'"></span>
+
+                <!--<span style="color:#FF9E3F">（社区之光）</span>
+                <span style="color:#999">（该号已被封）</span>-->
+              </div>
+
+              <div class="detail-hits">
+                <span th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
+              </div>
+
+<!--              <i class="iconfont icon-caina" title="最佳答案"></i>-->
+            </div>
+
+            <div  th:id="${'comment-view'+commentStat.index}" style="margin:10px 0px;padding: 0px;overflow-y: hidden;">
+              <div class="detail-body jieda-body photos">
+                <textarea style="display:none;" th:text="${comment.content}"></textarea>
+              </div>
+            </div>
+            <div class="jieda-reply" >
+
+              <span class="jieda-zan zanok" th:id="${'zan'+comment.id}" th:if="${comment.flag}" th:onclick="zanComment([[${comment.id}]])" type="zan">
+                <i class="iconfont icon-zan"></i>
+                <em th:text="${comment.likeCount}"></em>
+              </span>
+              <span class="jieda-zan " th:id="${'zan'+comment.id}" th:if="${!comment.flag}" th:onclick="zanComment([[${comment.id}]])" type="zan">
+                <i class="iconfont icon-zan"></i>
+                <em th:text="${comment.likeCount}"></em>
+              </span>
+<!--              th:onclick="reply([[${comment.user.name}]]);" th:onclick="reply([[${comment.user.name}]],[[${comment.user.id}]])"-->
+                <a href="#comment">
+                <span type="reply"  th:onclick="reply([[${comment.user.name}]],[[${comment.user.id}]]);">
+                <i   class="iconfont icon-svgmoban53"></i>
+                回复
+                </span>
+                </a>
+              <div th:if="${session.user != null && comment.user.id == session.user.id}" class="jieda-admin">
+<!--                <span type="edit">编辑</span>-->
+                <span th:onclick="commentDel([[${comment.id}]])" type="del">删除</span>
+                <!-- <span class="jieda-accept" type="accept">采纳</span> -->
+              </div>
+            </div>
+          </li>
+          <!-- 无数据时 -->
+<!--          <li th:if="${commentDTOS.list == null || commentDTOS.list.size() == 0}" class="fly-none">消灭零回复</li>-->
+        </ul>
+        <div  th:if="${commentDTOS.total>10}" style="text-align: center">
+          <div id="comment-page"></div>
+        </div>
+        <blockquote class="layui-elem-quote layui-quote-nm" th:if="${session.user==null}" style="margin: 100px 0 20px; padding: 50px 20px; text-align: center; color: #999!important;">
+          <a href="/user/login">登录后方可评论</a>
+        </blockquote>
+        <div class="layui-form layui-form-pane"  id="tocomment" th:if="${session.user != null}">
+          <div id="comment-info"></div>
+          <form  method="post">
+            <div class="layui-form-item layui-form-text">
+              <a name="comment"></a>
+              <div class="layui-input-block">
+                <input type="hidden" name="parentId" id="question_id" th:value="${questionDTO.id}">
+                <input type="hidden" name="type" value="1">
+                <input type="hidden" id="to_comment_id" name="toCommentId" value="-1">
+                <div id="editor">
+                  <textarea id="L_content" name="content"  required lay-verify="required" placeholder="请输入内容" class="layui-textarea" style="height: 150px;display:none;" ></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <input type="hidden" name="jid" value="123">
+              <button class="layui-btn"   lay-filter="comment" lay-submit>提交回复</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-md4">
+      <dl class="fly-panel fly-list-one">
+        <dt class="fly-panel-title">相关帖子</dt>
+        <dd th:if="${relatedQuestions!= null && relatedQuestions.size() >0}" th:each="relatedQuestion:${relatedQuestions}">
+          <a th:href="${'/question/'+relatedQuestion.id+'/page/1'}" th:text="${relatedQuestion.title}"></a>
+          <span><i class="iconfont icon-pinglun1"></i><span th:text="${relatedQuestion.commentCount}" th:remove="tag"></span> </span>
+        </dd>
+
+        <!-- 无数据时 -->
+        <div   th:if="${relatedQuestions== null || relatedQuestions.size() ==0}" class="fly-none">没有相关数据</div>
+      </dl>
+        <div class="fly-panel">
+            <div class="fly-panel-title">
+                最近以下用户Star了该帖
+            </div>
+            <div class="fly-panel-main" id="liked_user">
+                <a  th:each="zanUser:${zanUsers}" th:href="${'/user/home/'+zanUser.id}" th:title="${zanUser.name}">
+                <img width="30" height="30" class="zan-avatar" th:src="${zanUser.avatarUrl}">
+            </a>
+            </div>
+            <div th:if="${zanUsers.size() == 0}" style="min-height: 50px; padding:30px 0; height:auto;" class="fly-none">没有相关数据</div>
+        </div>
+
+
+      <div class="fly-panel">
+        <div class="fly-panel-title">
+          这里可作为广告区域
+        </div>
+        <div class="fly-panel-main">
+          <a href="http://layim.layui.com/?from=fly" target="_blank" class="fly-zanzhu" time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">LayIM 3.0 - layui 旗舰之作</a>
+        </div>
+      </div>
+
+      <div class="fly-panel" style="padding: 20px 0; text-align: center;">
+        <img src="/images/weixin.jpg" style="max-width: 100%;" alt="layui">
+        <p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p>
+      </div>
+
+    </div>
+
+
+  </div>
+</div>
+
+<div  class="fly-footer">
+  <p><a href="http://fly.layui.com/" target="_blank">Fly社区</a> 2017 &copy; <a href="http://www.layui.com/" target="_blank">layui.com 出品</a></p>
+  <p>
+    <a href="http://fly.layui.com/jie/3147/" target="_blank">付费计划</a>
+    <a href="http://www.layui.com/template/fly/" target="_blank">获取Fly社区模版</a>
+    <a href="http://fly.layui.com/jie/2461/" target="_blank">微信公众号</a>
+  </p>
+</div>
+<input  id="collect-flag" type="hidden" th:value="${collect}">
+<!--<script type="text/javascript" th:src="@{/js/jquery.js}"></script>-->
+<div th:replace="~{common/question :: questionjs}"></div>
+
+<script type="text/javascript" th:inline="javascript">
+
+  $(function () {
+    var question = editormd.markdownToHTML("question-view", {
+      path: "/js/lib/",  // Autoload modules mode, codemirror, marked... dependents libs path
+      htmlDecode: "style,script,iframe",
+      emoji: true,
+      taskList: true,
+      htmlDecode: true,
+      htmlDecode: "dark,script,iframe",
+      //flowChart: true,
+      tex: true,
+    });
+    for (var i=0;i <[[${commentDTOS.size}]];i++){
+      editormd.markdownToHTML("comment-view"+i, {
+        path: "/js/lib/",  // Autoload modules mode, codemirror, marked... dependents libs path
+        htmlDecode: "style,script,iframe",
+        emoji: true,
+        taskList: true,
+        htmlDecode: true,
+        htmlDecode: "dark,script,iframe",
+        //flowChart: true,
+        tex: true,
+      });
+    }
+
+  });
+</script>
+<script th:inline="javascript">
+
+layui.use(['layer', 'form','laypage'],function () {
+
+  var form = layui.form;
+  var layer = layui.layer;
+  var laypage = layui.laypage
+  form.render();
+  form.on('submit(comment)',function (data) {
+      $.ajax({
+        url:'/comment/add',
+        type:'post',
+        data:data.field,
+        dataType:'json',
+        success:function (data) {
+          if (data.code == 1000){
+            window.location.reload();
+            layer.msg("回复成功");
+          }else {
+            layer.msg("回复失败");
+          }
+        }
+      })
+    return false;
+  });
+  laypage.render({
+    elem: 'comment-page'
+    ,count:[[${commentDTOS.total}]]//数据总数
+    ,limit:[[${commentDTOS.pageSize}]]
+    ,curr:[[${commentDTOS.pageNum}]]
+    ,jump: function(obj,first){
+      if (!first) {
+        window.location.href = '/question/' + [[${questionDTO.id}]] + '/page/' + obj.curr;
+      }
+    }
+  });
+
+
+});
+</script>
+
+<script type="text/javascript">
+
+  $(function() {
+    var editor = editormd("editor", {
+      width: "100%",
+      height: 350,
+      path: "/js/lib/",
+      saveHTMLToTextarea : false,
+      delay: 0,
+      watch: false,
+      placeholder: "请输入问题描述",
+      imageUpload: true,
+      imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+      emoji:true,
+      imageUploadURL : "/file/upload",
+      autoFocus : false,
+      watch: false,
+      toolbarIcons: function () {
+        // Or return editormd.toolbarModes[name]; // full, simple, mini
+        // Using "||" set icons align right.
+        return ["undo", "redo",  "|", "bold", "hr", "italic", "del",  "|",   "list-ul", "list-ol", "code-block"
+          , "table", "clear", "search", "|", "preview", "watch", "|", "emoji", "link", "file", "faicon", "||", "watch", "preview", "image"]
+      },
+    });
+  })
+</script>
+<!--<script  th:src="@{/js/question.js}"></script>-->
+<script>
+    layui.cache.page = 'user';
+    layui.cache.user = {
+        uid: -1
+    };
+    layui.config({
+        version: "3.0.0"
+        ,base: '/mods/'
+    }).extend({
+        fly: 'index'
+    }).use('fly');
+</script>
+</body>
+</html>

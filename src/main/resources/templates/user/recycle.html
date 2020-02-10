@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>我的消息</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel='icon' href='/images/freemi.ico' type='image/x-ico' />
+  <meta name="keywords" content="FreeMi社区">
+  <meta name="description" content="FreeMi社区">
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+</head>
+<body>
+
+<div th:replace="~{common/header :: head}"></div>
+
+<div class="layui-container fly-marginTop fly-user-main">
+  <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+    <li class="layui-nav-item">
+      <a th:href="${'/user/home/'+session.user.id}">
+        <i class="layui-icon" >&#xe68e;</i>
+        我的主页
+      </a>
+    </li>
+    <li class="layui-nav-item ">
+      <a href="/user/question">
+        <i class="layui-icon">&#xe612;</i>
+        用户中心
+      </a>
+    </li>
+    <li class="layui-nav-item">
+      <a href="/user/set">
+        <i class="layui-icon">&#xe620;</i>
+        基本设置
+      </a>
+    </li>
+    <li class="layui-nav-item">
+      <a href="/notification/all/page/1">
+        <i class="layui-icon">&#xe611;</i>
+        我的消息
+      </a>
+    </li>
+    <li class="layui-nav-item  layui-this">
+      <a href="/question/recycle/page/1" class="layui-this">
+        <i class="layui-icon"></i>
+        回收站
+      </a>
+    </li>
+  </ul>
+
+  <div class="site-tree-mobile layui-hide">
+    <i class="layui-icon">&#xe602;</i>
+  </div>
+  <div class="site-mobile-shade"></div>
+
+  <div class="site-tree-mobile layui-hide">
+    <i class="layui-icon">&#xe602;</i>
+  </div>
+  <div class="site-mobile-shade"></div>
+
+
+  <div class="fly-panel fly-panel-user" pad20>
+    <div class="layui-tab layui-tab-brief" lay-filter="user" id="LAY_msg" style="margin-top: 15px;">
+      <button th:if="${recyclePageInfo.list != null && recyclePageInfo.list.size() > 0}" class="layui-btn layui-btn-danger" onclick="rdAll(1)">清空全部消息</button>
+      <button th:if="${recyclePageInfo.list != null && recyclePageInfo.list.size() > 0}" class="layui-btn layui-btn-normal" onclick="rdAll(0)" >恢复全部消息</button>
+      <div   id="LAY_minemsg" style="margin-top: 10px;">
+        <div th:if="${recyclePageInfo.list == null || recyclePageInfo.list.size() == 0}" class="fly-none">您暂时没有最新消息</div>
+        <ul class="mine-msg">
+          <li  th:each="recycle:${recyclePageInfo.list}" th:id="${recycle.id}">
+            <blockquote class="layui-elem-quote layui-quote-nm">
+              <span th:text="${recycle.title}" ></span>
+            </blockquote>
+            <p><span th:text="${#dates.format(recycle.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
+              <a  href="javascript:;" th:onclick="delQues([[${recycle.id}]])" class="layui-btn layui-btn-small layui-btn-danger fly-delete">删除</a>
+              <a href="javascript:;"th:onclick="recQues([[${recycle.id}]])" class="layui-btn layui-btn-small layui-btn-normal fly-delete">恢复</a>
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div th:if="${recyclePageInfo.size>8}" id="recyclePage">
+    </div>
+  </div>
+</div>
+
+
+<div class="fly-footer">
+  <p><a href="http://fly.layui.com/" target="_blank">Fly社区</a> 2017 &copy; <a href="http://www.layui.com/" target="_blank">layui.com 出品</a></p>
+  <p>
+    <a href="http://fly.layui.com/jie/3147/" target="_blank">付费计划</a>
+    <a href="http://www.layui.com/template/fly/" target="_blank">获取Fly社区模版</a>
+    <a href="http://fly.layui.com/jie/2461/" target="_blank">微信公众号</a>
+  </p>
+</div>
+
+<script src="/layui/layui.js"></script>
+<script>
+
+  layui.use(['layer','laypage'], function(){
+    var layer = layui.layer,
+            laypage = layui.laypage;//获得layer模块
+
+
+    laypage.render({
+      elem: 'recyclePage'
+      ,count:[[${recyclePageInfo.total}]]//数据总数
+      ,limit:[[${recyclePageInfo.pageSize}]]
+      ,curr:[[${recyclePageInfo.pageNum}]]
+      ,jump: function(obj,first){
+        if (!first) {
+          window.location.href = '/question/recycle/page/' + obj.curr;
+        }
+      }
+    });
+
+  })
+  function rdAll(type) {
+    if (type == 1){
+      var tip ="确定永久删除所有帖子？";
+      var zl = "delete";
+    } else {
+      var tip ="确定回收所有帖子？";
+      var zl = "recycle";
+    }
+    var othis = $(this);
+    layer.confirm(tip, function(){
+      $.ajax({
+        url:'/question/'+zl,
+        type:'get',
+        dataType:'json',
+        success:function (res) {
+          layer.msg(res.msg);
+          $("#LAY_msg").html("<div class=fly-none>回收站暂时为空</div>");
+        }
+      });
+    });
+  }
+  function delQues(id) {
+    layer.confirm('确定永久删除吗？', function(){
+      $.ajax({
+        url:'/question//delete/'+id,
+        type:'get',
+        dataType:'json',
+        success:function (res) {
+          if (res.code == 1003){
+            $("#"+id).remove();
+            layer.msg(res.msg);
+          }else {
+            layer.msg("删除失败");
+          }
+        }
+      });
+    })
+  }
+  function recQues(id) {
+    layer.confirm('确定恢复帖子？', function(){
+      $.ajax({
+        url:'/question/recycle/'+id,
+        type:'get',
+        dataType:'json',
+        success:function (res) {
+          if (res.code == 1010){
+            $("#"+id).remove();
+            layer.msg(res.msg);
+          }else {
+            layer.msg("恢复失败");
+          }
+        }
+      });
+    })
+  }
+
+</script>
+<script>
+layui.cache.page = 'user';
+layui.cache.user = {
+  username: '游客'
+  ,uid: -1
+  ,avatar: '/images/avatar/00.jpg'
+  ,experience: 83
+  ,sex: '男'
+};
+layui.config({
+  version: "3.0.0"
+  ,base: '/mods/'
+}).extend({
+  fly: 'index'
+}).use('fly');
+</script>
+
+</body>
+</html>

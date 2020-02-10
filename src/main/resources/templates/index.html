@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>FreeMi社区</title>
+    <link rel='icon' href='/images/freemi.ico' type='image/x-ico' />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="FreeMi社区">
+  <meta name="description" content="FreeMi区">
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/tag.css">
+</head>
+<body>
+
+<div th:replace="common/header :: head"></div>
+
+<div th:replace="common/column :: column"></div>
+
+<div class="layui-container">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md8">
+        <div class="fly-panel">
+            <div class="fly-panel-title fly-filter">
+                <a>置顶</a>
+            </div>
+            <ul class="fly-list">
+                <li th:each="topQuestion:${topList}">
+                    <a th:href="${'/user/home/'+topQuestion.creator}" class="fly-avatar">
+                        <img th:src="${topQuestion.user.avatarUrl}" alt="贤心">
+                    </a>
+                    <h2>
+                        <a th:text="${topQuestion.category}" class="layui-badge"></a>
+                        <a th:href="@{'/question/'+ ${topQuestion.id}+'/page/1'}" th:text="${topQuestion.title}"></a>
+                    </h2>
+                    <div class="fly-list-info">
+                        <a th:href="${'/user/home/'+topQuestion.user.id}" link>
+                            <cite><span th:text="${topQuestion.user.name}"></span></cite>
+                            <i class="layui-badge fly-badge-vip layui-bg-gray layui-hide-xs " th:text="${'LV'+questionDTO.user.lv}"></i>
+                        </a>
+                        <span th:text="${#dates.format(topQuestion.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
+
+                        <span class="fly-list-like layui-hide-xs " title="悬赏米币" style="color:#FFB800;">
+                            <i class="layui-icon">&#xe65e;</i>
+                            <span style="color:#FFB800;" th:text="${topQuestion.experience}"></span></span>
+                        <span class="fly-list-like layui-hide-xs " style="color:#FFB800;" title="Star"><i class="layui-icon"></i><span style="color:#FFB800;" th:text="${topQuestion.likeCount}"></span></span>
+                        <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
+                        <span class="fly-list-nums">
+                <i class="iconfont icon-pinglun1" title="回答"></i>
+                <span th:text="${topQuestion.commentCount}"></span>
+              </span>
+                    </div>
+
+                    <div class="fly-list-badge">
+
+                        <span class="layui-badge layui-bg-black">置顶</span>
+                        <!--
+                        <span class="layui-badge layui-bg-red">精帖</span>
+                        -->
+                    </div>
+                </li>
+            </ul>
+        </div>
+      <div class="fly-panel" style="margin-bottom: 0;">
+
+          <div class="fly-panel-title fly-filter">
+              <span class="fly-mid"></span>
+              <a id="new" th:href="${newUrl}">最新发布</a>
+              <span class="fly-mid"></span>
+              <a id="hot"  th:href="${hotUrl}">最多评论</a>
+
+          </div>
+        <!--帖子列表-->
+          <ul class="fly-list"  >
+              <li th:each="questionDTO : ${pageInfo.list}">
+                  <a th:href="${'/user/home/'+questionDTO.creator}" class="fly-avatar">
+                      <img th:src="${questionDTO.user.avatarUrl}" alt="cwj">
+                  </a>
+                  <h2>
+                      <a class="layui-badge"><span th:text="${questionDTO.category}"></span></a>
+                      <a th:href="@{'/question/'+ ${questionDTO.id}+'/page/1'}"><span th:text="${questionDTO.title}"></span></a>
+                  </h2>
+                  <div class="fly-list-info">
+                      <a th:href="${'/user/home/'+questionDTO.user.id}" link>
+                          <cite><span th:text="${questionDTO.user.name}"></span></cite>
+                          <i class="layui-badge fly-badge-vip layui-bg-gray layui-hide-xs " th:text="${'LV'+questionDTO.user.lv}"></i>
+                      </a>
+                      <span th:text="${#dates.format(questionDTO.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
+
+                  <span class="fly-list-like layui-hide-xs" title="悬赏米币">
+                    <i class="layui-icon" >&#xe65e;</i>
+                    <span th:text="${questionDTO.experience}"></span>
+                </span>
+                      <span class="fly-list-like layui-hide-xs " style="color:#FFB800;" title="Star">
+                          <i class="layui-icon"></i>
+                          <span style="color:#FFB800;" th:text="${questionDTO.likeCount}">
+                          </span>
+                      </span>
+                      <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
+                      <span class="fly-list-nums">
+                <i class="iconfont icon-pinglun1" title="回答"></i>
+                <span th:text="${questionDTO.commentCount}"></span>
+              </span>
+                  </div>
+                  <div class="fly-list-badge">
+<!--                                    <span class="layui-badge layui-bg-red">精帖</span>-->
+                  </div>
+              </li>
+          </ul>
+
+        <div style="text-align: center">
+          <div class="laypage-main">
+            <a href="/all/page/1" class="laypage-next">更多求解</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="layui-col-md4">
+
+      <div class="fly-panel">
+          <div class="fly-panel">
+              <h3 class="fly-panel-title">热门标签</h3>
+              <div class="fly-panel-main">
+                  <a th:href="${'/tag/'+tag+'/page/1'}" href="javascript:; "th:each="tag:${hotTags}" >
+                      <span class="layui-badge  tag layui-anim-scaleSpring" th:text="${tag}"></span>
+                  </a>
+              </div>
+          </div>
+      </div>
+
+    <!-- 回帖版单-->
+      <div class="fly-panel fly-rank fly-rank-reply" id="LAY_replyRank">
+        <h3 class="fly-panel-title">回帖榜 - TOP12</h3>
+        <dl >
+<!--          <i class="layui-icon fly-loading">&#xe63d;</i>-->
+          <dd th:each="sortUser:${commentCountUsers}">
+            <a th:href="@{'/user/home/'+${sortUser.id}}">
+              <img th:src="${sortUser.avatarUrl}"><cite th:text="${sortUser.name}"></cite><i th:text="${ sortUser.commentCounts+'次回答'}"></i>
+            </a>
+          </dd>
+
+        </dl>
+      </div>
+      <div class="fly-panel fly-signin">
+            <div class="fly-panel-title">
+                签到
+                <i class="fly-mid"></i>
+                <a href="javascript:;" class="fly-link" id="LAY_signinHelp">说明</a>
+<!--                <i class="fly-mid"></i>-->
+<!--                <a href="javascript:;" class="fly-link" id="LAY_signinTop">活跃榜<span class="layui-badge-dot"></span></a>-->
+                <span class="fly-signin-days" th:if="${session.user != null}">已连续签到<cite id="days"></cite>天</span>
+            </div>
+          <!--签到-->
+            <div id="sign" class="fly-panel-main fly-signin-main">
+            </div>
+      </div>
+      <dl class="fly-panel fly-list-one" >
+        <dt class="fly-panel-title" >热议</dt>
+
+        <dd th:each="hotQuestion:${commentCountQuestions}" >
+          <a th:href="${'/question/'+hotQuestion.id+'/page/1'}"  th:text="${hotQuestion.title}"></a>
+          <span ><i class="iconfont icon-pinglun1"></i> [[${hotQuestion.commentCount}]]</span>
+        </dd>
+
+        <!-- 无数据时 -->
+        <div th:if="commentCountQuestions ==null" class="fly-none">没有相关数据</div>
+      </dl>
+
+      <div class="fly-panel">
+        <div class="fly-panel-title">
+            广告位出租中
+        </div>
+        <div class="fly-panel-main">
+          <a href="/" target="_blank" style="background-color: #404553!important;" class="fly-zanzhu" time-limit="2017.09.25-2099.01.01" >广告位出租中</a>
+        </div>
+      </div>
+      
+      <div class="fly-panel fly-link">
+        <h3 class="fly-panel-title">友情链接</h3>
+        <dl class="fly-panel-main">
+          <dd><a href="http://www.layui.com/" target="_blank">layui</a><dd>
+          <dd><a href="http://layim.layui.com/" target="_blank">WebIM</a><dd>
+          <dd><a href="http://layer.layui.com/" target="_blank">layer</a><dd>
+          <dd><a href="http://www.layui.com/laydate/" target="_blank">layDate</a><dd>
+          <dd><a href="mailto:xianxin@layui-inc.com?subject=%E7%94%B3%E8%AF%B7Fly%E7%A4%BE%E5%8C%BA%E5%8F%8B%E9%93%BE" class="fly-link">申请友链</a><dd>
+        </dl>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="fly-footer">
+  <p><a href="http://fly.layui.com/" target="_blank">Fly社区</a> 2017 &copy; <a href="http://www.layui.com/" target="_blank">layui.com 出品</a></p>
+  <p>
+    <a href="http://fly.layui.com/jie/3147/" target="_blank">付费计划</a>
+    <a href="http://www.layui.com/template/fly/" target="_blank">获取Fly社区模版</a>
+    <a href="http://fly.layui.com/jie/2461/" target="_blank">微信公众号</a>
+  </p>
+</div>
+<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/js/sign.js}"></script>
+<script th:inline="javascript">
+
+
+
+layui.cache.page = '';
+layui.cache.user = {
+  username: '游客'
+  ,uid: -1
+};
+layui.config({
+  version: "3.0.0"
+  ,base: 'http://localhost:9001/mods/' //这里实际使用时，建议改成绝对路径
+}).extend({
+  fly: 'index'
+}).use('fly');
+</script>
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_30088308'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "w.cnzz.com/c.php%3Fid%3D30088308' type='text/javascript'%3E%3C/script%3E"));</script>
+
+</body>
+</html>
