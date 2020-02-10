@@ -13,7 +13,7 @@ import javax.persistence.Table;
  * 签到
  **/
 @Data
-@Table(name = "signIn")
+@Table(name = "signin")
 public class SignIn {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

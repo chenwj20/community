@@ -209,12 +209,11 @@
 
 layui.cache.page = '';
 layui.cache.user = {
-  username: '游客'
-  ,uid: -1
+    uid: -1
 };
 layui.config({
   version: "3.0.0"
-  ,base: 'http://localhost:9001/mods/' //这里实际使用时，建议改成绝对路径
+  ,base: '/mods/' //这里实际使用时，建议改成绝对路径
 }).extend({
   fly: 'index'
 }).use('fly');
