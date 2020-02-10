@@ -45,7 +45,7 @@
           <span class="layui-badge layui-bg-red">精帖</span>
 
           <div class="fly-admin-box" th:data-id="${questionDTO.id}">
-            <span th:if="${session.user.role == 1}" th:onclick="topQuestion([[${questionDTO.id}]])" class="layui-btn layui-btn-xs jie-admin layui-bg-orange" type="set" field="stick" rank="1">置顶</span>
+            <span th:if="${session.user != null && session.user.role == 1}" th:onclick="topQuestion([[${questionDTO.id}]])" class="layui-btn layui-btn-xs jie-admin layui-bg-orange" type="set" field="stick" rank="1">置顶</span>
 
         </div>
 
@@ -118,7 +118,7 @@
                 </a>
 
                 <span style="color:#5FB878" th:if="${comment.user.id == questionDTO.user.id}">(楼主)</span>
-                <span th:if="${comment.user.role == 1}" style="color:#FF9E3F">(管理员)</span>
+               <!-- <span th:if="${comment.user.role == 1}" style="color:#FF9E3F">(管理员)</span>-->
                 <span th:text="${'('+commentStat.count}+'楼)'"></span>
 
                 <!--<span style="color:#FF9E3F">（社区之光）</span>

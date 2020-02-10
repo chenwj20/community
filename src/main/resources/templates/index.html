@@ -37,7 +37,7 @@
                     <div class="fly-list-info">
                         <a th:href="${'/user/home/'+topQuestion.user.id}" link>
                             <cite><span th:text="${topQuestion.user.name}"></span></cite>
-                            <i class="layui-badge fly-badge-vip layui-bg-gray layui-hide-xs " th:text="${'LV'+questionDTO.user.lv}"></i>
+                            <i class="layui-badge fly-badge-vip layui-bg-gray layui-hide-xs " th:text="${'LV'+topQuestion.user.lv}"></i>
                         </a>
                         <span th:text="${#dates.format(topQuestion.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
 
