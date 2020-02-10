@@ -31,13 +31,13 @@
     -->
   </h1>
 
-<!--  <p style="padding: 10px 0; color: #5FB878;">认证信息：layui 作者</p>-->
+  <p style="padding: 10px 0; color: #5FB878;">认证信息：FreeMi社区用户</p>
 
   <p class="fly-home-info">
     <i class="layui-icon " style="color:#FFB800;">&#xe65e;</i><span style="color: #FF7200;" th:text="${userDTO.miCoin}"></span>
 
-    <i class="iconfont icon-shijian"></i><span th:text="${#dates.format(userDTO.gmtCreate,'yyyy-MM-dd HH:mm')}"> 加入</span>
-    <i class="iconfont icon-chengshi"></i><span th:text="${userDTO.location}">来自杭州</span>
+    <i class="iconfont icon-shijian"></i><span th:text="${#dates.format(userDTO.gmtCreate,'yyyy-MM-dd HH:mm')+'加入'}"> </span>
+    <i class="iconfont icon-chengshi"></i><span th:text="${'来自'+userDTO.location}"></span>
   </p>
 
   <p class="fly-home-sign" th:text="${userDTO.bio}"></p>
@@ -58,7 +58,7 @@
           <li th:each="question:${userDTO.questions}">
 <!--            <span class="fly-jing">精</span>-->
             <a th:href="${'/question/'+question.id+'/page/1'}" class="jie-title" th:text="${question.title}"> </a>
-            <i ></i><span th:text="${#dates.format(userDTO.gmtCreate,'yyyy-MM-dd HH:mm')+'加入'}" ></span>
+            <i th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></i>
             <em class="layui-hide-xs" th:text="${question.viewCount+'阅/'+question.commentCount+'答'}" ></em>
           </li>
 

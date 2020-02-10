@@ -70,9 +70,9 @@ public class UserController {
         HttpSession session = request.getSession();
         String code = (String)session.getAttribute("verifyCode");
         if (!verifyCode.equalsIgnoreCase(code)){
-            session.removeAttribute("verifyCode");
             return ResultDTO.errorOf(CustomizeErrorCode.VERIFY_CODE_ERROR);
             }
+            session.removeAttribute("verifyCode");
             String password = user.getPassword();
             String salt = password.substring(password.length() -2,password.length());
             //MD5加密
@@ -86,6 +86,7 @@ public class UserController {
             userService.updateUserToken(user1);
             Cookie cookie = new Cookie("token", token);
             cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
+            cookie.setPath("/");
             response.addCookie(cookie);
             session.setAttribute("user", user1);
             return ResultDTO.okOf();
@@ -131,7 +132,8 @@ public class UserController {
             return ResultDTO.errorOf(CustomizeErrorCode.EMAIL_CODE_ERROR);
         }
 //        Long time = new Date().getTime()-(Long) session.getAttribute("mailTime");
-
+        session.removeAttribute("verifyCode");
+        session.removeAttribute("emailCode");
         Boolean b = userService.checkUser(user);
         if (b){
             return ResultDTO.errorOf(CustomizeErrorCode.USER_IS_EXIST);
@@ -140,6 +142,7 @@ public class UserController {
         user.setToken(token);
         Cookie cookie = new Cookie("token", token);
         cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
+        cookie.setPath("/");
         response.addCookie(cookie);
         user.setGmtCreate(System.currentTimeMillis());
         String password = user.getPassword();
@@ -163,6 +166,7 @@ public class UserController {
     @PostMapping("/forget")
     @ResponseBody
     public ResultDTO forget(HttpServletRequest request,
+                            HttpServletResponse response,
                             @RequestParam(value = "emailCode") String emailCode,
                             @RequestParam("email") String email
                          ){
@@ -174,14 +178,23 @@ public class UserController {
         if (!emailCode.equalsIgnoreCase((String) session.getAttribute("emailCode"))){
             return ResultDTO.errorOf(CustomizeErrorCode.EMAIL_CODE_ERROR);
         }
+        session.removeAttribute("emailCode");
         User user = new User();
         user.setEmail(email);
         boolean isEmail = userService.checkUserByEmail(user);
         if (!isEmail){
             return ResultDTO.errorOf(CustomizeErrorCode.EMAIL_UNREG);
         }
+        String token = UUID.randomUUID().toString();
+        Cookie cookie = new Cookie("token", token);
+        cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        user.setToken(token);
+        userService.updateUserToken(user);
         User fuser = userService.finUserByEmail(email);
         session.setAttribute("user",fuser);
+
         return ResultDTO.okOf();
     }
 
