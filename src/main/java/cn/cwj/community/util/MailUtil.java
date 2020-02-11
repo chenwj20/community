@@ -3,6 +3,9 @@ package cn.cwj.community.util;
 
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,7 +16,28 @@ import java.util.List;
  * @Date 2020/2/2
  * @Version V1.0
  **/
+@Component
 public class MailUtil {
+
+    private static String myEmail;
+    @Value("${email.account}")
+    public  void setMyEmail(String myEmail) {
+        MailUtil.myEmail = myEmail;
+    }
+    private static String password;
+    public String getPassword() {
+        return password;
+    }
+    @Value("${email.password}")
+    public void setPassword(String password) {
+        MailUtil.password = password;
+    }
+
+    private static String host;
+    @Value("${email.host}")
+    public void setHostIp(String host) {
+        MailUtil.host = host;
+    }
 
     // 随机验证码
     public static String achieveCode() {  //由于数字1 和0 和字母 O,l 有时分不清，所有，没有字母1 、0
@@ -32,14 +56,13 @@ public class MailUtil {
     public static Boolean sendAuthCodeEmail(String userEmail, String authCode) {
         HtmlEmail email=new HtmlEmail();//创建一个HtmlEmail实例对象
 
-        email.setHostName("smtp.163.com");//邮箱的SMTP服务器，一般123邮箱的是smtp.123.com,qq邮箱为smtp.qq.com
+        email.setHostName(host);//邮箱的SMTP服务器，一般123邮箱的是smtp.123.com,qq邮箱为smtp.qq.com
         email.setCharset("utf-8");//设置发送的字符类型
         try {
             System.out.println("用户邮件为："+userEmail);
-            email.setSmtpPort(25);
             email.addTo(userEmail);//设置收件人
-            email.setFrom("chenweijun_yz@163.com","FreeMi");//发送人的邮箱为自己的，用户名可以随便填
-            email.setAuthentication("chenweijun_yz@163.com","123456cwj");//设置发送人到的邮箱和用户名和授权码(授权码是自己设置的)
+            email.setFrom(myEmail,"FreeMi");//发送人的邮箱为自己的，用户名可以随便填
+            email.setAuthentication(myEmail,password);//设置发送人到的邮箱和用户名和授权码(授权码是自己设置的)
             email.setSubject("FreeMi官方邮箱验证码");//设置发送主题
             String mailHtml = getMailHtml(authCode, new Date().toString());
             System.out.println(email.getSmtpPort());

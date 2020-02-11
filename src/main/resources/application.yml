@@ -38,11 +38,10 @@ oss:
   accessKeyId: LTAI4Fr3iioRYy8hDnmhenee
   bucketName: chebweijun
   accessKeySecret: bPrk5CYi1NcYWJoAXhyoEdxCXd7D1z
-exmail:
+email:
   account: chenweijun_yz@163.com
-  password:
-  smtp:
-    host: smtp.163.com
+  password: 123456cwj
+  host: 220.181.12.15
 site:
   main:
     title: FreeMI
