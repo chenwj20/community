@@ -1,5 +1,5 @@
 server:
-  port: 9001
+  port: 80
 github:
   client:
     id: d7a2dd53de6f2e1ebee4
