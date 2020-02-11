@@ -11,7 +11,9 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableScheduling
 @MapperScan("cn.cwj.community.mapper")
 public class CommunityApplication {
+
     public static void main(String[] args) {
+
         SpringApplication.run(CommunityApplication.class, args);
     }
 
