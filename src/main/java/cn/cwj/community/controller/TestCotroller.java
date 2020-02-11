@@ -1,4 +1,4 @@
-package cn.cwj.community.cotroller;
+package cn.cwj.community.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

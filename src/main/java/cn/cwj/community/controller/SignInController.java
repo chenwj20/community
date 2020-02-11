@@ -1,4 +1,4 @@
-package cn.cwj.community.cotroller;
+package cn.cwj.community.controller;
 
 import cn.cwj.community.dto.IsSignInDTO;
 import cn.cwj.community.dto.ResultDTO;
@@ -6,7 +6,6 @@ import cn.cwj.community.exception.CustomizeErrorCode;
 import cn.cwj.community.model.User;
 import cn.cwj.community.service.SignInService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

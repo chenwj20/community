@@ -1,4 +1,4 @@
-package cn.cwj.community.cotroller;
+package cn.cwj.community.controller;
 
 import cn.cwj.community.dto.ResultDTO;
 import cn.cwj.community.exception.CustomizeErrorCode;

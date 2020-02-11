@@ -1,25 +1,18 @@
-package cn.cwj.community.cotroller;
+package cn.cwj.community.controller;
 
 import cn.cwj.community.cache.HotTagCache;
 import cn.cwj.community.dto.QuestionDTO;
 import cn.cwj.community.dto.UserDTO;
-import cn.cwj.community.mapper.UserMapper;
 import cn.cwj.community.model.Question;
-import cn.cwj.community.model.User;
-import cn.cwj.community.provider.GithubProvider;
 import cn.cwj.community.service.QuestionService;
 import cn.cwj.community.service.UserService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.reflect.MethodDelegate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller

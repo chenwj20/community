@@ -1,4 +1,4 @@
-package cn.cwj.community.cotroller;
+package cn.cwj.community.controller;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;

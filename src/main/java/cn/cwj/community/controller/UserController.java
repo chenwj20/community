@@ -1,4 +1,4 @@
-package cn.cwj.community.cotroller;
+package cn.cwj.community.controller;
 
 import cn.cwj.community.dto.CollectionQuestionDTO;
 import cn.cwj.community.dto.ResultDTO;
@@ -7,14 +7,9 @@ import cn.cwj.community.dto.UserOwnDTO;
 import cn.cwj.community.enums.CommonEnum;
 import cn.cwj.community.exception.CustomizeErrorCode;
 import cn.cwj.community.exception.CustomizeException;
-import cn.cwj.community.mapper.UserMapper;
 import cn.cwj.community.model.Question;
 import cn.cwj.community.model.User;
-import cn.cwj.community.service.QuestionService;
 import cn.cwj.community.service.UserService;
-import cn.hutool.captcha.CaptchaUtil;
-import cn.hutool.captcha.CircleCaptcha;
-import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -22,13 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import tk.mybatis.mapper.common.Mapper;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 import java.util.UUID;
 import java.util.regex.Pattern;
 

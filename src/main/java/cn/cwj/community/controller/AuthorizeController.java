@@ -1,8 +1,7 @@
-package cn.cwj.community.cotroller;
+package cn.cwj.community.controller;
 
 import cn.cwj.community.dto.AccessTokenDTO;
 import cn.cwj.community.dto.GithubUser;
-import cn.cwj.community.mapper.UserMapper;
 import cn.cwj.community.model.User;
 import cn.cwj.community.provider.GithubProvider;
 import cn.cwj.community.service.UserService;
@@ -60,8 +59,11 @@ public class AuthorizeController {
             user.setAvatarUrl(githubUser.getAvatar_url());
             user.setBio(githubUser.getBto());
             userService.createOrUpdateUser(user);
+            Cookie cookie = new Cookie("token", user.getToken());
+            cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
+            cookie.setPath("/");
             //写入cookie
-            response.addCookie(new Cookie("token",user.getToken()));
+            response.addCookie(cookie);
             return "redirect:/";
             //登入成功
         }else {

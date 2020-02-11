@@ -1,4 +1,4 @@
-package cn.cwj.community.cotroller;
+package cn.cwj.community.controller;
 
 import cn.cwj.community.cache.HotTagCache;
 import cn.cwj.community.dto.QuestionDTO;
@@ -7,7 +7,6 @@ import cn.cwj.community.model.Question;
 import cn.cwj.community.service.QuestionService;
 import cn.cwj.community.service.UserService;
 import com.github.pagehelper.PageInfo;
-import org.omg.CORBA.INTERNAL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

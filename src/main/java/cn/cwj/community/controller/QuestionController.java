@@ -1,14 +1,11 @@
-package cn.cwj.community.cotroller;
+package cn.cwj.community.controller;
 
-import cn.cwj.community.dto.CommentDTO;
 import cn.cwj.community.dto.QuestionDTO;
 import cn.cwj.community.dto.ResultDTO;
-import cn.cwj.community.dto.UserDTO;
 import cn.cwj.community.enums.CommentTypeEnum;
 import cn.cwj.community.enums.CommonEnum;
 import cn.cwj.community.exception.CustomizeErrorCode;
 import cn.cwj.community.exception.CustomizeException;
-import cn.cwj.community.mapper.QuestionMapper;
 import cn.cwj.community.model.Question;
 import cn.cwj.community.model.User;
 import cn.cwj.community.service.CollectService;
@@ -16,13 +13,11 @@ import cn.cwj.community.service.CommentService;
 import cn.cwj.community.service.QuestionService;
 import cn.cwj.community.service.ZanService;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 

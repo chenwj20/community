@@ -1,14 +1,12 @@
-package cn.cwj.community.cotroller;
+package cn.cwj.community.controller;
 
 import cn.cwj.community.cache.TagCache;
 import cn.cwj.community.dto.QuestionDTO;
 import cn.cwj.community.dto.ResultDTO;
 import cn.cwj.community.dto.TagDTO;
 import cn.cwj.community.exception.CustomizeErrorCode;
-import cn.cwj.community.mapper.QuestionMapper;
 import cn.cwj.community.model.Question;
 import cn.cwj.community.model.User;
-import cn.cwj.community.model.UserTag;
 import cn.cwj.community.service.QuestionService;
 import cn.cwj.community.service.UserService;
 import cn.cwj.community.service.UserTagService;
@@ -19,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

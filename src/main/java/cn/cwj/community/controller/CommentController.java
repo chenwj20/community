@@ -1,4 +1,4 @@
-package cn.cwj.community.cotroller;
+package cn.cwj.community.controller;
 
 import cn.cwj.community.dto.CommentDTO;
 import cn.cwj.community.dto.ResultDTO;
@@ -9,7 +9,6 @@ import cn.cwj.community.model.Comment;
 import cn.cwj.community.model.User;
 import cn.cwj.community.service.CommentService;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

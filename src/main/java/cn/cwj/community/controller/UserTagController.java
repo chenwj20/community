@@ -1,8 +1,7 @@
-package cn.cwj.community.cotroller;
+package cn.cwj.community.controller;
 
 import cn.cwj.community.cache.TagCache;
 import cn.cwj.community.dto.ResultDTO;
-import cn.cwj.community.dto.TagDTO;
 import cn.cwj.community.enums.CommonEnum;
 import cn.cwj.community.exception.CustomizeErrorCode;
 import cn.cwj.community.model.User;
@@ -12,7 +11,6 @@ import cn.cwj.community.service.UserTagService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
