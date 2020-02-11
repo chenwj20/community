@@ -10,7 +10,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/community
     username: root
-    password: root422
+    password: root
     driver-class-name: com.mysql.jdbc.Driver
   thymeleaf:
         cache: false
