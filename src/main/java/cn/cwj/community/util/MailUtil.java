@@ -36,7 +36,7 @@ public class MailUtil {
         email.setCharset("utf-8");//设置发送的字符类型
         try {
             System.out.println("用户邮件为："+userEmail);
-            email.setSmtpPort(465);
+            email.setSmtpPort(25);
             email.addTo(userEmail);//设置收件人
             email.setFrom("chenweijun_yz@163.com","FreeMi");//发送人的邮箱为自己的，用户名可以随便填
             email.setAuthentication("chenweijun_yz@163.com","123456cwj");//设置发送人到的邮箱和用户名和授权码(授权码是自己设置的)
