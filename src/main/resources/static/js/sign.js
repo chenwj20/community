@@ -49,7 +49,7 @@ function signStatus() {
                 $("#days").text(res.data.days);
                 if (res.data.signed){
                     var tplSignin = '<button class="layui-btn layui-btn-disabled">今日已签到</button>'
-                        +'<span>获得了<cite> '+res.data.experience +'</cite>飞吻</span>';
+                        +'<span>获得了<cite> '+res.data.experience +'</cite>米币</span>';
                     $("#sign").html(tplSignin);
                     // layer.msg(res.msg, {shift: 6});
                 }else {

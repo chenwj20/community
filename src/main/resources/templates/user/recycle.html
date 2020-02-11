@@ -63,10 +63,10 @@
 
   <div class="fly-panel fly-panel-user" pad20>
     <div class="layui-tab layui-tab-brief" lay-filter="user" id="LAY_msg" style="margin-top: 15px;">
-      <button th:if="${recyclePageInfo.list != null && recyclePageInfo.list.size() > 0}" class="layui-btn layui-btn-danger" onclick="rdAll(1)">清空全部消息</button>
-      <button th:if="${recyclePageInfo.list != null && recyclePageInfo.list.size() > 0}" class="layui-btn layui-btn-normal" onclick="rdAll(0)" >恢复全部消息</button>
+      <button th:if="${recyclePageInfo.list != null && recyclePageInfo.list.size() > 0}" class="layui-btn layui-btn-danger" onclick="rdAll(1)">清空全部帖子</button>
+      <button th:if="${recyclePageInfo.list != null && recyclePageInfo.list.size() > 0}" class="layui-btn layui-btn-normal" onclick="rdAll(0)" >恢复全部帖子</button>
       <div   id="LAY_minemsg" style="margin-top: 10px;">
-        <div th:if="${recyclePageInfo.list == null || recyclePageInfo.list.size() == 0}" class="fly-none">您暂时没有最新消息</div>
+        <div th:if="${recyclePageInfo.list == null || recyclePageInfo.list.size() == 0}" class="fly-none">回收站暂时为空</div>
         <ul class="mine-msg">
           <li  th:each="recycle:${recyclePageInfo.list}" th:id="${recycle.id}">
             <blockquote class="layui-elem-quote layui-quote-nm">

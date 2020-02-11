@@ -12,7 +12,8 @@
   <link rel="stylesheet" href="/layui/css/layui.css">
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/editormd.min.css">
-  <link rel="stylesheet" href="/css/editormd.preview.min.css"><link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,500,700&amp;display=swap'>
+  <link rel="stylesheet" href="/css/editormd.preview.min.css">
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,500,700&amp;display=swap'>
   <link rel="stylesheet" href="/css/zan-style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
@@ -61,7 +62,7 @@
             <img th:src="${questionDTO.user.avatarUrl}" alt="cwj">
           </a>
           <div class="fly-detail-user">
-            <a href="../user/home.html" class="fly-link">
+            <a th:href="${'/user/home/'+questionDTO.id}" class="fly-link">
               <cite th:text="${questionDTO.user.name}"></cite>
               <i class="layui-badge fly-badge-vip" th:text="${'LV'+ questionDTO.user.lv}"></i>
             </a>
@@ -336,8 +337,8 @@ layui.use(['layer', 'form','laypage'],function () {
       toolbarIcons: function () {
         // Or return editormd.toolbarModes[name]; // full, simple, mini
         // Using "||" set icons align right.
-        return ["undo", "redo",  "|", "bold", "hr", "italic", "del",  "|",   "list-ul", "list-ol", "code-block"
-          , "table", "clear", "search", "|", "preview", "watch", "|", "emoji", "link", "file", "faicon", "||", "watch", "preview", "image"]
+        return ["undo", "redo",  "|", "bold", "hr", "italic", "del",  "|",   "list-ul", "list-ol", "preformatted-text"
+          , "table", "clear", "search", "|", "preview", "watch", "|", "emoji", "link", "file", "faicon", "||", "image", "watch", "preview"]
       },
     });
   })

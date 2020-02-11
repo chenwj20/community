@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="/layui/css/layui.css">
   <link rel="stylesheet" href="/css/global.css">
   <link rel="stylesheet" href="/css/tag.css">
+  <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
 </head>
 <body>
 
@@ -31,7 +32,7 @@
                         <img th:src="${topQuestion.user.avatarUrl}" alt="贤心">
                     </a>
                     <h2>
-                        <a th:text="${topQuestion.category}" th:class="${topQuestion.category == 1?'layui-badge layui-bg-green':'layui-badge'}" ></a>
+                        <a th:text="${topQuestion.category}" th:class="${topQuestion.category == '公告'?'layui-badge layui-bg-green':'layui-badge'}" ></a>
                         <a th:href="@{'/question/'+ ${topQuestion.id}+'/page/1'}" th:text="${topQuestion.title}"></a>
                     </h2>
                     <div class="fly-list-info">
@@ -78,7 +79,7 @@
                       <img th:src="${questionDTO.user.avatarUrl}" alt="cwj">
                   </a>
                   <h2>
-                      <a th:class="${questionDTO.category == 1?'layui-badge layui-bg-green':'layui-badge'}"><span th:text="${questionDTO.category}"></span></a>
+                      <a th:class="${questionDTO.category == '公告'?'layui-badge layui-bg-green':'layui-badge'}"><span th:text="${questionDTO.category}"></span></a>
                       <a th:href="@{'/question/'+ ${questionDTO.id}+'/page/1'}"><span th:text="${questionDTO.title}"></span></a>
                   </h2>
                   <div class="fly-list-info">
@@ -185,7 +186,7 @@
           <dd><a href="http://layim.layui.com/" target="_blank">WebIM</a><dd>
           <dd><a href="http://layer.layui.com/" target="_blank">layer</a><dd>
           <dd><a href="http://www.layui.com/laydate/" target="_blank">layDate</a><dd>
-          <dd><a href="mailto:xianxin@layui-inc.com?subject=%E7%94%B3%E8%AF%B7Fly%E7%A4%BE%E5%8C%BA%E5%8F%8B%E9%93%BE" class="fly-link">申请友链</a><dd>
+          <dd><a href="mailto:984770829@qq.com?subject=%E7%94%B3%E8%AF%B7Fly%E7%A4%BE%E5%8C%BA%E5%8F%8B%E9%93%BE" class="fly-link">申请友链</a><dd>
         </dl>
       </div>
 
@@ -201,9 +202,8 @@
     <a href="http://fly.layui.com/jie/2461/" target="_blank">微信公众号</a>
   </p>
 </div>
-<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+
 <script th:src="@{/layui/layui.js}"></script>
-<script th:src="@{/js/sign.js}"></script>
 <script th:inline="javascript">
 
 
