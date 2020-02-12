@@ -11,10 +11,12 @@ import cn.cwj.community.mapper.UserMapper;
 import cn.cwj.community.model.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.util.HtmlUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.text.DecimalFormat;
@@ -74,6 +76,7 @@ public class UserService {
             if (question.getIsShow() == 0){
                 continue;
             }
+
             showComments.add(comment);
         }
         BeanUtils.copyProperties(user,userDTO);

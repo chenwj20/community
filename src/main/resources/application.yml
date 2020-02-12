@@ -8,7 +8,7 @@ github:
     uri: http://47.112.152.213/githubCallback
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/community
+    url: jdbc:mysql://localhost:3306/community?useUnicode=true&characterEncoding=utf8
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
