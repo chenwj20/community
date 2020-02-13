@@ -28,11 +28,15 @@
         <a href="/user/register">注册</a>
       </li>
       <li class="layui-nav-item layui-hide-xs">
-        <a href="/app/qq/" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>
+        <a href="/app/weibo/" onclick="layer.msg('正在通过github登入', {icon:16, shade: 0.1, time:0})" title="github登入" >
+          <img src="/images/githubtp.png" height="32" width="45"/></a>
       </li>
-      <li class="layui-nav-item layui-hide-xs">
-        <a href="/app/weibo/" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入" class="iconfont icon-weibo"></a>
-      </li>
+<!--      <li class="layui-nav-item layui-hide-xs">-->
+<!--        <a href="/app/qq/" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>-->
+<!--      </li>-->
+<!--      <li class="layui-nav-item layui-hide-xs">-->
+<!--        <a href="/app/weibo/" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入" class="iconfont icon-weibo"></a>-->
+<!--      </li>-->
     </ul>
     <ul class="layui-nav fly-nav-user" th:if="${session.user != null}">
       <!-- 登入后的状态 -->
