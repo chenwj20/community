@@ -26,15 +26,13 @@
         <a href="/user/register">注册</a>
       </li>
       <li class="layui-nav-item layui-hide-xs">
-        <a href="https://github.com/login/oauth/authorize?client_id=d7a2dd53de6f2e1ebee4&redirect_uri=http://47.112.152.213/githubCallback&scope=user&state=1" onclick="layer.msg('正在通过github登入', {icon:16, shade: 0.1, time:0})" title="github登入" >
+        <a href="https://github.com/login/oauth/authorize?client_id=d7a2dd53de6f2e1ebee4&redirect_uri=http://freemi.cn/githubCallback&scope=user&state=1" onclick="layer.msg('正在通过github登入', {icon:16, shade: 0.1, time:0})" title="github登入" >
           <img src="/images/github-logo.png" alt="github" height="32" width="45"/></a>
       </li>
-<!--      <li class="layui-nav-item layui-hide-xs">-->
-<!--        <a href="/app/qq/" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>-->
-<!--      </li>-->
-<!--      <li class="layui-nav-item layui-hide-xs">-->
-<!--        <a href="/app/weibo/" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入" class="iconfont icon-weibo"></a>-->
-<!--      </li>-->
+      <li class="layui-nav-item layui-hide-xs">
+        <a href="${'https://graph.qq.com/oauth2.0/authorize?client_id='+@environment.getProperty('qq.client.id')+'&redirect_uri='+@environment.getProperty('qq.redirect.uri')+'&response_type=code&state=1'}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>
+      </li>
+
     </ul>
     <ul class="layui-nav fly-nav-user" th:if="${session.user != null}">
       <!-- 登入后的状态 -->

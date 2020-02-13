@@ -5,7 +5,13 @@ github:
     id: d7a2dd53de6f2e1ebee4
     secret: 7c9ceba827d3326542a7f87b65a939a8891778d0
   redirect:
-    uri: http://47.112.152.213/githubCallback
+    uri: http://freemi.cn/githubCallback
+qq:
+  client:
+    id: 101852364
+    secret: c94af99560e04bebc09a214775bb4da5
+    redirect:
+      uri: http://freemi.cn/qqCallback
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/community?useUnicode=true&characterEncoding=utf8
