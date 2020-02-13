@@ -5,14 +5,12 @@
     </a>
     <ul class="layui-nav fly-nav layui-hide-xs">
       <li class="layui-nav-item layui-this">
+        <a href="/"><i class="layui-icon layui-icon-home"></i>主页</a>
+      </li>
+      <li class="layui-nav-item layui-this">
         <a href="/"><i class="iconfont icon-jiaoliu"></i>交流</a>
       </li>
-      <li class="layui-nav-item">
-        <a href="/"><i class="iconfont icon-iconmingxinganli"></i>案例</a>
-      </li>
-      <li class="layui-nav-item">
-        <a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>
-      </li>
+
     </ul>
 
     <ul class="layui-nav fly-nav-user" th:if="${session.user == null}">
@@ -28,8 +26,8 @@
         <a href="/user/register">注册</a>
       </li>
       <li class="layui-nav-item layui-hide-xs">
-        <a href="/app/weibo/" onclick="layer.msg('正在通过github登入', {icon:16, shade: 0.1, time:0})" title="github登入" >
-          <img src="/images/githubtp.png" height="32" width="45"/></a>
+        <a href="https://github.com/login/oauth/authorize?client_id=d7a2dd53de6f2e1ebee4&redirect_uri=http://47.112.152.213/githubCallback&scope=user&state=1" onclick="layer.msg('正在通过github登入', {icon:16, shade: 0.1, time:0})" title="github登入" >
+          <img src="/images/github-logo.png" alt="github" height="32" width="45"/></a>
       </li>
 <!--      <li class="layui-nav-item layui-hide-xs">-->
 <!--        <a href="/app/qq/" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>-->

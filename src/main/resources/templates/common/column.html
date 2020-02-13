@@ -11,12 +11,12 @@
       <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li> 
       
       <!-- 用户登入后显示 -->
-      <li th:if="${session.user!=null}" class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="/user/question">我发表的贴</a></li>
+        <li th:if="${session.user!=null}" class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="/user/question">我发表的贴</a></li>
       <li th:if="${session.user!=null}" class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="/user/question/#collection">我收藏的贴</a></li>
     </ul> 
     
     <div th:if="${session.user != null}" class="fly-column-right layui-hide-xs">
-      <span class="fly-search"><i class="layui-icon"></i></span>
+<!--      <span class="fly-search" ><i class="layui-icon"></i></span>-->
       <a href="/publish" class="layui-btn">发表新帖</a>
     </div> 
     <div th:if="${session.user != null}" class="layui-hide-sm layui-show-xs-block" style="margin-top: -10px; padding-bottom: 10px; text-align: center;">
