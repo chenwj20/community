@@ -65,7 +65,7 @@ public class PublishController {
                                HttpServletRequest request){
         User user = (User)request.getSession().getAttribute("user");
         if (StringUtils.isBlank(question.getTag())){
-            ResultDTO.errorOf(CustomizeErrorCode.TAG_ONE);
+            return ResultDTO.errorOf(CustomizeErrorCode.TAG_ONE);
         }
         String tag = question.getTag().substring(1);
         question.setTag(tag);
