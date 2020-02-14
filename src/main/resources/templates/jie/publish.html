@@ -99,13 +99,13 @@
                 </ul>
 
                 <div class="layui-tab-content">
-                  <div  th:each="tagDTO,tagDTOStat:${tags}" th:class="${tagDTOStat.first ? 'layui-tab-item layui-show':'layui-tab-item'}"  >
+                  <div  th:each="tagDTO,tagDTOStat:${tags}" th:class="${tagDTOStat.first ? 'layui-tab-item layui-show':'layui-tab-item'}" th:id="${tagDTOStat.last?'myTag':'tag'+tagDTOStat.count}"  >
 
                     <a href="javascript:"; th:if="${tagDTO.list != null && tagDTO.list.size() > 0}" th:each="tag:${tagDTO.list}">
                       <span class="layui-badge  tag" th:text="${tag}"></span>
                     </a>
 
-                    <span id="myTag" th:if="${tagDTO.list == null || tagDTO.list.size() == 0}" style="text-align: center;display:block">您还没有自定义标签</span>
+                    <span  th:if="${tagDTO.list == null || tagDTO.list.size() == 0}" style="text-align: center;display:block">您还没有自定义标签</span>
                   </div>
 
                 </div>
@@ -124,7 +124,60 @@
 </div>
 
 <div th:replace="common/footer :: foot"></div>
+<script>
+  layui.use(['layer', 'form','element'],function () {
+    var form = layui.form;
+    var layer = layui.layer,
+            element = layui.element;
+    form.render();
+    form.on('submit(post)',function (data) {
+      var tags = $("#tag").val();
+      if (tags.length == 0){
+        layer.msg("最少添加一个标签",{shift:6}) ;
+        return false;
+      }else {
+        $.ajax({
+          url: '/publish',
+          type: 'post',
+          data: data.field,
+          dataType: 'json',
+          success: function (res) {
+            if (res.code == 200) {
+              window.location.href = "/";
+            }else {
+              layer.msg(res.msg,{shift:6})
+            }
+          }
+        })
+      }
+      return false;
+    })
 
+  })
+  function addSelectTag(obj){
+    var objVal = $(obj).text();
+    var rtags = $("#tag").val();
+    if (objVal.length ==0){
+
+      var othis = $(this).text();
+    } else {
+      var othis = objVal;
+    }
+    if (rtags.indexOf(othis)>=0){
+      layer.msg("标签已添加",{shift: 6});
+      return;
+    }
+    var html = '<span class="layui-badge selected-tag">'+othis +
+            '<a href="javascript:void(0);" onclick="removeTag(this)">&nbsp;&nbsp;&nbsp;✗</a>' +
+            '</span>';
+    $("#selected-tags").prepend(html);
+
+    var tags = $("#tag").val();
+    $("#tag").val(tags+','+othis);
+  }
+  $(".tag").click(addSelectTag);
+
+</script>
 <script>
   $("#createTag").click(function () {
     layer.open({
@@ -146,10 +199,9 @@
             if (res.code == 1006) {
               layer.close(index);
               layer.msg(res.msg);
-              var myTag = '<span class="layui-badge selected-tag">'+tag +
-                      '<a href="javascript:void(0);" onclick="removeTag(this)">&nbsp;&nbsp;&nbsp;✗</a>' +
-                      '</span>';
-              $("#myTag").parent().val(myTag);
+              var myTag = '<a  href="javascript:"; >'+ '<span  class="layui-badge tag" onclick="addSelectTag(this)">'+ tag+'</span></a>';
+              $("#myTag").append(myTag);
+
             }else {
               layer.close(index);
               layer.msg(res.msg,{shift:6});
@@ -168,22 +220,7 @@
 
     });
   })
-    $(".tag").click(function () {
-        var rtags = $("#tag").val();
-        var othis = $(this).text();
-        if (rtags.indexOf(othis)>=0){
-          layer.msg("标签已添加",{shift: 6});
-          return;
-        }
-        var html = '<span class="layui-badge selected-tag">'+othis +
-            '<a href="javascript:void(0);" onclick="removeTag(this)">&nbsp;&nbsp;&nbsp;✗</a>' +
-            '</span>';
-        $("#selected-tags").prepend(html);
 
-        var tags = $("#tag").val();
-        $("#tag").val(tags+','+othis);
-
-    });
 
     function removeTag(obj) {
         var rtag = $(obj).parent().prop ('firstChild').nodeValue;
@@ -228,37 +265,7 @@
 
 </script>
 <!--<script src="/layui/layui.js"></script>-->
-<script>
-  layui.use(['layer', 'form','element'],function () {
-    var form = layui.form;
-    var layer = layui.layer,
-            element = layui.element;
-    form.render();
-    form.on('submit(post)',function (data) {
-      var tags = $("#tag").val();
-      if (tags.length == 0){
-        layer.msg("最少添加一个标签",{shift:6}) ;
-        return false;
-      }else {
-        $.ajax({
-          url: '/publish',
-          type: 'post',
-          data: data.field,
-          dataType: 'json',
-          success: function (res) {
-            if (res.code == 200) {
-              window.location.href = "/";
-            }else {
-              layer.msg(res.msg,{shift:6})
-            }
-          }
-        })
-      }
-      return false;
-    })
 
-  })
-</script>
 <script>
   layui.config({
     version: "3.0.0"

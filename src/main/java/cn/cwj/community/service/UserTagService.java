@@ -35,7 +35,7 @@ public class UserTagService {
         Example example = new Example(UserTag.class);
         example.createCriteria()
                 .andEqualTo("uid",uid)
-                .andEqualTo("tag",tag);
+                .andEqualTo("tag",tag.getTag());
         List<UserTag> userTags = userTagMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(userTags)){
             return false;
