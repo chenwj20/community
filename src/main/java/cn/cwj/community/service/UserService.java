@@ -199,7 +199,7 @@ public class UserService {
                 .andEqualTo("accountType",user.getAccountType())
                 .andEqualTo("accountId",user.getAccountId());
         List<User> users = userMapper.selectByExample(example);
-        System.out.println("用户"+users);
+        System.out.println("查到用户没有"+users);
         if (CollectionUtils.isEmpty(users)){
             log.info("新增用户 {}");
             //新增加用户
