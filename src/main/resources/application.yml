@@ -10,8 +10,8 @@ qq:
   client:
     id: 101852364
     secret: c94af99560e04bebc09a214775bb4da5
-    redirect:
-      uri: http://freemi.cn/qqCallback
+  redirect:
+    uri: http://freemi.cn/qqCallback
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/community?useUnicode=true&characterEncoding=utf8
