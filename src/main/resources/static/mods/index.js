@@ -276,7 +276,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
           if(val.replace(/\s/g, '') === ''){
             return false;
           }
-          input.val('site:layui.com '+ input.val());
+          input.val('site:freemi.cn '+ input.val());
       });
       }
     })

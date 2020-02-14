@@ -8,7 +8,6 @@ import cn.cwj.community.model.User;
 import cn.cwj.community.provider.GithubProvider;
 import cn.cwj.community.provider.QQProvider;
 import cn.cwj.community.service.UserService;
-import cn.hutool.system.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
