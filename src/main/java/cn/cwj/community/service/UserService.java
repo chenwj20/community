@@ -11,6 +11,7 @@ import cn.cwj.community.mapper.UserMapper;
 import cn.cwj.community.model.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import static cn.cwj.community.enums.LVEnum.LV1;
  * @Version V1.0
  **/
 @Service
+@Slf4j
 public class UserService {
     @Autowired
     private UserMapper userMapper;
@@ -197,12 +199,14 @@ public class UserService {
                 .andEqualTo("accountType",user.getAccountType())
                 .andEqualTo("accountId",user.getAccountId());
         List<User> users = userMapper.selectByExample(example);
+        System.out.println("用户"+users);
         if (CollectionUtils.isEmpty(users)){
             //新增加用户
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtModified());
             userMapper.insertSelective(user);
         }else {
+            log.info("我自己 {}",user);
             //更新用户
             User dbUser = users.get(0);
             User updateUser = new User();
