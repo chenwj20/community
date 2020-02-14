@@ -193,7 +193,9 @@ public class UserService {
 
     public void createOrUpdateUser(User user) {
         Example example = new Example(User.class);
-        example.createCriteria().andEqualTo("accountId",user.getAccountId());
+        example.createCriteria()
+                .andEqualTo("accountType",user.getAccountType())
+                .andEqualTo("accountId",user.getAccountId());
         List<User> users = userMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(users)){
             //新增加用户

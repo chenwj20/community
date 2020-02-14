@@ -79,6 +79,7 @@ public class AuthorizeController {
             user.setAvatarUrl(qqUser.getFigureurl_qq());
 //            user.setGender(qqUser.getGender());
             user.setLocation(qqUser.getProvince()+"省"+qqUser.getCity()+"市");
+            user.setAccountType("QQ");
             userService.createOrUpdateUser(user);
             Cookie cookie = new Cookie("token", token);
             cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
@@ -114,6 +115,7 @@ public class AuthorizeController {
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setAvatarUrl(githubUser.getAvatar_url());
             user.setBio(githubUser.getBto());
+            user.setAccountType("github");
             userService.createOrUpdateUser(user);
             Cookie cookie = new Cookie("token", user.getToken());
             cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
