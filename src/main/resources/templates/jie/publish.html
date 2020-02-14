@@ -112,7 +112,7 @@
               </div>
 
               <div class="layui-form-item">
-                  <input id="tag" th:value="${questionEdit != null ?questionEdit.tag:''}" name="tag" type="hidden" >
+                  <input id="tag" th:value="${questionEdit != null ?','+questionEdit.tag:''}" name="tag" type="hidden" >
                 <button class="layui-btn" lay-filter="post" lay-submit>立即发布</button>
               </div>
             </form>
@@ -223,7 +223,7 @@
 
 
     function removeTag(obj) {
-        var rtag = $(obj).parent().prop ('firstChild').nodeValue;
+        var rtag = $(obj).parent().prop ('firstChild').nodeValue.trim();
         var rtags = $("#tag").val();
         var rtext = rtags.replace(','+rtag,'');
         $("#tag").val(rtext);
