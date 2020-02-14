@@ -145,6 +145,9 @@ public class UserController {
         String md5Password = DigestUtil.md5Hex(user.getPassword()+salt);
         user.setPassword(md5Password);
         user.setGmtCreate(System.currentTimeMillis());
+        user.setAccountType("freemi");
+        String accountId = token.replaceAll("-", "");
+        user.setAccountId(accountId);
         userService.insert(user);
         User userNew = userService.findByToken(token);
         session.setAttribute("user",userNew);
