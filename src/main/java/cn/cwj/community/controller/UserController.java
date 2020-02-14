@@ -45,7 +45,7 @@ public class UserController {
         if (user != null && user.getId() == id){
             userOwnDTO = userService.findUserEx(userDTO);
         }
-        model.addAttribute("userOwnDTO",userDTO);
+        model.addAttribute("userOwnDTO",userOwnDTO);
         model.addAttribute("userDTO",userDTO);
         return "user/home";
     }
@@ -246,11 +246,9 @@ public class UserController {
             if (!rePassWord.equals(user.getPassword())){
                 return ResultDTO.errorOf(CustomizeErrorCode.PASSWORD_DIFFERENCE_EEROR);
             }
-
-            String pattern = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
+            String pattern = "^[a-z0-9A-Z]{6,16}$";
             boolean nowP = Pattern.matches(pattern, nowPassword);
             boolean newP = Pattern.matches(pattern, user.getPassword());
-
             if (!newP || !nowP){
                 return ResultDTO.errorOf(CustomizeErrorCode.PASSWORD_FORMAT_EEROR);
             }
@@ -261,17 +259,19 @@ public class UserController {
             if (puser == null){
                 return ResultDTO.errorOf(CustomizeErrorCode.NOW_PASSWORD_EEROR);
             }
-            String newSalt = user.getPassword().substring(user.getPassword().length() -2,nowPassword.length());
+            String newSalt = user.getPassword().substring(user.getPassword().length() -2,user.getPassword().length());
             //MD5加密
-            String newMd5Password = DigestUtil.md5Hex(nowPassword+salt);
+            String newMd5Password = DigestUtil.md5Hex(user.getPassword()+newSalt);
             user.setPassword(newMd5Password);
 
         }
 
         user.setId(suser.getId());
-        Boolean b = userService.checkUser(user);
-        if (b){
-            return ResultDTO.okOf(CustomizeErrorCode.USER_IS_EXIST);
+        if (StringUtils.isNoneBlank(user.getName())){
+            Boolean b = userService.checkUser(user);
+            if (b){
+                return ResultDTO.okOf(CustomizeErrorCode.USER_IS_EXIST);
+            }
         }
 
         userService.userEdit(user);
