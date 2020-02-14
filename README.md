@@ -29,7 +29,7 @@ FreeMi社区
 12. 回收站
 13. 用户资料编辑
 14. 签到
-# 目录结构
+## 目录结构
    ```
        ├─cn.cwj.community      应用目录
        │  ├─controller         控制器目录
