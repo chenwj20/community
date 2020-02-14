@@ -65,7 +65,9 @@ public class AuthorizeController {
         String string = qqProvider.getAccessToken(qqAccessTokenDTO);
         String access_token = string.split("&")[0].split("=")[1];
         String openid = qqProvider.getOpenID(access_token);
+
         QQUserDTO qqUser = qqProvider.getUser(access_token,qqClientId,openid);
+        log.info("qquser :{}",qqUser);
         if (qqUser != null && qqUser.getOpenId() != null) {
             User user = new User();
 //            User userInfo = new User();
@@ -73,6 +75,7 @@ public class AuthorizeController {
             user.setName(qqUser.getNickname());
             user.setToken(token);
             user.setAccountId(qqUser.getOpenId());
+            log.info("openid,{}", openid);
             user.setAvatarUrl(qqUser.getFigureurl_qq());
 //            user.setGender(qqUser.getGender());
             user.setLocation(qqUser.getProvince()+"省"+qqUser.getCity()+"市");
