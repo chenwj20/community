@@ -201,12 +201,13 @@ public class UserService {
         List<User> users = userMapper.selectByExample(example);
         System.out.println("用户"+users);
         if (CollectionUtils.isEmpty(users)){
+            log.info("新增用户 {}");
             //新增加用户
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtModified());
             userMapper.insertSelective(user);
         }else {
-            log.info("我自己 {}",user);
+            log.info("更新 {}",user);
             //更新用户
             User dbUser = users.get(0);
             User updateUser = new User();
@@ -216,7 +217,8 @@ public class UserService {
             updateUser.setToken(user.getToken());
             updateUser.setBio(user.getBio());
             Example updateExample = new Example(User.class);
-            updateExample.createCriteria().andEqualTo(dbUser.getId());
+            updateExample.createCriteria()
+                    .andEqualTo("id",dbUser.getId());
             userMapper.updateByExampleSelective(updateUser,updateExample);
         }
     }
