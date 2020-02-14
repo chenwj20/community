@@ -344,7 +344,7 @@ public class QuestionService {
                 ids.add(question.getId());
             }
             Example commentExample = new Example(Comment.class);
-            example.createCriteria().andIn("parentId",ids);
+            commentExample.createCriteria().andIn("parentId",ids);
             commentMapper.deleteByExample(commentExample);
             questionMapper.deleteByExample(example);
         }else {

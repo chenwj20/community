@@ -13,7 +13,6 @@ import javax.persistence.Table;
  **/
 @Data
 @Table(name = "comment")
-
 public class Comment {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
