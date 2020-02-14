@@ -1,4 +1,4 @@
-# community
+# FreeMi社区
 FreeMi社区
 ## 在线体验
 [http://freemi.cn/](http://freemi.cn/ "http://freemi.cn/")
