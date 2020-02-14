@@ -80,7 +80,7 @@ public class AuthorizeController {
             Cookie cookie = new Cookie("token", token);
             cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
             response.addCookie(cookie);
-            return "redirect: /";
+            return "redirect:/";
 
         }else {
             log.error("callback get qq error,{}", qqUser);
