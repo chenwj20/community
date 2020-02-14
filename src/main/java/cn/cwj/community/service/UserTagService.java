@@ -52,11 +52,14 @@ public class UserTagService {
         Example example = new Example(UserTag.class);
         example.createCriteria().andEqualTo("uid",uid);
         List<UserTag> userTags = userTagMapper.selectByExample(example);
-        if (CollectionUtils.isEmpty(userTags)){
-            return null;
-        }
         List<String> tags = new ArrayList<>();
+        tags.add("test");
+        if (CollectionUtils.isEmpty(userTags)){
+            return tags;
+        }
+
         for (UserTag userTag : userTags) {
+
             tags.add(userTag.getTag());
         }
         return tags;

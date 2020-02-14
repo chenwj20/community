@@ -10,6 +10,7 @@ import cn.cwj.community.model.User;
 import cn.cwj.community.service.QuestionService;
 import cn.cwj.community.service.UserService;
 import cn.cwj.community.service.UserTagService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ import java.util.List;
  * @Version V1.0
  **/
 @Controller
-
+@Slf4j
 public class PublishController {
     @Autowired
     QuestionService questionService;
@@ -67,7 +68,9 @@ public class PublishController {
         if (StringUtils.isBlank(question.getTag())){
             return ResultDTO.errorOf(CustomizeErrorCode.TAG_ONE);
         }
+        log.info("no tag {}" ,question.getTag());
         String tag = question.getTag().substring(1);
+        log.info("sp tag {}" ,tag);
         question.setTag(tag);
         question.setCreator(user.getId());
         questionService.createOrUpdateQuestion(question);
