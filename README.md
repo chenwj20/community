@@ -1,7 +1,7 @@
 # community
 FreeMi社区
 ## 在线体验
-[https://freemi.cn/](https://freemi.cn/ "https://freemi.cn/")
+[http://freemi.cn/](http://freemi.cn/ "http://freemi.cn/")
 
 ## 技术栈
 1. SpringBoot框架。
