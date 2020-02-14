@@ -64,7 +64,7 @@ public class NotificationService {
      */
     public Integer findNotificationCount(Long id) {
         Example example = new Example(Notification.class);
-        example.createCriteria().andEqualTo("notifier",id)
+        example.createCriteria().andEqualTo("receiver",id)
                 .andEqualTo("status", NotificationStatusEnum.UN_READ.getStatus());
         Integer count = notificationMapper.selectCountByExample(example);
 
