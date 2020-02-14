@@ -47,7 +47,7 @@ oss:
 email:
   account: chenweijun_yz@163.com
   password: 123456cwj
-  host: 220.181.12.15
+  host: smtp.163.com
 site:
   main:
     title: FreeMI
