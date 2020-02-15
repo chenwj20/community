@@ -82,8 +82,10 @@ public class AuthorizeController {
             user.setAccountType("QQ");
             userService.createOrUpdateUser(user);
             Cookie cookie = new Cookie("token", token);
+            cookie.setPath("/");
             cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
             response.addCookie(cookie);
+            request.getSession().setAttribute("user",user);
             return "redirect:/";
 
         }else {
@@ -122,6 +124,7 @@ public class AuthorizeController {
             cookie.setPath("/");
             //写入cookie
             response.addCookie(cookie);
+            request.getSession().setAttribute("user",user);
             return "redirect:/";
             //登入成功
         }else {
