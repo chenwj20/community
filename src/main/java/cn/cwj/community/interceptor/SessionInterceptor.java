@@ -1,6 +1,5 @@
 package cn.cwj.community.interceptor;
 
-import cn.cwj.community.mapper.UserMapper;
 import cn.cwj.community.model.User;
 import cn.cwj.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -77,11 +77,10 @@ public class AuthorizeController {
             user.setAccountId(qqUser.getOpenId());
             log.info("openid,{}", openid);
             user.setAvatarUrl(qqUser.getFigureurl_qq());
-//            user.setGender(qqUser.getGender());
             user.setLocation(qqUser.getProvince()+"省"+qqUser.getCity()+"市");
             user.setAccountType("QQ");
             userService.createOrUpdateUser(user);
-            Cookie cookie = new Cookie("token", token);
+            Cookie cookie = new Cookie("token",token);
             cookie.setPath("/");
             cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
             response.addCookie(cookie);

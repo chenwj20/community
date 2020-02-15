@@ -50,7 +50,11 @@ public class UserController {
         return "user/home";
     }
     @GetMapping("/login")
-    public String loginHtml(){
+    public String loginHtml(HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null){
+            return "redirect:/";
+        }
         return "user/login";
     }
 
@@ -97,7 +101,11 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String register(){
+    public String register(HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null){
+            return "redirect:/";
+        }
         return "user/reg";
     }
 
@@ -155,7 +163,11 @@ public class UserController {
     }
 
     @GetMapping("/forget")
-    public String forget(){
+    public String forget(HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null){
+            return "redirect:/";
+        }
         return "user/forget";
     }
 
