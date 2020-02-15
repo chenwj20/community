@@ -74,9 +74,9 @@ public class QuestionService {
         }
         if (StringUtils.isNoneBlank(sort)){
             if (sort.equals("hot")){
-                Collections.sort(questionDTOS,(o1, o2) -> o2.getGmtCreate().compareTo(o1.getGmtCreate()));
-            }else {
                 Collections.sort(questionDTOS,(o1, o2) -> o2.getCommentCount()-o1.getCommentCount());
+            }else {
+                Collections.sort(questionDTOS,(o1, o2) -> o2.getGmtCreate().compareTo(o1.getGmtCreate()));
             }
         }
 

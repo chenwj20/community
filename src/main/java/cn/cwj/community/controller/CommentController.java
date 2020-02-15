@@ -45,8 +45,8 @@ public class CommentController {
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setCommentator(user.getId());
         comment.setLikeCount(0);
-        commentService.insertComment(comment,user,toCommentId);
-        return ResultDTO.okOf(CommonEnum.COMMENT_SUCCESS);
+        Long commentId = commentService.insertComment(comment, user, toCommentId);
+        return ResultDTO.okOf(commentId,CommonEnum.COMMENT_SUCCESS);
     }
     @RequestMapping("/remove/{id}")
     public ResultDTO deleteComment(@PathVariable("id") Long id,

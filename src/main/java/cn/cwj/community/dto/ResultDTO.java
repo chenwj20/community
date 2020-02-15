@@ -47,7 +47,13 @@ public class ResultDTO<T> {
         resultDTO.setData(t);
         return resultDTO;
     }
-
+    public static <T> ResultDTO okOf(T t,CommonEnum commonEnum) {
+        ResultDTO resultDTO = new ResultDTO();
+        resultDTO.setCode(commonEnum.getCode());
+        resultDTO.setMsg(commonEnum.getMessage());
+        resultDTO.setData(t);
+        return resultDTO;
+    }
     public static ResultDTO okOf(Integer code, String msg) {
         ResultDTO resultDTO = new ResultDTO();
         resultDTO.setCode(code);

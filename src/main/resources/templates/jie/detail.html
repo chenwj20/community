@@ -22,7 +22,6 @@
   <script th:src="@{/js/moment.js}" type="application/javascript"></script>
   <script th:src="@{/js/lib/marked.min.js}"></script>
   <script th:src="@{/js/lib/prettify.min.js}"></script>
-
 </head>
 <body>
 
@@ -119,8 +118,10 @@
 
                 <span style="color:#5FB878" th:if="${comment.user.id == questionDTO.user.id}">(楼主)</span>
                <!-- <span th:if="${comment.user.role == 1}" style="color:#FF9E3F">(管理员)</span>-->
-                <span th:text="${'('+commentStat.count}+'楼)'"></span>
-
+                <span >
+                  (<span th:text="${(commentDTOS.pageNum -1)*commentDTOS.pageSize+commentStat.count}" th:remove="
+tag"></span>楼)
+                </span>
                 <!--<span style="color:#FF9E3F">（社区之光）</span>
                 <span style="color:#999">（该号已被封）</span>-->
               </div>
@@ -283,9 +284,15 @@ layui.use(['layer', 'form','laypage'],function () {
         type:'post',
         data:data.field,
         dataType:'json',
-        success:function (data) {
-          if (data.code == 1000){
-            window.location.reload();
+        success:function (res) {
+          if (res.code == 1000){
+            if ([[${commentDTOS.size}]]==10){
+              window.location.href = '/question/' + [[${questionDTO.id}]] + '/page/' + [[${commentDTOS.pageNum}]]+1+'#item-'+res.data;
+            } else {
+              var url = location.href.toString();
+              var newUrl = url.substring(0,url.indexOf("?"))+'?date='+ new Date().getTime()+'#item-'+res.data;
+              window.location.href = newUrl;
+            }
             layer.msg("回复成功");
           }else {
             layer.msg("回复失败");
@@ -315,7 +322,7 @@ layui.use(['layer', 'form','laypage'],function () {
   $(function() {
     var editor = editormd("editor", {
       width: "100%",
-      height: 350,
+      height: 200,
       path: "/js/lib/",
       saveHTMLToTextarea : false,
       delay: 0,

@@ -100,6 +100,7 @@ public class CommentService {
 
             pageInfo.setList(commentDTOS);
         }
+
 //        System.out.println(pageInfo);
         return pageInfo;
     }
@@ -109,7 +110,7 @@ public class CommentService {
      * @param comment
      */
     @Transactional
-    public void insertComment(Comment comment,User user,Long toCommentId) {
+    public Long insertComment(Comment comment,User user,Long toCommentId) {
         if (comment.getParentId() == null){
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
         }
@@ -148,6 +149,7 @@ public class CommentService {
             }
             comment.setParentTitle(question.getTitle());
             commentMapper.insertSelective(comment);
+
             question.setCommentCount(question.getCommentCount()+1);
             questionMapper.updateByPrimaryKeySelective(question);
 
@@ -156,6 +158,7 @@ public class CommentService {
             createNotify(comment, question.getCreator(), user.getName(), question.getTitle(), NotificationTypeEnum.REPLY_QUESTION, question.getId());
 
         }
+        return comment.getId();
     }
 
     private void createNotify(Comment comment, Long receiver, String notifierName, String outerTitle, NotificationTypeEnum notificationType, Long outerId) {
