@@ -11,10 +11,9 @@ public enum  QuestionCategory {
     Share(3,"分享"),
     Discuss(4,"讨论"),
     Advise(5,"建议"),
-    Bug(6,"Bug"),
-    FOR_JOB(7,"求职"),
-    TEACH(8,"教程"),
-    INTERVIEW(9,"面试");
+    News(6,"新闻"),
+    Bug(7,"Bug"),
+    INTERVIEW(8,"面试");
     private Integer value;
     private  String name;
 
