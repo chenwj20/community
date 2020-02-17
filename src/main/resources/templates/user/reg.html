@@ -80,7 +80,7 @@
                 <span>或者直接使用社交账号快捷注册</span>
                 <a th:href="${'https://graph.qq.com/oauth2.0/authorize?client_id='+@environment.getProperty('qq.client.id')+'&redirect_uri='+@environment.getProperty('qq.redirect.uri')+'&response_type=code&state=1'}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq" title="QQ登入"></a>
 <!--                <a href="" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-weibo" title="微博登入"></a>-->
-                <a href="https://github.com/login/oauth/authorize?client_id=d7a2dd53de6f2e1ebee4&redirect_uri=http://freemi.cn/githubCallback&scope=user&state=1" onclick="layer.msg('正在通过Github登入', {icon:16, shade: 0.1, time:0})" title="GITHUB登入">
+                <a th:href="${'https://github.com/login/oauth/authorize?client_id='+@environment.getProperty('github.client.id')+'&redirect_uri='+@environment.getProperty('github.redirect.uri')+'&response_type=code&state=1'}" onclick="layer.msg('正在通过Github登入', {icon:16, shade: 0.1, time:0})" title="GITHUB登入">
                   <img src="/images/github.jpg" height="26px;" style="margin-bottom: 6px;">
                 </a>
               </div>
