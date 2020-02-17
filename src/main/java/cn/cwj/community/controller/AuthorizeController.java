@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -51,9 +50,7 @@ public class AuthorizeController {
     @GetMapping("/qqCallback")
     public String callbackQq(@RequestParam(name = "code") String code,
                              @RequestParam(name = "state") String state,
-                             HttpServletResponse response,
-                             HttpServletRequest request,
-                             Model model) {
+                             HttpServletResponse response) {
 
         QQAccessTokenDTO qqAccessTokenDTO = new QQAccessTokenDTO();
         qqAccessTokenDTO.setGrant_type("authorization_code");
@@ -81,10 +78,9 @@ public class AuthorizeController {
             user.setAccountType("QQ");
             userService.createOrUpdateUser(user);
             Cookie cookie = new Cookie("token",token);
-            cookie.setPath("/");
             cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
+            cookie.setPath("/");
             response.addCookie(cookie);
-            request.getSession().setAttribute("user",user);
             return "redirect:/";
 
         }else {

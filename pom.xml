@@ -25,11 +25,15 @@
             <artifactId>hutool-all</artifactId>
             <version>5.1.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -44,6 +48,7 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.0.1</version>
         </dependency>
+
         <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper-spring-boot-starter</artifactId>
@@ -64,6 +69,9 @@
             <artifactId>okhttp</artifactId>
             <version>3.14.1</version>
         </dependency>
+
+
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -105,6 +113,9 @@
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>3.6.0</version>
         </dependency>
+
+
+
     </dependencies>
     <repositories>
         <repository>
@@ -129,6 +140,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>5.2.4</version>
                 <dependencies>
+
                     <dependency>
                         <groupId>mysql</groupId>
                         <artifactId>mysql-connector-java</artifactId>

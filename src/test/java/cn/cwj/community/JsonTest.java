@@ -1,12 +1,15 @@
 package cn.cwj.community;
 
 import cn.cwj.community.dto.CommentDTO;
+import cn.cwj.community.util.RedisUtil;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -16,6 +19,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class JsonTest {
+    @Autowired
+    private RedisUtil redisUtil;
+    @Autowired
+    private RedisTemplate redisTemplate;
     @Test
     public void test01(){
 //定义图形验证码的长、宽、验证码字符数、干扰元素个数
@@ -28,5 +35,9 @@ public class JsonTest {
 //验证图形验证码的有效性，返回boolean值
         boolean verify = captcha.verify(code);
         System.out.println(verify);
+    }
+    @Test
+    public void redisTest(){
+
     }
 }
