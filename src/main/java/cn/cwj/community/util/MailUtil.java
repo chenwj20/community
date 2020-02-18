@@ -1,6 +1,7 @@
 package cn.cwj.community.util;
 
 
+import com.sun.mail.util.MailSSLSocketFactory;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,11 @@ public class MailUtil {
         email.setCharset("utf-8");//设置发送的字符类型
         try {
             System.out.println("用户邮件为："+userEmail);
+
+
+
             email.addTo(userEmail);//设置收件人
+            email.setSmtpPort(80);
             email.setFrom(myEmail,"FreeMi");//发送人的邮箱为自己的，用户名可以随便填
             email.setAuthentication(myEmail,password);//设置发送人到的邮箱和用户名和授权码(授权码是自己设置的)
             email.setSubject("FreeMi官方邮箱验证码");//设置发送主题

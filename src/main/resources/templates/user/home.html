@@ -19,7 +19,7 @@
 
 <div class="fly-home fly-panel" style="background-image: url();">
   <img th:src="${userDTO.avatarUrl}" alt="cwj">
-  <i class="iconfont icon-renzheng" title="Fly社区认证"></i>
+  <i class="iconfont icon-renzheng" title="FreeMi社区认证"></i>
   <h1>
     <span th:text="${userDTO.name}">
     </span>
@@ -92,11 +92,6 @@
 
 <div th:replace="common/footer :: foot"></div>
 
-<!--<script th:inline="javascript">-->
-<!--  for (var comment in [[${userDTO.comments}]]) {-->
-<!--    $("#usercomment"+comment.id).innerText = comment.content;-->
-<!--  }-->
-<!--</script>-->
 <script>
 layui.config({
   version: "3.0.0"
