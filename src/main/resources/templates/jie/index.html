@@ -35,11 +35,11 @@
 
         <ul class="fly-list" th:each="question: ${pageInfo.list}">
           <li>
-            <a href="user/home.html" class="fly-avatar">
+            <a th:href="${'/user/home/'+question.user.id}" class="fly-avatar">
               <img th:src="${question.user.avatarUrl}" alt="cwj">
             </a>
             <h2>
-              <a class="layui-badge"><span th:text="${question.category}"></span></a>
+              <a th:class="${question.category == '公告'?'layui-badge layui-bg-green':'layui-badge'}" ><span th:text="${question.category}"></span></a>
               <a th:href="@{'/question/'+ ${question.id}+'/page/1'}"><span th:text="${question.title}"></span></a>
             </h2>
             <div class="fly-list-info">
@@ -51,10 +51,10 @@
 
                 <span class="fly-list-like layui-hide-xs" title="悬赏米币">
                     <i class="layui-icon " style="color:#FFB800;">&#xe65e;</i>
-                    <span  style="color:#FFB800;" th:text="${question.experience}"></span>
+                    <span  style="color:#FFB800;" th:text="${question.miCoin}"></span>
                 </span>
                 <span class="fly-list-like layui-hide-xs" title="Star"><i class="layui-icon " style="color:#FFB800;"></i><span style="color:#FFB800;" th:text="${question.likeCount}"></span></span>
-              <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
+              <span th:if="${question.acceptId != null}" class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
               <span class="fly-list-nums">
                 <i class="iconfont icon-pinglun1" title="回答"></i>
                 <span th:text="${question.commentCount}"></span>
@@ -89,7 +89,7 @@
 
       <!-- 回帖版单-->
       <div class="fly-panel fly-rank fly-rank-reply" id="LAY_replyRank">
-        <h3 class="fly-panel-title">回帖榜 - TOP20</h3>
+        <h3 class="fly-panel-title">用户回贴榜</h3>
         <dl >
           <!--          <i class="layui-icon fly-loading">&#xe63d;</i>-->
           <dd th:each="sortUser:${commentCountUsers}">

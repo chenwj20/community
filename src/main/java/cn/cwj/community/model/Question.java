@@ -24,8 +24,9 @@ public class Question {
     private String tag;
     private String description;
     private Integer category;
-    private String experience;
+    private Integer miCoin;
     private Integer isShow;
     private Integer status;
+    private Long acceptId;
 
 }

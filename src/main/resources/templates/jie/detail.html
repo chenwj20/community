@@ -68,7 +68,7 @@
             <span th:text="${#dates.format(questionDTO.gmtCreate,'yyyy-MM-dd HH:mm')}" ></span>
           </div>
           <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
-            <span style="padding-right: 10px; color: #FF7200">悬赏：<span th:text="${questionDTO.experience}"></span>米币</span>
+            <span style="padding-right: 10px; color: #FF7200">悬赏：<span th:text="${questionDTO.miCoin}"></span>米币</span>
             <span class="layui-btn layui-btn-xs jie-admin" type="edit" th:if="${session.user!= null && questionDTO.creator == session.user.id}"><a th:href="${'/publish/'+questionDTO.id}">编辑此贴</a></span>
 <!--            <button type="button" class="layui-btn layui-btn-sm">小型按钮</button>-->
             <button  type="button" id="collect" class="collect layui-btn layui-btn-xs" th:if="${session.user!= null && collect == '0'}">收藏此帖</button>
@@ -106,7 +106,7 @@
         <ul  class="jieda" id="jieda" >
           <li data-id="111" th:if="${commentDTOS.list != null && commentDTOS.size >0}" th:each="comment,commentStat : ${commentDTOS.list}" th:id="${'delComment'+comment.id}" class="jieda-daan">
             <a th:name="${'item-'+comment.id}" ></a>
-            <div class="detail-about detail-about-reply">
+            <div th:id="${'acceptComment'+comment.id}" class="detail-about detail-about-reply">
               <a class="fly-avatar" th:href="${'/user/home/'+comment.user.id}">
                 <img th:src="${comment.user.avatarUrl}" alt=" cwj">
               </a>
@@ -130,7 +130,7 @@ tag"></span>楼)
                 <span th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
               </div>
 
-<!--              <i class="iconfont icon-caina" title="最佳答案"></i>-->
+              <i th:if="${questionDTO.acceptId != null && questionDTO.acceptId == comment.id}" class="iconfont icon-caina" title="最佳答案"></i>
             </div>
 
             <div  th:id="${'comment-view'+commentStat.index}" style="margin:10px 0px;padding: 0px;overflow-y: hidden;">
@@ -155,10 +155,10 @@ tag"></span>楼)
                 回复
                 </span>
                 </a>
-              <div th:if="${session.user != null && comment.user.id == session.user.id}" class="jieda-admin">
+              <div  class="jieda-admin">
 <!--                <span type="edit">编辑</span>-->
-                <span th:onclick="commentDel([[${comment.id}]])" type="del">删除</span>
-                <!-- <span class="jieda-accept" type="accept">采纳</span> -->
+                <span th:if="${session.user != null && comment.user.id == session.user.id}" th:onclick="commentDel([[${comment.id}]])" type="del">删除</span>
+                 <span th:if="${ session.user != null && questionDTO.acceptId == null && questionDTO.creator != comment.commentator && questionDTO.creator == session.user.id }" th:onclick="accept([[${questionDTO.id}]],[[${comment.id}]]);" class="jieda-accept" type="accept">采纳</span>
               </div>
             </div>
           </li>

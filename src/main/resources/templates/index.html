@@ -44,7 +44,7 @@
 
                         <span class="fly-list-like layui-hide-xs " title="悬赏米币" style="color:#FFB800;">
                             <i class="layui-icon">&#xe65e;</i>
-                            <span style="color:#FFB800;" th:text="${topQuestion.experience}"></span></span>
+                            <span style="color:#FFB800;" th:text="${topQuestion.miCoin}"></span></span>
                         <span class="fly-list-like layui-hide-xs " style="color:#FFB800;" title="Star"><i class="layui-icon"></i><span style="color:#FFB800;" th:text="${topQuestion.likeCount}"></span></span>
                         <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
                         <span class="fly-list-nums">
@@ -91,7 +91,7 @@
 
                   <span class="fly-list-like layui-hide-xs" style="color:#FFB800;" title="悬赏米币">
                     <i class="layui-icon" >&#xe65e;</i>
-                    <span th:text="${questionDTO.experience}"></span>
+                    <span th:text="${questionDTO.miCoin}"></span>
                 </span>
                       <span class="fly-list-like layui-hide-xs " style="color:#FFB800;" title="Star">
                           <i class="layui-icon"></i>
@@ -133,7 +133,7 @@
 
     <!-- 回帖版单-->
       <div class="fly-panel fly-rank fly-rank-reply" id="LAY_replyRank">
-        <h3 class="fly-panel-title">回帖榜 - TOP20</h3>
+        <h3 class="fly-panel-title">用户回贴榜</h3>
         <dl >
 <!--          <i class="layui-icon fly-loading">&#xe63d;</i>-->
           <dd th:each="sortUser:${commentCountUsers}">

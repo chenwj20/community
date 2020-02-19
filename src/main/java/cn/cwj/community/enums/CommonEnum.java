@@ -11,7 +11,9 @@ public enum CommonEnum {
     AVATAR_SUCCESS(1008,"头像更改成功"),
     SET_SUCCESS(1009,"修改成功"),
     RECYCLE_SUCCESS(1010,"恢复成功"),
-    Top_question__SUCCESS(1011,"置顶成功");
+    Top_question__SUCCESS(1011,"置顶成功"),
+    MICOIN_LESS(1012,"米币不足"),
+    ACCEPT__SUCCESS(1013,"采纳成功");
 
 
 

@@ -152,5 +152,16 @@ public class QuestionController {
         questionService.topQuestion(id);
         return ResultDTO.okOf(CommonEnum.Top_question__SUCCESS);
     }
-
+    @RequestMapping("/{qid}/accept/{cid}")
+    @ResponseBody
+    public ResultDTO acceptComment(@PathVariable Long qid,
+                                   @PathVariable Long cid,
+                                 HttpServletRequest request){
+        User user = (User)request.getSession().getAttribute("user");
+        if (user == null){
+            return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
+        }
+        questionService.acceptComment(qid,cid);
+        return ResultDTO.okOf(CommonEnum.ACCEPT__SUCCESS);
+    }
 }

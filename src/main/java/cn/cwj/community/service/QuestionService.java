@@ -114,11 +114,14 @@ public class QuestionService {
      * @param question
      */
     @Transactional
-    public void createOrUpdateQuestion(Question question) {
+    public void createOrUpdateQuestion(Question question,User user) {
         if (question.getId() == null){
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
             //创建帖子
+            //减少米币
+            user.setMiCoin(user.getMiCoin()-question.getMiCoin());
+            userMapper.updateByPrimaryKeySelective(user);
             questionMapper.insertSelective(question);
             userService.addExperience(question.getCreator(),1);
         }else {
@@ -364,5 +367,21 @@ public class QuestionService {
         question.setStatus(1);
         question.setId(id);
         questionMapper.updateByPrimaryKeySelective(question);
+    }
+
+    /**
+     * 采纳回答
+     * @param qid
+     * @param cid
+     */
+    @Transactional
+    public void acceptComment(Long qid,Long cid) {
+        Comment comment = commentMapper.selectByPrimaryKey(cid);
+        Question question = questionMapper.selectByPrimaryKey(qid);
+        question.setAcceptId(cid);
+        questionMapper.updateByPrimaryKeySelective(question);
+        User user = userMapper.selectByPrimaryKey(comment.getCommentator());
+        user.setMiCoin(user.getMiCoin()+question.getMiCoin());
+        userMapper.updateByPrimaryKeySelective(user);
     }
 }

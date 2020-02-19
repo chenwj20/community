@@ -4,6 +4,7 @@ import cn.cwj.community.cache.TagCache;
 import cn.cwj.community.dto.QuestionDTO;
 import cn.cwj.community.dto.ResultDTO;
 import cn.cwj.community.dto.TagDTO;
+import cn.cwj.community.enums.CommonEnum;
 import cn.cwj.community.exception.CustomizeErrorCode;
 import cn.cwj.community.model.Question;
 import cn.cwj.community.model.User;
@@ -68,12 +69,15 @@ public class PublishController {
         if (StringUtils.isBlank(question.getTag())){
             return ResultDTO.errorOf(CustomizeErrorCode.TAG_ONE);
         }
+        if (user.getMiCoin()<question.getMiCoin()){
+            return ResultDTO.okOf(CommonEnum.MICOIN_LESS);
+        }
         log.info("no tag {}" ,question.getTag());
         String tag = question.getTag().substring(1);
         log.info("sp tag {}" ,tag);
         question.setTag(tag);
         question.setCreator(user.getId());
-        questionService.createOrUpdateQuestion(question);
+        questionService.createOrUpdateQuestion(question,user);
         return ResultDTO.okOf();
     }
 }

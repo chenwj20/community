@@ -44,7 +44,19 @@
                 remove();
             }
         });
-
+        function accept(qid,cid) {
+            $.ajax({
+                url: "/question/"+qid+"/accept/"+cid,
+                type: 'get',
+                dataType: 'json',
+                success: function (res) {
+                    layer.msg(res.msg);
+                    var accept = '<i  class="iconfont icon-caina" title="最佳答案"></i>';
+                    $("#acceptComment"+cid).append(accept);
+                    $(".jieda-accept").remove();
+                }
+            })
+        }
         function remove() {
             $.ajax({
                 type: "get",

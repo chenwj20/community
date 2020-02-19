@@ -23,8 +23,9 @@ public class QuestionDTO {
     private Integer likeCount;
     private String category;
     private Integer categoryI;
-    private String experience;
+    private Integer miCoin;
     private Integer isShow;
     private Integer status;
+    private Long acceptId;
     private User user;
 }

@@ -110,7 +110,21 @@
 
                 </div>
               </div>
-
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">悬赏米币</label>
+                  <div class="layui-input-inline" style="width: 190px;">
+                    <select th:disabled="${questionEdit!=null}"name="miCoin">
+                      <option th:selected="${questionEdit!=null && questionEdit.miCoin == 5}" value="5">5</option>
+                      <option th:selected="${questionEdit!=null && questionEdit.miCoin == 10}" value="10">10</option>
+                      <option th:selected="${questionEdit!=null && questionEdit.miCoin == 15}" value="15">15</option>
+                      <option th:selected="${questionEdit!=null && questionEdit.miCoin == 20}" value="20">20</option>
+                      <option th:selected="${questionEdit!=null && questionEdit.miCoin == 30}" value="30">30</option>
+                    </select>
+                  </div>
+                  <div class="layui-form-mid layui-word-aux">发表后无法更改米币</div>
+                </div>
+              </div>
               <div class="layui-form-item">
                   <input id="tag" th:value="${questionEdit != null ?','+questionEdit.tag:''}" name="tag" type="hidden" >
                 <button class="layui-btn" lay-filter="post" lay-submit>立即发布</button>

@@ -2,6 +2,7 @@ package cn.cwj.community.service;
 
 import cn.cwj.community.dto.CommentDTO;
 import cn.cwj.community.dto.CommentDTOU;
+import cn.cwj.community.dto.QuestionDTO;
 import cn.cwj.community.enums.CommentTypeEnum;
 import cn.cwj.community.enums.NotificationStatusEnum;
 import cn.cwj.community.enums.NotificationTypeEnum;
@@ -40,11 +41,14 @@ public class CommentService {
     @Autowired
     private UserService userService;
     //根据parentId查找评论
-    public PageInfo findByParentId(Long parentId,Integer type,Integer pageNum,Integer pageSize,User wuser){
+    public PageInfo findByParentId(Long id, Integer type, Integer pageNum, Integer pageSize, User wuser){
+        Question question = questionMapper.selectByPrimaryKey(id);
         Example commentExample = new Example(Comment.class);
-        commentExample.setOrderByClause("gmt_create asc");
+        if (question.getAcceptId() != null){
+            commentExample.setOrderByClause("id="+question.getAcceptId()+" desc");
+        }
         commentExample.createCriteria()
-                .andEqualTo("parentId",parentId);
+                .andEqualTo("parentId",id);
         //分页
         PageHelper.startPage(pageNum,pageSize);
         List<Comment> comments = commentMapper.selectByExample(commentExample);
