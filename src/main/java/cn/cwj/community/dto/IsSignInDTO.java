@@ -10,6 +10,6 @@ import lombok.Data;
 public class IsSignInDTO {
     //{days: 2, experience: 5, signed: true}
     private Integer days;
-    private Integer experience;
+    private Integer miCoin;
     private boolean signed;
 }

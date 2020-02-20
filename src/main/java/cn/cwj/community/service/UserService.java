@@ -316,4 +316,17 @@ public class UserService {
     public void updateUserToken(User user){
         userMapper.updateByPrimaryKeySelective(user);
     }
+
+    /**
+     * 增加米币
+     * @param uid
+     * @param miCoin
+     */
+    public void addMiCon(Long uid, Integer miCoin) {
+        User user1 = userMapper.selectByPrimaryKey(uid);
+        User user = new User();
+        user.setId(uid);
+        user.setMiCoin(miCoin+user1.getMiCoin());
+        userMapper.updateByPrimaryKeySelective(user);
+    }
 }

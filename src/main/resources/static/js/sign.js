@@ -49,12 +49,12 @@ function signStatus() {
                 $("#days").text(res.data.days);
                 if (res.data.signed){
                     var tplSignin = '<button class="layui-btn layui-btn-disabled">今日已签到</button>'
-                        +'<span>获得了<cite> '+res.data.experience +'</cite>米币</span>';
+                        +'<span>获得了<cite> '+res.data.miCoin +'</cite>米币</span>';
                     $("#sign").html(tplSignin);
                     // layer.msg(res.msg, {shift: 6});
                 }else {
                     var tplSignin = '<button class="layui-btn layui-btn-danger"  id="LAY_signin">今日签到</button>'
-                        +'<span>可获得<cite id="experience"> '+res.data.experience +'</cite>米币</span>';
+                        +'<span>可获得<cite id="experience"> '+res.data.miCoin +'</cite>米币</span>';
                     $("#sign").html(tplSignin);
                 }
             }
