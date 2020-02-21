@@ -43,14 +43,22 @@ public class QuestionService {
     public PageInfo<QuestionDTO> questionList(Integer pageNum,Integer pageSize,Integer category,String sort) {
         PageHelper.startPage(pageNum,pageSize);
         List<Question> questions = null;
+        //根据sort查询
+        String sortBy = "gmt_create desc";
+        if (StringUtils.isNoneBlank(sort) && sort.equals("hot")){
+          sortBy = "comment_count desc";
+        }
+
         if (category == null){
             Example example = new Example(Question.class);
+            example.setOrderByClause(sortBy);
             example.createCriteria()
                     .andEqualTo("isShow",1);
             //查询帖子
             questions = questionMapper.selectByExample(example);
         }else {
             Example example = new Example(Question.class);
+            example.setOrderByClause(sortBy);
             example.createCriteria()
                     .andEqualTo("category",category)
                     .andEqualTo("isShow",1);
@@ -72,13 +80,7 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOS.add(questionDTO);
         }
-        if (StringUtils.isNoneBlank(sort)){
-            if (sort.equals("hot")){
-                Collections.sort(questionDTOS,(o1, o2) -> o2.getCommentCount()-o1.getCommentCount());
-            }else {
-                Collections.sort(questionDTOS,(o1, o2) -> o2.getGmtCreate().compareTo(o1.getGmtCreate()));
-            }
-        }
+
 
         pageInfo.setList(questionDTOS);
         return pageInfo;
@@ -105,6 +107,7 @@ public class QuestionService {
         User user = userMapper.selectByPrimaryKey(question.getCreator());
         BeanUtils.copyProperties(question,questionDTO);
         questionDTO.setCategoryI(question.getCategory());
+        questionDTO.setCategory(QuestionCategory.getNameByVal(question.getCategory()));
         questionDTO.setUser(user);
         return questionDTO;
     }
@@ -362,9 +365,9 @@ public class QuestionService {
      * 置顶问题
      * @param id
      */
-    public void topQuestion(Long id) {
+    public void topQuestion(Long id,Integer status) {
         Question question = new Question();
-        question.setStatus(1);
+        question.setStatus(status);
         question.setId(id);
         questionMapper.updateByPrimaryKeySelective(question);
     }

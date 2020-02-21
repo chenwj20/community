@@ -35,11 +35,11 @@ public class SignInService {
         IsSignInDTO isSignInDTO = new IsSignInDTO();
         //暂时设为5
         //首次签到
+        Integer miCoin = 5;
         if (signIns == null || signIns.size() == 0){
-            isSignInDTO.setMiCoin(5);
+            isSignInDTO.setMiCoin(miCoin);
             isSignInDTO.setDays(0);
             isSignInDTO.setSigned(false);
-
             return isSignInDTO;
         }else {
             SignIn userSignIn = signIns.get(0);
@@ -47,8 +47,12 @@ public class SignInService {
             if (gmtCreate> DateUtil.todayZero()){
                 isSignInDTO.setSigned(true);
                 isSignInDTO.setDays(userSignIn.getContinueSign());
+                Integer cdays = userSignIn.getContinueSign();
+                miCoin = miCoin(cdays);
+                isSignInDTO.setMiCoin(miCoin);
             }else {
                 isSignInDTO.setSigned(false);
+                isSignInDTO.setMiCoin(miCoin);
             }
 
             return isSignInDTO;
@@ -87,17 +91,7 @@ public class SignInService {
                 //昨天签到了
                 signIn.setContinueSign(signIned.getContinueSign()+1);
                 Integer cdays = signIned.getContinueSign();
-                if (cdays<5){
-                    miCoin = 5;
-                }else if (cdays<10){
-                    miCoin = 10;
-                }else if (cdays<15){
-                    miCoin = 15;
-                }else if (cdays<30){
-                    miCoin = 20;
-                }else {
-                    miCoin = 20;
-                }
+               miCoin = miCoin(cdays);
             }else {
                 //昨天没签到，断签
                 signIn.setContinueSign(1);
@@ -109,5 +103,26 @@ public class SignInService {
         }
         userService.addMiCon(uid,miCoin);
         return isSignIn(uid);
+    }
+
+    /**
+     * 判断今天获得的米币
+     * @param days
+     * @return
+     */
+    private Integer miCoin(Integer days){
+        Integer miCoin = 5;
+        if (days<5){
+            miCoin = 5;
+        }else if (days<10){
+            miCoin = 10;
+        }else if (days<15){
+            miCoin = 15;
+        }else if (days<30){
+            miCoin = 20;
+        }else {
+            miCoin = 20;
+        }
+        return miCoin;
     }
 }

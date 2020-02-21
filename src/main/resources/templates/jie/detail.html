@@ -61,7 +61,7 @@
             <img th:src="${questionDTO.user.avatarUrl}" alt="cwj">
           </a>
           <div class="fly-detail-user">
-            <a th:href="${'/user/home/'+questionDTO.id}" class="fly-link">
+            <a th:href="${'/user/home/'+questionDTO.user.id}" class="fly-link">
               <cite th:text="${questionDTO.user.name}"></cite>
               <i class="layui-badge fly-badge-vip" th:text="${'LV'+ questionDTO.user.lv}"></i>
             </a>

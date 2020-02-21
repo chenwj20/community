@@ -76,7 +76,7 @@ function signIn(){
             } else if (res.data.signed) {
                 $("#days").text(res.data.days);
                 var tplSignin = '<button class="layui-btn layui-btn-disabled">今日已签到</button>'
-                    +'<span>获得了<cite> '+res.data.experience +'</cite>米币</span>';
+                    +'<span>获得了<cite> '+res.data.miCoin +'</cite>米币</span>';
                 $("#sign").html(tplSignin);
             } else {
                 layer.msg("请求错误");

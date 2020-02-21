@@ -141,17 +141,27 @@ public class QuestionController {
         model.addAttribute("recyclePageInfo",recyclePageInfo);
         return "user/recycle";
     }
-    @RequestMapping("/top/{id}")
+
+    /**
+     * 置顶问题
+     * @param id
+     * @param request
+     * @return
+     */
+    @RequestMapping("/{top}/{id}")
     @ResponseBody
     public ResultDTO topQuestion(@PathVariable Long id,
+                                 @PathVariable Integer top,
                                  HttpServletRequest request){
         User user = (User)request.getSession().getAttribute("user");
         if (user == null){
             throw new CustomizeException(CustomizeErrorCode.NO_LOGIN);
         }
-        questionService.topQuestion(id);
+        //1为置顶
+        questionService.topQuestion(id,top);
         return ResultDTO.okOf(CommonEnum.Top_question__SUCCESS);
     }
+
     @RequestMapping("/{qid}/accept/{cid}")
     @ResponseBody
     public ResultDTO acceptComment(@PathVariable Long qid,
