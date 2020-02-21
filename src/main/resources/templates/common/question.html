@@ -101,12 +101,24 @@
             });
         }
         function topQuestion(id) {
+
+            var type = $("#top-op").val();
             $.ajax({
-                url: "/question/1/"+id,
+                url: "/question/"+type+"/"+id,
                 type: 'get',
                 dataType: 'json',
                 success: function (res) {
-                    layer.msg(res.msg)
+                    if (type ==1){
+                        layer.msg(res.msg);
+                        $("#top-op").val(0);
+                        $("#top-btn").text("取消置顶");
+                        $("#top-btn").addClass("layui-bg-orange");
+                    } else {
+                        layer.msg("取消成功");
+                        $("#top-btn").text("置顶此贴");
+                        $("#top-btn").removeClass("layui-bg-orange");
+                        $("#top-op").val(1);
+                    }
                 }
             })
         }

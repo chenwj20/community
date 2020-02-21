@@ -24,8 +24,8 @@ public class QuestionDTO {
     private String category;
     private Integer categoryI;
     private Integer miCoin;
-    private Integer isShow;
-    private Integer status;
-    private Long acceptId;
+    private Integer isShow;//是否展示
+    private Integer status;//是否置顶，置顶为1
+    private Long acceptId;//采纳的回答id
     private User user;
 }

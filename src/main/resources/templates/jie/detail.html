@@ -44,8 +44,8 @@
           <span class="layui-badge layui-bg-red">精帖</span>
 
           <div class="fly-admin-box" th:data-id="${questionDTO.id}">
-            <span th:if="${session.user != null && session.user.role == 1}" th:onclick="topQuestion([[${questionDTO.id}]])" class="layui-btn layui-btn-xs jie-admin layui-bg-orange" type="set" field="stick" rank="1">置顶</span>
-
+            <span id="top-btn" th:if="${session.user != null && session.user.role == 1 }" th:onclick="topQuestion([[${questionDTO.id}]])" th:class="${questionDTO.status == 1?'layui-btn layui-btn-xs jie-admin layui-bg-orange':'layui-btn layui-btn-xs jie-admin '}" class="" type="set"  field="stick" rank="1" th:text="${questionDTO.status == 1?'取消置顶':'置顶此贴'}"></span>
+            <input id="top-op" type="hidden" th:value="${questionDTO.status == 1?0:1}">
         </div>
 
           <span class="fly-list-nums">
