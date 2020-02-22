@@ -28,6 +28,12 @@ public class ZanService {
     @Autowired
     private CommentMapper commentMapper;
 
+    /**
+     * 取消点赞
+     * @param id
+     * @param uid
+     * @param type
+     */
     @Transactional
     public void removeZan(Long id, Long uid, Integer type) {
         if (type == 1){
@@ -72,6 +78,13 @@ public class ZanService {
         zanMapper.insertSelective(zan);
     }
 
+    /**
+     * 判断是否点赞
+     * @param id
+     * @param uid
+     * @param type
+     * @return
+     */
     public boolean checkZan(Long id, Long uid,Integer type) {
         Example example = new Example(Zan.class);
         example.createCriteria()

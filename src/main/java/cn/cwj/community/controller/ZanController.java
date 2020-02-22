@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ZanController {
     @Autowired
     private ZanService zanService;
+
     @ResponseBody
     @RequestMapping("/add/{type}/{id}")
     public ResultDTO commentZan(@PathVariable Long id,

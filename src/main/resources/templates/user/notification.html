@@ -110,6 +110,7 @@
           success:function (res) {
             if (res.code == 1003){
               layer.msg(res.msg);
+              $("#notificationPage").remove();
               $("#LAY_msg").html("<div class=fly-none>您暂时没有最新消息</div>");
             }else {
               layer.msg("删除失败");
@@ -157,7 +158,6 @@
   layui.cache.page = 'user';
   layui.cache.user = {
    uid: -1
-
   };
   layui.config({
     version: "3.0.0"

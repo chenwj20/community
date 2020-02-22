@@ -31,6 +31,7 @@ public class UserDTO {
     private Integer miCoin;
     private Integer experience;
     private Integer lv;
+    private Integer gender;
     private List<Question> questions;
     private Integer role;
     private List<Comment> comments;

@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class Zan {
     private Long id;
-    private Integer type;
+    private Integer type;//1为问题，2为评论
     private Long uid;
     private Long parentId;
 }

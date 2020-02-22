@@ -287,7 +287,8 @@ public class QuestionService {
     public List<User> findZanUser(Long id) {
         Example example = new Example(Zan.class);
         example.createCriteria()
-                .andEqualTo("parentId",id);
+                .andEqualTo("parentId",id)
+                .andEqualTo("type",1);
         List<Zan> zans = zanMapper.selectByExample(example);
         List<User> users = new ArrayList();
         for (Zan zan : zans) {

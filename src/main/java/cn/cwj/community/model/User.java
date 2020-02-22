@@ -29,6 +29,6 @@ public class User {
     private Integer miCoin;
     private Integer experience;
     private Integer lv;
-    private Integer gender;
+    private Integer gender;//0为男，1为女
     private Integer role;
 }

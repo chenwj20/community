@@ -117,7 +117,7 @@
                 </a>
 
                 <span style="color:#5FB878" th:if="${comment.user.id == questionDTO.user.id}">(楼主)</span>
-               <!-- <span th:if="${comment.user.role == 1}" style="color:#FF9E3F">(管理员)</span>-->
+                <span th:if="${comment.user.role == 1}" style="color:#FF9E3F">(管理员)</span>
                 <span >
                   (<span th:text="${(commentDTOS.pageNum -1)*commentDTOS.pageSize+commentStat.count}" th:remove="
 tag"></span>楼)
