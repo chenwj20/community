@@ -23,7 +23,7 @@
 <div class="layui-container">
   <div class="layui-row layui-col-space15">
     <div class="layui-col-md8">
-      <div class="fly-panel" style="margin-bottom: 0;">
+      <div  class="fly-panel" style="margin-bottom: 0;">
         
         <div class="fly-panel-title fly-filter">
           <span class="fly-mid"></span>
@@ -40,7 +40,7 @@
             </a>
             <h2>
               <a th:class="${question.category == '公告'?'layui-badge layui-bg-green':'layui-badge'}" ><span th:text="${question.category}"></span></a>
-              <a th:href="@{'/question/'+ ${question.id}+'/page/1'}"><span th:text="${question.title}"></span></a>
+              <a th:href="@{'/question/'+ ${question.id}+'/page/1'}"><span class="q_title" th:text="${question.title}"></span></a>
             </h2>
             <div class="fly-list-info">
               <a href="user/home.html" link>
@@ -66,9 +66,9 @@
           </li>
         </ul>
         
-        <!-- <div class="fly-none">没有相关数据</div> -->
+         <div th:if="${pageInfo.total<1}" class="fly-none">没有相关数据</div>
 
-        <div style="text-align: center">
+        <div th:if="${pageInfo.total >=1}" style="text-align: center">
           <div  id="paging">
 <!--            <span class="laypage-curr">1</span>-->
 
@@ -139,6 +139,8 @@ layui.config({
 }).use('fly');
 </script>
 <script th:inline="javascript">
+  var condition =[[${condition}]];
+
   layui.use(['laypage', 'layer'], function() {
     var laypage = layui.laypage
             , layer = layui.layer;
@@ -153,11 +155,42 @@ layui.config({
       ,next: '<em>→</em>'
       ,jump: function(obj,first){
        if (!first){
-         window.location.href = [[${pageUrl}]] +obj.curr;
+         var url = [[${pageUrl}]] +obj.curr;
+         if (condition){
+           url = url +condition;
+         }
+         window.location.href = url;
        }
       }
     });
   })
+
+  if (condition){
+    $(".q_title").each(function() {
+      //取得标签的文本
+      var t = $(this).text();
+      //取得需要查出的关键字，我们这里假定是多关键字以","间隔
+      var array = condition.toString().split("=")[1].split(" ");
+      //开始用关键字遍历标签文本
+      for (var i = 0; i < array.length; i++) {
+
+        //判断标签是否包含关键字
+        if (t.indexOf(array[i]) > -1) {
+
+          //定义正则表达式对象  array[i]是关键字   "g"是指全局范围
+          var a = new RegExp(array[i], "g")
+          //对标签文本进行全局替换，包含关键字的位置替换为加红字span对象
+          t = t.replace(a, ("<span style='color:#F00'>" + array[i] + "</span>"));
+          //将替换完的文本对象赋给此对象中A标签对象的html值中
+          $(this).html(t);
+        }
+      }
+    });
+  }
+
+
+
+
 </script>
 </body>
 </html>

@@ -264,8 +264,8 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
       ,shadeClose: true
       ,maxWidth: 10000
       ,skin: 'fly-layer-search'
-      ,content: ['<form action="http://cn.bing.com/search">'
-        ,'<input autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="q">'
+      ,content: ['<form action="/search/page/1">'
+        ,'<input autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="keyword">'
       ,'</form>'].join('')
       ,success: function(layero){
         var input = layero.find('input');
@@ -276,7 +276,8 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
           if(val.replace(/\s/g, '') === ''){
             return false;
           }
-          input.val('site:freemi.cn '+ input.val());
+
+          // input.val(keyword);
       });
       }
     })

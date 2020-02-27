@@ -45,7 +45,7 @@
                   <input type="text" id="L_vercode" name="verifyCode" required lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid" style="padding: 0">
-                  <img onclick="imageCode(this)" title="点击换一张" th:src="${'/imageCode?date='+ (new java.util.Date().getTime())}">
+                  <img onclick="imageCode(this)" title="点击换一张" style="cursor:pointer;" th:src="${'/imageCode?date='+ (new java.util.Date().getTime())}">
                 </div>
               </div>
               <div class="layui-form-item">

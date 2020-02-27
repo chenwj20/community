@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 /**
  * @Date 2020/1/15
  * @Version V1.0
+ * 异常统一处理
  **/
 //@ControllerAdvice
 public class CustomizeExceptionHandler {

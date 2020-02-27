@@ -12,4 +12,7 @@ import java.util.List;
 public interface QuestionMapper extends Mapper<Question> {
     @Select("SELECT * FROM question WHERE id != #{id} AND is_show = #{isShow} AND tag REGEXP #{tag}")
     List<Question> selectRelated(@Param("id") Long id,@Param("tag") String tag,@Param("isShow") Integer isShow);
+
+    @Select("SELECT * FROM question WHERE  is_show = #{isShow} AND  title REGEXP #{title} order by ${sort}")
+    List<Question> selectQuestionByKeyword(@Param("title") String title,@Param("isShow") Integer isShow,@Param("sort")String sort);
 }

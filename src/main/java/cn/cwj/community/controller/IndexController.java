@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -44,10 +45,28 @@ public class IndexController {
         return "index";
        }
 
-    @GetMapping("/all/page/{pageNum}")
+    @GetMapping("/{kind}/page/{pageNum}")
     public String index(Model model,
+                        @RequestParam(required = false) String keyword,
+                        @PathVariable String kind,
                         @PathVariable("pageNum") Integer pageNum){
-        PageInfo<QuestionDTO> pageInfo = questionService.questionList(pageNum, pageSize, null,null);
+        PageInfo<QuestionDTO> pageInfo = null;
+        String newUrl = "/"+kind+"/new/page/1";
+        String hotUrl = "/"+kind+"/hot/page/1";
+        String pageUrl = "/"+kind+"/page/";
+
+        if ("all".equals(kind)){
+            model.addAttribute("condition",null);
+            pageInfo = questionService.questionList(pageNum, pageSize, null,null);
+        }
+        if ("search".equals(kind)){
+            String  condition = "?keyword="+keyword;
+            newUrl= newUrl+condition;
+            hotUrl = hotUrl + condition;
+            model.addAttribute("condition",condition);
+            pageInfo = questionService.findQuestionByKeyword(pageNum, pageSize, keyword,null);
+        }
+        model.addAttribute("pageUrl",pageUrl);
         List<String> hotTags = hotTagCache.getHots();
         //查询评论最多用户信息
         List<UserDTO> commentCountUsers = userService.findByCommentCount();
@@ -55,23 +74,47 @@ public class IndexController {
         List<Question> commentCountQuestions = questionService.findByComments(1,10);
         model.addAttribute("hotTags",hotTags);
         model.addAttribute("pageInfo",pageInfo);
-        model.addAttribute("newUrl","/all/new/page/"+pageNum);
-        model.addAttribute("hotUrl","/all/hot/page/"+pageNum);
+        model.addAttribute("newUrl",newUrl);
+        model.addAttribute("hotUrl",hotUrl);
         model.addAttribute("type",null);
         model.addAttribute("commentCountQuestions",commentCountQuestions);
-        model.addAttribute("pageUrl","/all/page/");
+        model.addAttribute("pageUrl",pageUrl);
         return "jie/index";
     }
 
 
-    @GetMapping("/all/{sort}/page/{pageNum}")
+    @GetMapping("/{kind}/{sort}/page/{pageNum}")
     public String index(Model model,
                         @PathVariable("pageNum") Integer pageNum,
-                        @PathVariable("sort") String sort){
+                        @PathVariable String kind,
+                        @PathVariable("sort") String sort,
+                        @RequestParam(required = false) String keyword){
         PageInfo<QuestionDTO> pageInfo = questionService.questionList(pageNum, pageSize, null,sort);
+        String newUrl = "/"+kind+"/new/page/1";
+        String hotUrl = "/"+kind+"/hot/page/1";
+        StringBuffer pageUrl = new StringBuffer();
+        pageUrl.append("/");
+        pageUrl.append(kind);
+        pageUrl.append("/");
+        pageUrl.append(sort);
+        pageUrl.append("/page/");
+        model.addAttribute("pageUrl",pageUrl);
+
+        if ("all".equals(kind)){
+            model.addAttribute("condition",null);
+            pageInfo = questionService.questionList(pageNum, pageSize, null,sort);
+        }
+
+        if ("search".equals(kind)){
+            String  condition = "?keyword="+keyword;
+            model.addAttribute("condition",condition);
+            newUrl= newUrl+condition;
+            hotUrl = hotUrl + condition;
+            pageInfo = questionService.findQuestionByKeyword(pageNum, pageSize, keyword,sort);
+        }
         model.addAttribute("pageInfo",pageInfo);
-        model.addAttribute("newUrl","/all/new/page/"+pageNum);
-        model.addAttribute("hotUrl","/all/hot/page/"+pageNum);
+        model.addAttribute("newUrl",newUrl);
+        model.addAttribute("hotUrl",hotUrl);
         model.addAttribute("sort",sort);
         model.addAttribute("type",null);
         List<String> hotTags = hotTagCache.getHots();
@@ -81,11 +124,7 @@ public class IndexController {
         //查询评论最多用户信息
         List<UserDTO> commentCountUsers = userService.findByCommentCount();
         model.addAttribute("commentCountUsers",commentCountUsers);
-        StringBuffer pageUrl = new StringBuffer();
-        pageUrl.append("/all/");
-        pageUrl.append(sort);
-        pageUrl.append("/page/");
-        model.addAttribute("pageUrl",pageUrl);
+
         return "jie/index";
     }
 
@@ -111,4 +150,5 @@ public class IndexController {
         model.addAttribute("pageUrl",pageUrl);
         return "jie/index";
     }
+
 }

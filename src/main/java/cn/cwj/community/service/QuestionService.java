@@ -388,4 +388,37 @@ public class QuestionService {
         user.setMiCoin(user.getMiCoin()+question.getMiCoin());
         userMapper.updateByPrimaryKeySelective(user);
     }
+
+    /**
+     * 根据关键子检索
+     * @param pageNum
+     * @param pageSize
+     * @param keyword
+     * @return
+     */
+    public PageInfo<QuestionDTO> findQuestionByKeyword(Integer pageNum, Integer pageSize, String keyword,String sort) {
+        String regexTitle = keyword.trim().replace("*", "").replace("?", "").replace("+","").replace(" ","|");
+        String sortBy = "gmt_create desc";
+        if (StringUtils.isNoneBlank(sort) && "hot".equals(sort)){
+            sortBy = "comment_count desc";
+        }
+        PageHelper.startPage(pageNum,pageSize);
+        List<Question> questions = questionMapper.selectQuestionByKeyword(regexTitle,1,sortBy);
+        PageInfo pageInfo = new PageInfo(questions);
+        List<QuestionDTO> questionDTOS = new ArrayList<>();
+        for (Question question : questions) {
+
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
+
+            QuestionDTO questionDTO = new QuestionDTO();
+            //复制属性
+            BeanUtils.copyProperties(question,questionDTO);
+            String str = QuestionCategory.getNameByVal(question.getCategory());
+            questionDTO.setCategory(str);
+            questionDTO.setUser(user);
+            questionDTOS.add(questionDTO);
+        }
+        pageInfo.setList(questionDTOS);
+        return pageInfo;
+    }
 }
