@@ -60,10 +60,6 @@ oss:
   accessKeyId: LTAI4Fr3iioRYy8hDnmhenee
   bucketName: chebweijun
   accessKeySecret: bPrk5CYi1NcYWJoAXhyoEdxCXd7D1z
-email:
-  account: chenweijun_yz@163.com
-  password: 123456cwj
-  host: smtp.163.com
 site:
   main:
     title: FreeMI
@@ -71,3 +67,20 @@ site:
 logging:
   level:
     root: info
+
+mail:
+  smtp:
+    auth: true
+    port: 465
+    timeout: 5000
+  transport:
+    protocol: smtp
+  send:
+    charset: UTF-8
+  is:
+    ssl: true
+  host: smtp.163.com
+  auth:
+    name: chenweijun_yz@163.com
+    password: 123456cwj
+

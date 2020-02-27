@@ -71,7 +71,7 @@ function signIn(){
         dataType: 'json',
         success: function (res) {
             if (res.code == 2003) {
-                layer.msg(res.msg);
+                layer.msg(res.msg,{shift: 6});
 
             } else if (res.data.signed) {
                 $("#days").text(res.data.days);

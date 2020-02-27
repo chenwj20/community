@@ -2,7 +2,7 @@ package cn.cwj.community.controller;
 
 import cn.cwj.community.dto.ResultDTO;
 import cn.cwj.community.tImer.CodeTimer;
-import cn.cwj.community.util.MailUtil;
+import cn.cwj.community.util.EmailUtils;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
 import org.springframework.stereotype.Controller;
@@ -39,13 +39,13 @@ public class VerifyController {
     public ResultDTO sendEmail(String email,
                                HttpServletRequest request){
         HttpSession session = request.getSession();
-        String emailCode = MailUtil.achieveCode();
+        String emailCode = EmailUtils.achieveCode();
         session.setAttribute("emailCode", emailCode);
         long mailTime = System.currentTimeMillis();
         CodeTimer codeTimer = new CodeTimer(session,"emailCode");
         codeTimer.timer.schedule(codeTimer,1000*60*5);
 //        session.setAttribute("mailTime", mailTime);
-        Boolean aBoolean = MailUtil.sendAuthCodeEmail(email, emailCode);
+        Boolean aBoolean = EmailUtils.sendAuthCodeEmail(email, emailCode);
         if (aBoolean){
             return ResultDTO.okOf(200,"发送成功");
         }else {
