@@ -39,8 +39,8 @@
               <img th:src="${question.user.avatarUrl}" alt="cwj">
             </a>
             <h2>
-              <a th:class="${question.category == '公告'?'layui-badge layui-bg-green':'layui-badge'}" ><span th:text="${question.category}"></span></a>
-              <a th:href="@{'/question/'+ ${question.id}+'/page/1'}"><span class="q_title" th:text="${question.title}"></span></a>
+              <a th:class="${question.category == '公告'?'layui-badge layui-bg-green':'layui-badge'}" th:text="${question.category}" ></a>
+              <a th:href="@{'/question/'+ ${question.id}+'/page/1'}" class="q_title" th:text="${question.title}"></a>
             </h2>
             <div class="fly-list-info">
               <a href="user/home.html" link>
@@ -166,25 +166,27 @@ layui.config({
   })
 
   if (condition){
+    var array = condition.toString().trim().split("=")[1].split(" ");
     $(".q_title").each(function() {
+
       //取得标签的文本
       var t = $(this).text();
-      //取得需要查出的关键字，我们这里假定是多关键字以","间隔
-      var array = condition.toString().split("=")[1].split(" ");
-      //开始用关键字遍历标签文本
+
       for (var i = 0; i < array.length; i++) {
-
-        //判断标签是否包含关键字
-        if (t.indexOf(array[i]) > -1) {
-
-          //定义正则表达式对象  array[i]是关键字   "g"是指全局范围
-          var a = new RegExp(array[i], "g")
-          //对标签文本进行全局替换，包含关键字的位置替换为加红字span对象
-          t = t.replace(a, ("<span style='color:#F00'>" + array[i] + "</span>"));
-          //将替换完的文本对象赋给此对象中A标签对象的html值中
-          $(this).html(t);
+        //定义正则表达式对象  array[i]是关键字   "g"是指全局范围
+        var aa = new RegExp(array[i], "gi");
+        var match = t.match(aa);
+        if (match) {
+          for (var j = 0; j < match.length; j++) {
+            var bb = new RegExp(match[j], "g");
+            t = t.replace(bb, "☜" + match[j] + "☞");
+          }
         }
       }
+      var areg = new RegExp("☜", "g");
+      var breg = new RegExp("☞", "g");
+      t = t.replace(areg,"<span style='color:#F00'>").replace(breg,"</span>");
+      $(this).html(t);
     });
   }
 
