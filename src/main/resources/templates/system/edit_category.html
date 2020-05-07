@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>编辑</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <div class="layui-form-item">
+        <label class="layui-form-label required">板块名</label>
+        <div class="layui-input-block">
+            <input type="text" th:value="${category!=null?category.category:''}" name="category" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入角色名" value="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">描述</label>
+        <div class="layui-input-block">
+            <textarea name="des" class="layui-textarea"th:text="${category!=null?category.des:''}" placeholder="请输入板块描述"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <input type="hidden" name="id" th:value="${category!=null?category.id:''}">
+            <button class="layui-btn" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+</div>
+<script src="/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form',"upload"], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            upload = layui.upload,
+            $ = layui.$;
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            // alert(JSON.stringify(data.field));
+
+            $.ajax({
+                url: '/system/category/option/',
+                type: 'post',
+                data: data.field,
+                dataType: 'json',
+                success: function (res) {
+
+                    layer.msg(res.msg,{
+                        icon: 1
+                        ,time: 1000
+                        ,shade: 0.1
+                    })
+                    var iframeIndex = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(iframeIndex);
+
+
+                }
+            })
+
+            ;
+
+            return false;
+        });
+
+
+    });
+
+
+
+
+
+</script>
+</body>
+</html>

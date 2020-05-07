@@ -31,4 +31,5 @@ public class User {
     private Integer lv;
     private Integer gender;//0为男，1为女
     private Integer role;
+    private Integer status;//0正常，1禁用
 }

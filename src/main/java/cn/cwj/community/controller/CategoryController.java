@@ -1,9 +1,12 @@
 package cn.cwj.community.controller;
 
 import cn.cwj.community.cache.HotTagCache;
+import cn.cwj.community.cache.HotUserCache;
 import cn.cwj.community.dto.QuestionDTO;
 import cn.cwj.community.dto.UserDTO;
+import cn.cwj.community.model.Category;
 import cn.cwj.community.model.Question;
+import cn.cwj.community.service.CategoryService;
 import cn.cwj.community.service.QuestionService;
 import cn.cwj.community.service.UserService;
 import com.github.pagehelper.PageInfo;
@@ -28,7 +31,9 @@ public class CategoryController {
     @Autowired
     private HotTagCache hotTagCache;
     @Autowired
-    private UserService userService;
+    private CategoryService categoryService;
+    @Autowired
+    private HotUserCache hotUserCache;
     private Integer pageSize = 20;
     @GetMapping("/{type}/page/{pageNum}")
     public String category(Model model,
@@ -53,10 +58,10 @@ public class CategoryController {
         model.addAttribute("newUrl",newSb.toString());
         model.addAttribute("hotUrl",hotSb.toString());
 
-        List<Question> commentCountQuestions = questionService.findByComments(1,10);
+        List<Question> commentCountQuestions = hotUserCache.getHotQuestionCache();
         model.addAttribute("commentCountQuestions",commentCountQuestions);
         //查询评论最多用户信息
-        List<UserDTO> commentCountUsers = userService.findByCommentCount();
+        List<UserDTO> commentCountUsers = hotUserCache.getUserCache();
         model.addAttribute("commentCountUsers",commentCountUsers);
         List<String> hotTags = hotTagCache.getHots();
         model.addAttribute("hotTags",hotTags);
@@ -64,6 +69,8 @@ public class CategoryController {
         pageUrl.append("/category/");
         pageUrl.append(type);
         pageUrl.append("/page/");
+        List<Category> categories = categoryService.selectCategory();
+        model.addAttribute("categories",categories);
         model.addAttribute("pageUrl",pageUrl);
         return "jie/index";
     }
@@ -90,14 +97,14 @@ public class CategoryController {
 
         List<String> hotTags = hotTagCache.getHots();
         //查询评论最多用户信息
-        List<UserDTO> commentCountUsers = userService.findByCommentCount();
+        List<UserDTO> commentCountUsers = hotUserCache.getUserCache();
         model.addAttribute("commentCountUsers",commentCountUsers);
         hotSb.append("/hot/page/");
         hotSb.append(pageNum);
         model.addAttribute("newUrl",newSb.toString());
         model.addAttribute("hotUrl",hotSb.toString());
         model.addAttribute("hotTags",hotTags);
-        List<Question> commentCountQuestions = questionService.findByComments(1,10);
+        List<Question> commentCountQuestions = hotUserCache.getHotQuestionCache();
         model.addAttribute("commentCountQuestions",commentCountQuestions);
 
         StringBuffer pageUrl = new StringBuffer();
@@ -107,6 +114,8 @@ public class CategoryController {
         pageUrl.append(sort);
 
         pageUrl.append("/page/");
+        List<Category> categories = categoryService.selectCategory();
+        model.addAttribute("categories",categories);
         model.addAttribute("pageUrl",pageUrl);
         return "jie/index";
     }

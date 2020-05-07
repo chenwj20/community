@@ -1,6 +1,7 @@
 package cn.cwj.community.service;
 
 import cn.cwj.community.dto.QuestionDTO;
+import cn.cwj.community.dto.TableDTO;
 import cn.cwj.community.dto.UserDTO;
 import cn.cwj.community.enums.QuestionCategory;
 import cn.cwj.community.exception.CustomizeErrorCode;
@@ -155,12 +156,7 @@ public class QuestionService {
      * 根据问题评论数排行查询你问题
      */
     public List<Question> findByComments(Integer pageSize,Integer pageNum) {
-        Example example = new Example(Question.class);
-        example.setOrderByClause("comment_count desc");
-        example.createCriteria().andEqualTo("isShow",1);
-
-        PageHelper.startPage(pageSize,pageNum);
-        List<Question> questions = questionMapper.selectByExample(example);
+        List<Question> questions = questionMapper.selectByHot();
         return questions;
     }
 
@@ -171,12 +167,15 @@ public class QuestionService {
      */
     @Transactional
     public void deleteQuestion(Long id,User user) {
-        if (user == null){
-            throw new CustomizeException(CustomizeErrorCode.NO_LOGIN);
-        }else {
-            Question question = questionMapper.selectByPrimaryKey(id);
-            if (question.getCreator()!=user.getId()){
-                throw new CustomizeException(CustomizeErrorCode.INVALID_DELETE);
+        //-999表示管理员操作
+        if (user.getId() != -999l){
+            if (user == null){
+                throw new CustomizeException(CustomizeErrorCode.NO_LOGIN);
+            }else {
+                Question question = questionMapper.selectByPrimaryKey(id);
+                if (question.getCreator()!=user.getId()){
+                    throw new CustomizeException(CustomizeErrorCode.INVALID_DELETE);
+                }
             }
         }
         Example example = new Example(Comment.class);
@@ -420,5 +419,56 @@ public class QuestionService {
         }
         pageInfo.setList(questionDTOS);
         return pageInfo;
+    }
+
+    /**
+     * 后台查询帖子
+     * @param pageNum
+     * @param pageSize
+     * @param question
+     * @return
+     */
+    public TableDTO findQuestionBySome(Integer pageNum, Integer pageSize, Question question) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Question> questions = questionMapper.select(question);
+        PageInfo pageInfo = new PageInfo(questions);
+        for (Question question1 : questions) {
+            User user = userMapper.selectByPrimaryKey(question1.getCreator());
+            question1.setCreatorName(user.getName());
+        }
+        return TableDTO.okOf(questions,pageInfo.getTotal());
+    }
+
+    /**
+     * 封禁或解禁问题
+     * @param id
+     */
+    public void banOrNoQuestion(Long id,Integer type) {
+        Question question = new Question();
+        question.setId(id);
+        question.setIsShow(type);
+        questionMapper.updateByPrimaryKeySelective(question);
+    }
+
+    public void deleteQuestionSelected(ArrayList arrayList) {
+        Example example = new Example(Question.class);
+        example.createCriteria().andIn("id",arrayList);
+        questionMapper.deleteByExample(example);
+    }
+
+    public int findQuestionCount() {
+        return questionMapper.selectCount(null);
+    }
+
+    /**
+     * 精贴
+     * @param id
+     * @param status
+     */
+    public void fineQuestion(Long id,Integer status) {
+        Question question = new Question();
+        question.setId(id);
+        question.setStatus(status);
+        questionMapper.updateByPrimaryKeySelective(question);
     }
 }

@@ -12,6 +12,8 @@ import cn.cwj.community.model.User;
 import cn.cwj.community.service.UserService;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,7 @@ import java.util.regex.Pattern;
  * @Date 2020/1/13
  * @Version V1.0
  **/
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -144,8 +147,8 @@ public class UserController {
         cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
         cookie.setPath("/");
         response.addCookie(cookie);
-        user.setGmtCreate(System.currentTimeMillis());
-        String password = user.getPassword();
+
+        /*String password = user.getPassword();
         //盐密码后两位
         String salt = password.substring(password.length() -2,password.length());
         //MD5加密
@@ -153,9 +156,11 @@ public class UserController {
         user.setPassword(md5Password);
         user.setGmtCreate(System.currentTimeMillis());
         user.setAccountType("freemi");
+        */
+
         String accountId = token.replaceAll("-", "");
         user.setAccountId(accountId);
-        userService.insert(user);
+        userService.insertOrEdit(user);
         User userNew = userService.findByToken(token);
         session.setAttribute("user",userNew);
         return ResultDTO.okOf(200,"注册成功");
@@ -288,7 +293,7 @@ public class UserController {
             }
         }
 
-        userService.userEdit(user);
+        userService.insertOrEdit(user);
         return ResultDTO.okOf(CommonEnum.SET_SUCCESS);
     }
     @PostMapping("/set/avatar")
@@ -300,7 +305,11 @@ public class UserController {
             throw new CustomizeException(CustomizeErrorCode.NO_LOGIN);
         }
         user.setAvatarUrl(avatar);
-        userService.userEdit(user);
+        userService.insertOrEdit(user);
         return ResultDTO.okOf(CommonEnum.AVATAR_SUCCESS);
+    }
+    @RequestMapping("/ban")
+    public String userBan(){
+        return "user/ban";
     }
 }

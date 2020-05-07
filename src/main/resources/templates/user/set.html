@@ -115,7 +115,7 @@
           <div class="layui-form layui-form-pane layui-tab-item">
             <div class="layui-form-item">
               <div class="avatar-add">
-                <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过200KB</p>
+                <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过1M</p>
                 <button type="button" id="set-avatar" class="layui-btn upload-img">
                   <i class="layui-icon">&#xe67c;</i>上传头像
                 </button>
@@ -203,7 +203,7 @@
       upload.render({
         elem: '.upload-img'
         ,url: '/user/upload/'
-        ,size: 200
+        ,size: 1024
         ,before: function(){
           avatarAdd.find('.loading').show();
         }

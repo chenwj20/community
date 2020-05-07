@@ -6,8 +6,11 @@ import cn.cwj.community.dto.ResultDTO;
 import cn.cwj.community.dto.TagDTO;
 import cn.cwj.community.enums.CommonEnum;
 import cn.cwj.community.exception.CustomizeErrorCode;
+import cn.cwj.community.model.Category;
 import cn.cwj.community.model.Question;
 import cn.cwj.community.model.User;
+import cn.cwj.community.provider.TextAntispamScanSample;
+import cn.cwj.community.service.CategoryService;
 import cn.cwj.community.service.QuestionService;
 import cn.cwj.community.service.UserService;
 import cn.cwj.community.service.UserTagService;
@@ -31,7 +34,7 @@ public class PublishController {
     @Autowired
     QuestionService questionService;
     @Autowired
-    private UserService userService;
+    private CategoryService categoryService;
     @Autowired
     private UserTagService userTagService;
     @GetMapping("publish/{id}")
@@ -46,6 +49,8 @@ public class PublishController {
         model.addAttribute("questionEdit",questionEdit);
         List<String> list = userTagService.findUserTag(user.getId());
         List<TagDTO> tagDTOS = TagCache.tagList(list);
+        List<Category> categories = categoryService.selectCategory();
+        model.addAttribute("categories",categories);
         model.addAttribute("tags",tagDTOS);
         return "jie/publish";
     }
@@ -56,6 +61,8 @@ public class PublishController {
             return "user/login";
         }
         List<String> list = userTagService.findUserTag(user.getId());
+        List<Category> categories = categoryService.selectCategory();
+        model.addAttribute("categories",categories);
         model.addAttribute("questionEdit",null);
         List<TagDTO> tagDTOS = TagCache.tagList(list);
         model.addAttribute("tags",tagDTOS);
@@ -64,19 +71,25 @@ public class PublishController {
     @PostMapping("/publish")
     @ResponseBody
     public ResultDTO doPublish(Question question,
-                               HttpServletRequest request){
+                               HttpServletRequest request) throws Exception {
         User user = (User)request.getSession().getAttribute("user");
         if (StringUtils.isBlank(question.getTag())){
             return ResultDTO.errorOf(CustomizeErrorCode.TAG_ONE);
         }
-        if (user.getMiCoin()<question.getMiCoin()){
+        if (question.getId() == null && user.getMiCoin()<question.getMiCoin()){
             return ResultDTO.okOf(CommonEnum.MICOIN_LESS);
         }
+
         log.info("no tag {}" ,question.getTag());
         String tag = question.getTag().substring(1);
         log.info("sp tag {}" ,tag);
         question.setTag(tag);
         question.setCreator(user.getId());
+        //内容检测
+        boolean b = TextAntispamScanSample.checkText(question.getTitle() + question.getDescription());
+        if (b){
+            return ResultDTO.errorOf(CustomizeErrorCode.CONTENT_ILLEGAL);
+        }
         questionService.createOrUpdateQuestion(question,user);
         return ResultDTO.okOf();
     }

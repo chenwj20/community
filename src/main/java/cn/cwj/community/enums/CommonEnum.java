@@ -13,7 +13,13 @@ public enum CommonEnum {
     RECYCLE_SUCCESS(1010,"恢复成功"),
     Top_question__SUCCESS(1011,"置顶成功"),
     MICOIN_LESS(1012,"米币不足"),
-    ACCEPT__SUCCESS(1013,"采纳成功");
+    ACCEPT__SUCCESS(1013,"采纳成功"),
+    PASSWORD_TRUE(1014,"口令正确"),
+    ADD_SUCCESS(1015,"添加成功"),
+    BAN_SUCCESS(1016,"封禁成功"),
+    NOBAN_SUCCESS(1017,"解禁成功"),
+    FINE_SUCCESS(1018,"置精成功"),
+    OPTION__SUCCESS(1019,"操作成功");
 
 
 

@@ -2,10 +2,7 @@ package cn.cwj.community.model;
 
 import lombok.Data;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Table(name = "question")
@@ -25,8 +22,10 @@ public class Question {
     private String description;
     private Integer category;
     private Integer miCoin;
-    private Integer isShow;
+    private Integer isShow;//3封禁
     private Integer status;
     private Long acceptId;
+    @Transient
+    private String creatorName;
 
 }

@@ -43,7 +43,7 @@
               <a th:href="@{'/question/'+ ${question.id}+'/page/1'}" class="q_title" th:text="${question.title}"></a>
             </h2>
             <div class="fly-list-info">
-              <a href="user/home.html" link>
+              <a th:href="${'/user/home/'+question.user.id}" link>
                 <cite><span th:text="${question.user.name}"></span></cite>
                 <i class="layui-badge fly-badge-vip layui-bg-gray layui-hide-xs" th:text="${'LV'+question.user.lv}"></i>
               </a>
@@ -61,7 +61,7 @@
               </span>
             </div>
             <div class="fly-list-badge">
-              <!--<span class="layui-badge layui-bg-red">精帖</span>-->
+              <span class="layui-badge layui-bg-red" th:if="${question.status ==1}">精帖</span>
             </div>
           </li>
         </ul>
@@ -166,7 +166,7 @@ layui.config({
   })
 
   if (condition){
-    var array = condition.toString().trim().split("=")[1].split(" ");
+      var array = condition.toString().trim().split("=")[1].split(" ");
     $(".q_title").each(function() {
 
       //取得标签的文本

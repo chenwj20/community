@@ -1,11 +1,14 @@
 package cn.cwj.community.controller;
 
 import cn.cwj.community.dto.ResultDTO;
+import cn.cwj.community.enums.CommonEnum;
+import cn.cwj.community.exception.CustomizeErrorCode;
 import cn.cwj.community.tImer.CodeTimer;
 import cn.cwj.community.util.EmailUtils;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -52,6 +55,16 @@ public class VerifyController {
             return ResultDTO.errorOf(0,"发送失败");
         }
 
+    }
+
+    @PostMapping("/system/password")
+    @ResponseBody
+    public ResultDTO del(String password){
+        if ("123456".equals(password)){
+            return ResultDTO.okOf(CommonEnum.PASSWORD_TRUE);
+        }else {
+            return ResultDTO.errorOf(CustomizeErrorCode.VERIFY_CODE_ERROR);
+        }
     }
 
 }

@@ -41,7 +41,7 @@
            <span th:if="${questionDTO.acceptId != null}" class="layui-badge" style="background-color: #5FB878;">已结</span>
 
           <span th:if="${questionDTO.status == 1}" class="layui-badge layui-bg-black">置顶</span>
-          <span class="layui-badge layui-bg-red">精帖</span>
+          <span class="layui-badge layui-bg-red" th:if="${questionDTO.status == 1}">精帖</span>
 
           <div class="fly-admin-box" th:data-id="${questionDTO.id}">
             <span id="top-btn" th:if="${session.user != null && session.user.role == 1 }" th:onclick="topQuestion([[${questionDTO.id}]])" th:class="${questionDTO.status == 1?'layui-btn layui-btn-xs jie-admin layui-bg-orange':'layui-btn layui-btn-xs jie-admin '}" class="" type="set"  field="stick" rank="1" th:text="${questionDTO.status == 1?'取消置顶':'置顶此贴'}"></span>
@@ -122,8 +122,8 @@
                   (<span th:text="${(commentDTOS.pageNum -1)*commentDTOS.pageSize+commentStat.count}" th:remove="
 tag"></span>楼)
                 </span>
-                <!--<span style="color:#FF9E3F">（社区之光）</span>
-                <span style="color:#999">（该号已被封）</span>-->
+<!--                <span style="color:#FF9E3F">（社区之光）</span>-->
+                <span style="color:#999" th:if="${comment.user.status == 1}">（该号已被封）</span>
               </div>
 
               <div class="detail-hits">

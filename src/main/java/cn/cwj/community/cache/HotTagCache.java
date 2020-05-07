@@ -20,7 +20,7 @@ public class HotTagCache {
      * @param tags
      */
     public void updateTags(Map<String,Integer> tags){
-        int max = 20;
+        int max = 23;
         PriorityQueue<HotTagDTO> priorityQueue = new PriorityQueue<>(max);
 
         tags.forEach(
@@ -28,7 +28,7 @@ public class HotTagCache {
             HotTagDTO hotTagDTO = new HotTagDTO();
             hotTagDTO.setName(name);
             hotTagDTO.setPriority(priority);
-            if (priorityQueue.size()<20){
+            if (priorityQueue.size()<23){
                 priorityQueue.add(hotTagDTO);
             }else {
                 HotTagDTO minHot = priorityQueue.peek();
@@ -45,7 +45,6 @@ public class HotTagCache {
             poll = priorityQueue.poll();
         }
         hots = sortedTags;
-        System.out.println(hots);
     }
 
 }

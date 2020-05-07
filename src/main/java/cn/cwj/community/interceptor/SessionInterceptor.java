@@ -1,7 +1,9 @@
 package cn.cwj.community.interceptor;
 
+
 import cn.cwj.community.model.User;
 import cn.cwj.community.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -29,7 +31,17 @@ public class SessionInterceptor implements HandlerInterceptor {
                     //判断用户是否登入
                     User user = userService.findByToken(token);
                     if (user != null){
-                        request.getSession().setAttribute("user",user);
+                        if (user.getStatus() == 1){
+
+                            request.getSession().removeAttribute("user");
+                            Cookie cookie1 = new Cookie("token", null);
+                            cookie1.setMaxAge(0);
+                            cookie1.setPath("/");
+                            response.addCookie(cookie1);
+                            response.sendRedirect("/user/ban");
+                        }else {
+                            request.getSession().setAttribute("user",user);
+                        }
                     }
                     break;
                 }

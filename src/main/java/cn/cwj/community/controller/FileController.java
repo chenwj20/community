@@ -1,6 +1,7 @@
 package cn.cwj.community.controller;
 
 import cn.cwj.community.dto.FileDTO;
+import cn.cwj.community.provider.ImageSyncScanRequestSample;
 import cn.cwj.community.provider.OssUploadImgProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,11 +24,20 @@ public class FileController {
     private OssUploadImgProvider ossUploadImgProvider;
     @ResponseBody
     @RequestMapping(value = "/file/upload",method = RequestMethod.POST)
-    public FileDTO uploadImg(HttpServletRequest request) throws IOException {
+    public FileDTO uploadImg(HttpServletRequest request) throws Exception {
         MultipartRequest multipartRequest= (MultipartRequest) request;
         MultipartFile file = multipartRequest.getFile("editormd-image-file");
         String url=ossUploadImgProvider.UploadFile(file.getInputStream(),file.getContentType(),file.getOriginalFilename(),"img/jie/"+System.currentTimeMillis());
+        //检测文件合法性
+        boolean b = ImageSyncScanRequestSample.checkImg(url);
         FileDTO fileDTO = new FileDTO();
+
+        if (b){
+            fileDTO.setSuccess(0);
+            fileDTO.setMessage("图片违规");
+            return fileDTO;
+        }
+
         fileDTO.setMessage("上传成功");
         fileDTO.setSuccess(1);
         fileDTO.setUrl(url);
@@ -35,15 +45,22 @@ public class FileController {
     }
     @ResponseBody
     @RequestMapping(value = "/user/upload",method = RequestMethod.POST)
-    public FileDTO uploadUserImg(HttpServletRequest request) throws IOException {
+    public FileDTO uploadUserImg(HttpServletRequest request) throws Exception {
         MultipartRequest multipartRequest= (MultipartRequest) request;
         MultipartFile file = multipartRequest.getFile("file");
         String url=ossUploadImgProvider.UploadFile(file.getInputStream(),file.getContentType(),file.getOriginalFilename(),"img/user/avatar/"+System.currentTimeMillis());
+        boolean b = ImageSyncScanRequestSample.checkImg(url);
         FileDTO fileDTO = new FileDTO();
+
+        if (b){
+            fileDTO.setSuccess(0);
+            fileDTO.setMessage("图片违规");
+            return fileDTO;
+        }
         fileDTO.setMessage("上传成功");
         fileDTO.setSuccess(1);
         fileDTO.setUrl(url);
-        System.out.println(url);
+
         return fileDTO;
     }
 

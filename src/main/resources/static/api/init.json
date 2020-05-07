@@ -1,0 +1,82 @@
+{
+  "clearInfo": {
+    "clearUrl": "/api/clear.json"
+  },
+  "homeInfo": {
+    "title": "首页",
+    "icon": "fa fa-home",
+    "href": "/system/welcome?mpi=m-p-i-0"
+  },
+  "logoInfo": {
+    "title": "FreeMi",
+    "image": "/images/favicon.ico",
+    "href": ""
+  },
+  "menuInfo": {
+    "currency": {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "child": [
+        {
+          "title": "用户管理",
+          "href": "",
+          "icon": "fa fa-user",
+          "target": "_self",
+          "child": [
+            {
+              "title": "网站用户",
+              "href": "/system/userlist",
+              "icon": "",
+              "target": "_self"
+            },
+            {
+              "title": "后台管理员",
+              "href": "/system/systemUserlist",
+              "icon": "",
+              "target": "_self"
+            },
+            {
+              "title": "角色管理",
+              "href": "/system/systemRolelist",
+              "icon": "",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "内容管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self",
+          "child": [
+            {
+              "title": "帖子管理",
+              "href": "/system/questionList",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            },
+            {
+              "title": "评论管理",
+              "href": "/system/commentList",
+              "icon": "fa fa-navicon",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "菜单管理",
+          "href": "/system/category",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
+        },
+        {
+          "title": "SQL监控",
+          "href": "/druid/index.html",
+          "icon": "fa fa-file-text",
+          "target": "_self"
+        }
+      ]
+    }
+
+  }
+}

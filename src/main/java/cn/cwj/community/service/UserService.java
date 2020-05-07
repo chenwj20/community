@@ -1,18 +1,18 @@
 package cn.cwj.community.service;
 
-import cn.cwj.community.dto.CollectionQuestionDTO;
-import cn.cwj.community.dto.UserDTO;
-import cn.cwj.community.dto.UserOwnDTO;
+import cn.cwj.community.dto.*;
 import cn.cwj.community.enums.LVEnum;
 import cn.cwj.community.mapper.CollectMapper;
 import cn.cwj.community.mapper.CommentMapper;
 import cn.cwj.community.mapper.QuestionMapper;
 import cn.cwj.community.mapper.UserMapper;
 import cn.cwj.community.model.*;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,8 +41,22 @@ public class UserService {
     @Autowired
     private CollectMapper collectMapper;
 
-    public void insert(User user) {
-        userMapper.insertSelective(user);
+    public void insertOrEdit(User user) {
+
+        if (user.getId() != null ){
+            user.setGmtModified(System.currentTimeMillis());
+            userMapper.updateByPrimaryKeySelective(user);
+        }else {
+            String password = user.getPassword();
+            //盐密码后两位
+            String salt = password.substring(password.length() -2);
+            //MD5加密
+            String md5Password = DigestUtil.md5Hex(user.getPassword()+salt);
+            user.setPassword(md5Password);
+            user.setAccountType("freemi");
+            user.setGmtCreate(System.currentTimeMillis());
+            userMapper.insertSelective(user);
+        }
     }
 
     //根据用户名密码查询之后再做优化
@@ -57,6 +71,7 @@ public class UserService {
         }
         return users.get(0);
     }
+
     public UserDTO findByIdMore(Long id) {
         UserDTO userDTO = new UserDTO();
         User user = userMapper.selectByPrimaryKey(id);
@@ -101,19 +116,12 @@ public class UserService {
         return users.get(0);
     }
 
+    /**
+     * 通过评论数查询用户
+     * @return
+     */
     public List<UserDTO> findByCommentCount() {
-        PageHelper.startPage(1,20);
-        List<User> users = userMapper.selectAll();
-        List<UserDTO> userDTOS = new ArrayList<>();
-
-        for (User user : users) {
-            UserDTO userDTO = new UserDTO();
-            Integer commentCount = commentMapper.selectCountByCommentator(user.getId());
-            BeanUtils.copyProperties(user,userDTO);
-            userDTO.setCommentCounts(commentCount);
-            userDTOS.add(userDTO);
-        }
-        Collections.sort(userDTOS, ((o1, o2) -> o2.getCommentCounts() - o1.getCommentCounts()));
+        List<UserDTO> userDTOS = userMapper.selectByCommentCount();
         return userDTOS;
     }
 
@@ -193,6 +201,10 @@ public class UserService {
         return true;
     }
 
+    /**
+     * 新增或更新用户
+     * @param user
+     */
     public void createOrUpdateUser(User user) {
         Example example = new Example(User.class);
         example.createCriteria()
@@ -207,11 +219,14 @@ public class UserService {
             user.setGmtModified(user.getGmtModified());
             userMapper.insertSelective(user);
         }else {
+            User dbUser = users.get(0);
+            if (dbUser.getGmtModified() != null){
+                return;
+            }
             log.info("更新 {}",user);
             //更新用户
-            User dbUser = users.get(0);
             User updateUser = new User();
-            updateUser.setGmtModified(System.currentTimeMillis());
+
             updateUser.setAvatarUrl(user.getAvatarUrl());
             updateUser.setName(user.getName());
             updateUser.setToken(user.getToken());
@@ -228,9 +243,7 @@ public class UserService {
         return user;
     }
 
-    public void userEdit(User user) {
-        userMapper.updateByPrimaryKeySelective(user);
-    }
+
 
 
     public void addExperience(Long id,Integer type){
@@ -328,5 +341,67 @@ public class UserService {
         user.setId(uid);
         user.setMiCoin(miCoin+user1.getMiCoin());
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    /**
+     * 查询站内用户
+     * @param pageNum
+     * @param pageSize
+     * @param user
+     * @return
+     */
+    public TableDTO findAllSiteUser(Integer pageNum, Integer pageSize, User user) {
+        if ("".equals(user.getEmail())){
+            user.setEmail(null);
+        }
+        if ("".equals(user.getName())){
+            user.setName(null);
+        }
+
+        PageHelper.startPage(pageNum,pageSize);
+        List<User> siteUsers = userMapper.select(user);
+        PageInfo pageInfo = new PageInfo(siteUsers);
+        List<UserTableDTO> userTableDTOS = new ArrayList<>();
+        for (User siteUser : siteUsers) {
+            UserTableDTO userTableDTO = new UserTableDTO();
+            BeanUtils.copyProperties(siteUser,userTableDTO);
+            userTableDTOS.add(userTableDTO);
+        }
+        return TableDTO.okOf(userTableDTOS,pageInfo.getTotal());
+    }
+
+    public void deleteSiteUserById(Long id) {
+        userMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 批量删除用户
+     * @param ids
+     */
+    public void deleteSiteUserMany(List<Long> ids) {
+
+        Example example = new Example(User.class);
+        example.createCriteria()
+                .andIn("id",ids);
+        userMapper.deleteByExample(example);
+    }
+
+    /**
+     * 禁用或解禁
+     * @param user
+     */
+    public void banUser(User user) {
+        userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    public int findUserCount() {
+        return userMapper.selectCount(null);
+    }
+
+    public List<User> findNewUsers() {
+        Example example = new Example(User.class);
+        example.setOrderByClause("gmt_create desc");
+        List<User> users = userMapper.selectByExampleAndRowBounds(example, new RowBounds(0, 5));
+        return users;
     }
 }

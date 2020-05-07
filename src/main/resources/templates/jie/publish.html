@@ -56,12 +56,8 @@
                   <div class="layui-input-block">
                     <select lay-verify="required" name="category" lay-filter="column">
                       <option></option>
-                      <option th:if="${session.user != null && session.user.role == 1}" th:selected="${questionEdit!=null && questionEdit.category == 1}" value="1">公告</option>
-                      <option th:selected="${questionEdit!=null && questionEdit.categoryI == 2}" value="2">提问</option>
-                      <option th:selected="${questionEdit!=null && questionEdit.categoryI == 3}" value="3">分享</option>
-                      <option th:selected="${questionEdit!=null && questionEdit.categoryI == 4}" value="4">讨论</option>
-                      <option th:selected="${questionEdit!=null && questionEdit.categoryI == 5}" value="5">建议</option>
-                      <option th:selected="${questionEdit!=null && questionEdit.categoryI == 6}" value="6">新闻</option>
+                      <!--th:if="${session.user != null && session.user.role == 1}"-->
+                      <option th:each="categorie:${categories}" th:selected="${questionEdit!=null && questionEdit.categoryI == categorie.id}" th:value="${categorie.id}" th:text="${categorie.category}"></option>
                     </select>
                   </div>
                 </div>

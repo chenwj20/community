@@ -1,28 +1,24 @@
 package cn.cwj.community;
 
+import cn.cwj.community.mapper.SystemuserRoleMapper;
+import cn.cwj.community.model.SystemuserRole;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @Date 2020/1/30
  * @Version V1.0
  **/
 public class StringTest {
+    @Autowired
+    private SystemuserRoleMapper systemuserRoleMapper;
     @Test
     public void test01(){
-        String s = "@111";
-        String[] arr = s.split("@");
-        System.out.println(arr.length);
-        String[] arr1 = arr[1].split(" ");
-        for (String s1 : arr) {
-            System.out.println("s1："+s1);
-        }
-
-        for (String s2 : arr1) {
-            System.out.println("s2："+s2);
-        }
-        /*String name = s.split("@")[1].split(" ")[0];
-        System.out.println(name);*/
+        List<SystemuserRole> select = systemuserRoleMapper.select(new SystemuserRole(1, null));
+        System.out.println(select);
     }
+
 }

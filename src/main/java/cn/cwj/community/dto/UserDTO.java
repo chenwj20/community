@@ -34,5 +34,6 @@ public class UserDTO {
     private Integer gender;
     private List<Question> questions;
     private Integer role;
+    private Integer status;//0正常，1禁用
     private List<Comment> comments;
 }

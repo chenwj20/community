@@ -4,7 +4,7 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     QUESTION_NOT_FOUND(2001, "你找到问题不在了，要不要换个试试？"),
     TARGET_PARAM_NOT_FOUND(2002, "未选中任何问题或评论进行回复"),
     NO_LOGIN(2003, "请先登陆"),
-    NO_LOGIN1(0, "请先登陆"),
+    OPERATION_ERROR(2222, "操作错误"),
     SYS_ERROR(2004, "服务冒烟了，要不然你稍后再试试！！！"),
     TYPE_PARAM_WRONG(2005, "评论类型错误或不存在"),
     COMMENT_NOT_FOUND(2006, "回复的评论不存在了，要不要换个试试？"),
@@ -29,7 +29,8 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     PASSWORD_FORMAT_EEROR(2025,"请输入正确的密码格式"),
     PASSWORD_DIFFERENCE_EEROR(2026,"密码不一致"),
     TAG_NOT_BLANK(2027,"标签不能为空"),
-    TAGBIO_NOT_BLANK(2028,"标签描述不能为空");
+    TAGBIO_NOT_BLANK(2028,"标签描述不能为空"),
+    CONTENT_ILLEGAL(2029,"存在不合规内容");
 
     @Override
     public String getMessage() {

@@ -2,10 +2,7 @@ package cn.cwj.community.model;
 
 import lombok.Data;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @Date 2020/1/15
@@ -26,4 +23,6 @@ public class Comment {
     private Integer commentCount;
     private Long commentator;
     private String parentTitle;
+    @Transient
+    private String commentatorName;
 }

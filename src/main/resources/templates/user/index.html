@@ -82,7 +82,7 @@
             </li>
 
           </ul>
-          <div id="LAY_page"></div>
+          <div id="LAY_page"  style="position: absolute;bottom: 10px;"></div>
         </div>
         <div class="layui-tab-item">
           <ul class="mine-view jie-row" th:each="collection:${myCollections.list}">
@@ -90,7 +90,7 @@
               <a class="jie-title"  th:href="${'/question/'+collection.id+'/page/1'}"target="_blank" th:text="${collection.title}"></a>
               <i >收藏于<span th:text="${#dates.format(collection.collectionTime,'yyyy-MM-dd HH:mm')}" th:remove="tag"></span></i>  </li>
           </ul>
-          <div id="LAY_page1"></div>
+          <div id="LAY_page1" style="position: absolute;bottom: 10px;"></div>
         </div>
       </div>
     </div>
@@ -112,6 +112,35 @@ layui.config({
 }).extend({
   fly: 'index'
 }).use('fly');
+
+layui.use(['layer','laypage'], function(){
+  var layer = layui.layer,
+          laypage = layui.laypage;//获得layer模块
+
+
+  laypage.render({
+    elem: 'LAY_page'
+    ,count:[[${myQuestions.total}]]//数据总数
+    ,limit:[[${myQuestions.pageSize}]]
+    ,curr:[[${myQuestions.pageNum}]]
+    ,jump: function(obj,first){
+      if (!first) {
+        window.location.href = '/user/question/?pageNum=' + obj.curr;
+      }
+    }
+  });
+  laypage.render({
+    elem: 'LAY_page1'
+    ,count:[[${myCollections.total}]]//数据总数
+    ,limit:[[${myCollections.pageSize}]]
+    ,curr:[[${myCollections.pageNum}]]
+    ,jump: function(obj,first){
+      if (!first) {
+        window.location.href = '/user/question/?pageNum=' + obj.curr;
+      }
+    }
+  });
+})
 </script>
 
 </body>

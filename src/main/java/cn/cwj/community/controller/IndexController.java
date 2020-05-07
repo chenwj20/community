@@ -1,9 +1,12 @@
 package cn.cwj.community.controller;
 
 import cn.cwj.community.cache.HotTagCache;
+import cn.cwj.community.cache.HotUserCache;
 import cn.cwj.community.dto.QuestionDTO;
 import cn.cwj.community.dto.UserDTO;
+import cn.cwj.community.model.Category;
 import cn.cwj.community.model.Question;
+import cn.cwj.community.service.CategoryService;
 import cn.cwj.community.service.QuestionService;
 import cn.cwj.community.service.UserService;
 import com.github.pagehelper.PageInfo;
@@ -20,17 +23,20 @@ import java.util.List;
 public class IndexController {
     private Integer pageSize = 16;
     @Autowired
-    private UserService userService;
+    private CategoryService categoryService;
     @Autowired
     private QuestionService questionService;
     @Autowired
     private HotTagCache hotTagCache;
+    @Autowired
+    private HotUserCache hotUserCache;
     @GetMapping("/")
     public String index(Model model){
         //查询评论最多用户信息
-        List<UserDTO> commentCountUsers = userService.findByCommentCount();
+        List<UserDTO> commentCountUsers = hotUserCache.getUserCache();
+        System.out.println(commentCountUsers);
         model.addAttribute("commentCountUsers",commentCountUsers);
-        List<Question> commentCountQuestions = questionService.findByComments(1,10);
+        List<Question> commentCountQuestions = hotUserCache.getHotQuestionCache();
         model.addAttribute("commentCountQuestions",commentCountQuestions);
         PageInfo<QuestionDTO> pageInfo = questionService.questionList(1, 20, null,null);
         List<QuestionDTO> topList = questionService.findByStatus(1);
@@ -38,6 +44,8 @@ public class IndexController {
         model.addAttribute("newUrl","/all/new/page/"+1);
         model.addAttribute("hotUrl","/all/hot/page/"+1);
         List<String> hotTags = hotTagCache.getHots();
+        List<Category> categories = categoryService.selectCategory();
+        model.addAttribute("categories",categories);
         model.addAttribute("hotTags",hotTags);
 
         model.addAttribute("type",null);
@@ -60,18 +68,21 @@ public class IndexController {
             pageInfo = questionService.questionList(pageNum, pageSize, null,null);
         }
         if ("search".equals(kind)){
-            String  condition = "?keyword="+keyword;
+            String keywordTrim = keyword.trim();
+            String  condition = "?keyword="+keywordTrim;
             newUrl= newUrl+condition;
             hotUrl = hotUrl + condition;
             model.addAttribute("condition",condition);
-            pageInfo = questionService.findQuestionByKeyword(pageNum, pageSize, keyword,null);
+            pageInfo = questionService.findQuestionByKeyword(pageNum, pageSize, keywordTrim,null);
         }
         model.addAttribute("pageUrl",pageUrl);
         List<String> hotTags = hotTagCache.getHots();
+        List<Category> categories = categoryService.selectCategory();
+        model.addAttribute("categories",categories);
         //查询评论最多用户信息
-        List<UserDTO> commentCountUsers = userService.findByCommentCount();
+        List<UserDTO> commentCountUsers = hotUserCache.getUserCache();
         model.addAttribute("commentCountUsers",commentCountUsers);
-        List<Question> commentCountQuestions = questionService.findByComments(1,10);
+        List<Question> commentCountQuestions = hotUserCache.getHotQuestionCache();
         model.addAttribute("hotTags",hotTags);
         model.addAttribute("pageInfo",pageInfo);
         model.addAttribute("newUrl",newUrl);
@@ -106,12 +117,15 @@ public class IndexController {
         }
 
         if ("search".equals(kind)){
-            String  condition = "?keyword="+keyword;
+            String keywordTrim = keyword.trim();
+            String  condition = "?keyword="+keywordTrim;
             model.addAttribute("condition",condition);
             newUrl= newUrl+condition;
             hotUrl = hotUrl + condition;
-            pageInfo = questionService.findQuestionByKeyword(pageNum, pageSize, keyword,sort);
+            pageInfo = questionService.findQuestionByKeyword(pageNum, pageSize, keywordTrim,sort);
         }
+        List<Category> categories = categoryService.selectCategory();
+        model.addAttribute("categories",categories);
         model.addAttribute("pageInfo",pageInfo);
         model.addAttribute("newUrl",newUrl);
         model.addAttribute("hotUrl",hotUrl);
@@ -119,10 +133,10 @@ public class IndexController {
         model.addAttribute("type",null);
         List<String> hotTags = hotTagCache.getHots();
         model.addAttribute("hotTags",hotTags);
-        List<Question> commentCountQuestions = questionService.findByComments(1,10);
+        List<Question> commentCountQuestions = hotUserCache.getHotQuestionCache();
         model.addAttribute("commentCountQuestions",commentCountQuestions);
         //查询评论最多用户信息
-        List<UserDTO> commentCountUsers = userService.findByCommentCount();
+        List<UserDTO> commentCountUsers = hotUserCache.getUserCache();
         model.addAttribute("commentCountUsers",commentCountUsers);
 
         return "jie/index";
@@ -138,10 +152,12 @@ public class IndexController {
         List<String> hotTags = hotTagCache.getHots();
         model.addAttribute("hotTags",hotTags);
         model.addAttribute("type",null);
+        List<Category> categories = categoryService.selectCategory();
+        model.addAttribute("categories",categories);
         //查询评论最多用户信息
-        List<UserDTO> commentCountUsers = userService.findByCommentCount();
+        List<UserDTO> commentCountUsers = hotUserCache.getUserCache();
         model.addAttribute("commentCountUsers",commentCountUsers);
-        List<Question> commentCountQuestions = questionService.findByComments(1,10);
+        List<Question> commentCountQuestions = hotUserCache.getHotQuestionCache();
         model.addAttribute("commentCountQuestions",commentCountQuestions);
         StringBuffer pageUrl = new StringBuffer();
         pageUrl.append("/tag/");

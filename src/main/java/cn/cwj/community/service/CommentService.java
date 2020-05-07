@@ -3,6 +3,7 @@ package cn.cwj.community.service;
 import cn.cwj.community.dto.CommentDTO;
 import cn.cwj.community.dto.CommentDTOU;
 import cn.cwj.community.dto.QuestionDTO;
+import cn.cwj.community.dto.TableDTO;
 import cn.cwj.community.enums.CommentTypeEnum;
 import cn.cwj.community.enums.NotificationStatusEnum;
 import cn.cwj.community.enums.NotificationTypeEnum;
@@ -165,10 +166,19 @@ public class CommentService {
         return comment.getId();
     }
 
+    /**
+     * 创建消息
+     * @param comment
+     * @param receiver
+     * @param notifierName
+     * @param outerTitle
+     * @param notificationType
+     * @param outerId
+     */
     private void createNotify(Comment comment, Long receiver, String notifierName, String outerTitle, NotificationTypeEnum notificationType, Long outerId) {
-        /*if (receiver == comment.getCommentator()) {
+        if (receiver == comment.getCommentator()) {
             return;
-        }*/
+        }
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
         notification.setType(notificationType.getType());
@@ -202,5 +212,33 @@ public class CommentService {
         question.setCommentCount(question.getCommentCount()-1);
         questionMapper.updateByPrimaryKeySelective(question);
         commentMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 后台查询评论
+     * @param pageNum
+     * @param pageSize
+     * @param comment
+     * @return
+     */
+    public TableDTO findCommentBySome(Integer pageNum, Integer pageSize, Comment comment) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Comment> comments = commentMapper.select(comment);
+        PageInfo pageInfo = new PageInfo(comments);
+        for (Comment comment1 : comments) {
+            User user = userMapper.selectByPrimaryKey(comment1.getCommentator());
+            comment1.setCommentatorName(user.getName());
+        }
+        return TableDTO.okOf(comments,pageInfo.getTotal());
+    }
+
+    public void deleteCommentSelected(ArrayList arrayList) {
+        Example example = new Example(Comment.class);
+        example.createCriteria().andIn("id",arrayList);
+        commentMapper.deleteByExample(example);
+    }
+
+    public int findCommentCount() {
+        return commentMapper.selectCount(null);
     }
 }

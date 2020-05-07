@@ -1,0 +1,52 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>帖子详情</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+<!--    <div th:replace="common/markdown :: markdown"></div>-->
+    <link rel="stylesheet" href="/css/editormd.min.css">
+    <link rel="stylesheet" href="/css/editormd.preview.min.css">
+    <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script th:src="@{/js/editormd.min.js}" type="application/javascript"></script>
+    <script th:src="@{/js/moment.js}" type="application/javascript"></script>
+    <script th:src="@{/js/lib/marked.min.js}"></script>
+    <script th:src="@{/js/lib/prettify.min.js}"></script>
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="question-view" style="margin:10px 0px;padding: 0px;overflow-y: hidden;">
+    <!--内容-->
+    <textarea id="q-text" style="display:none;" ></textarea>
+</div>
+
+<script type="text/javascript" >
+
+    $(function () {
+        var item = localStorage.getItem("text");
+        $("#q-text").text(item);
+        var question = editormd.markdownToHTML("question-view", {
+            path: "/js/lib/",  // Autoload modules mode, codemirror, marked... dependents libs path
+            htmlDecode: "style,script,iframe",
+            emoji: true,
+            taskList: true,
+            htmlDecode: true,
+            htmlDecode: "dark,script,iframe",
+            //flowChart: true,
+            tex: true,
+        });
+
+    });
+</script>
+</body>
+</html>
