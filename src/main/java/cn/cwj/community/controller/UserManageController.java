@@ -226,7 +226,7 @@ public class UserManageController {
             userService.deleteSiteUserMany(arrayList);
         }
         if ("systemUsers".equals(userType)){
-            systemUserService.deleteSiteUserMany(arrayList);
+            systemUserService.deleteSystemUserMany(arrayList);
         }
         if ("systemRoles".equals(userType)){
             systemRoleService.deleteRoleMany(arrayList);

@@ -82,10 +82,9 @@ public class SystemRoleService {
                 .andIn("roleId",arrayList);
         systemuserRoleMapper.deleteByExample(userRoleExample);
 
-        Example example = new Example(Role.class);
-        example.createCriteria()
-                .andIn("id", arrayList);
-        systemRoleMapper.deleteByExample(arrayList);
+        for (Object o : arrayList) {
+            systemRoleMapper.deleteByPrimaryKey(o);
+        }
     }
 
     public void editSystemRole(Role role) {
@@ -93,7 +92,7 @@ public class SystemRoleService {
     }
 
     public void insertSystemRole(Role role) {
-        systemRoleMapper.insert(role);
+        systemRoleMapper.insertSelective(role);
     }
 
     /**

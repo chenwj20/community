@@ -401,7 +401,7 @@ public class UserService {
     public List<User> findNewUsers() {
         Example example = new Example(User.class);
         example.setOrderByClause("gmt_create desc");
-        List<User> users = userMapper.selectByExampleAndRowBounds(example, new RowBounds(0, 5));
+        List<User> users = userMapper.selectByExampleAndRowBounds(example, new RowBounds(0, 10));
         return users;
     }
 }

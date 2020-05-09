@@ -32,6 +32,7 @@ public class SystemUserService {
     private SystemRoleService systemRoleService;
     @Autowired
     private SystemuserRoleMapper systemuserRoleMapper;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -76,7 +77,13 @@ public class SystemUserService {
      * 通过id删除用户
      * @param id
      */
+    @Transactional
     public void deleteSystemUserById(Long id) {
+        Example example = new Example(SystemuserRole.class);
+        example.createCriteria()
+                .andEqualTo("userId",id);
+        systemuserRoleMapper.deleteByExample(example);
+
         systemUserMapper.deleteByPrimaryKey(id);
     }
 
@@ -90,6 +97,10 @@ public class SystemUserService {
 
         systemUser.setPassword(passwordEncoder.encode(systemUser.getPassword()));
 
+        String encode = passwordEncoder.encode(systemUser.getPassword());
+        System.out.println("密码为："+encode);
+
+
         systemUserMapper.insertSelective(systemUser);
         String[] roleIds = systemUser.getRoleIds().split(",");
         for (String roleId : roleIds) {
@@ -102,8 +113,7 @@ public class SystemUserService {
     }
 
     public void editSystemUser(SystemUser systemUser) {
-        systemUser.setPassword(passwordEncoder.encode(systemUser.getPassword()));
-        systemUserMapper.insertSelective(systemUser);
+        systemUserMapper.updateByPrimaryKey(systemUser);
     }
 
     /**
@@ -122,10 +132,15 @@ public class SystemUserService {
      * 批量删除系统用户
      * @param arrayList
      */
-    public void deleteSiteUserMany(ArrayList arrayList) {
-        Example example = new Example(SystemUser.class);
+    @Transactional
+    public void deleteSystemUserMany(ArrayList arrayList) {
+        Example example = new Example(SystemuserRole.class);
         example.createCriteria()
-                .andIn("id",arrayList);
-        systemUserMapper.deleteByExample(example);
+                .andIn("userId",arrayList);
+        systemuserRoleMapper.deleteByExample(example);
+
+        for ( Object i : arrayList) {
+            systemUserMapper.deleteByPrimaryKey((i));
+        }
     }
 }

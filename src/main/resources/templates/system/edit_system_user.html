@@ -26,13 +26,13 @@
     <div th:if="${editUser == null}" class="layui-form-item">
         <label class="layui-form-label">密码</label>
         <div class="layui-input-block">
-            <input type="email" lay-verify="required" name="password"  placeholder="请输入密码"  class="layui-input">
+            <input type="password" lay-verify="required" name="password"  placeholder="请输入密码"  class="layui-input">
         </div>
     </div>
     <div th:if="${editUser == null}" class="layui-form-item">
         <label class="layui-form-label">确认密码</label>
         <div class="layui-input-block">
-            <input type="email" lay-verify="required" name="repassword"  placeholder="请确认密码"  class="layui-input">
+            <input type="password" lay-verify="required" name="repassword"  placeholder="请确认密码"  class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -97,7 +97,7 @@
             data.field.roleIds = arr.join(",");//将数组合并成字符串
             // alert(JSON.stringify(data.field));
             $.ajax({
-                url: data.field.id?'/system/category/edit/':'/system/category/add',
+                url: data.field.id?'/system/edit/systemUser/':'/system/add/systemUser',
                 type: 'post',
                 data: data.field,
                 dataType: 'json',

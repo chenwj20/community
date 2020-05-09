@@ -2,6 +2,7 @@ package cn.cwj.community.controller;
 
 import cn.cwj.community.dto.SystemIndexDTO;
 import cn.cwj.community.model.User;
+import cn.cwj.community.service.CategoryService;
 import cn.cwj.community.service.CommentService;
 import cn.cwj.community.service.QuestionService;
 import cn.cwj.community.service.UserService;
@@ -26,6 +27,8 @@ public class SystemIndexController {
     QuestionService questionService;
     @Autowired
     CommentService commentService;
+    @Autowired
+    CategoryService categoryService;
     @RequestMapping("/")
     public String index(HttpServletResponse response){
         return "system/index";
@@ -36,12 +39,14 @@ public class SystemIndexController {
         int userCount = userService.findUserCount();
         int questionCount = questionService.findQuestionCount();
         int commentCount = commentService.findCommentCount();
+        int categoryCount = categoryService.findCategoryCount();
         List<User> users = userService.findNewUsers();
         SystemIndexDTO systemIndexDTO = new SystemIndexDTO();
         systemIndexDTO.setCommentCount(commentCount);
         systemIndexDTO.setQuestionCount(questionCount);
         systemIndexDTO.setUserCount(userCount);
         systemIndexDTO.setUsers(users);
+        systemIndexDTO.setCategoryCount(categoryCount);
         model.addAttribute("info",systemIndexDTO);
         return "system/welcome";
     }

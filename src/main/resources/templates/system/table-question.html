@@ -159,24 +159,7 @@
             return false;
         });
 
-        // 监听添加操作
-        $(".data-add-btn").on("click", function () {
 
-            var index = layer.open({
-                title: '添加用户',
-                type: 2,
-                shade: 0.2,
-                maxmin:true,
-                shadeClose: true,
-                area: ['100%', '100%'],
-                content: '/page/table/add.html',
-            });
-            $(window).on("resize", function () {
-                layer.full(index);
-            });
-
-            return false;
-        });
 
         // 监听删除操作
         $(".data-delete-btn").on("click", function () {
@@ -225,16 +208,25 @@
                 url = '/system/question/noBan/'+data.id;
             }
             else if (obj.event === 'delete') {
+                var aa = "";
                 layer.confirm('真的删除行么', function (index) {
-                    url = '/system/question/del/'+data.id;
                     obj.del();
+                    $.ajax({
+                        url: '/system/question/del/'+data.id,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (res) {
+                            layer.msg(res.msg);
+                        }
+                    })
                     layer.close(index);
                 });
+                url = aa;
             }
 
             $.ajax({
                 url: url,
-                type: 'post',
+                type: 'get',
                 dataType: 'json',
                 success: function (res) {
                     layer.msg(res.msg);

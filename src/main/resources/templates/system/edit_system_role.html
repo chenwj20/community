@@ -53,31 +53,26 @@
 
         //监听提交
         form.on('submit(saveBtn)', function (data) {
-            alert(JSON.stringify(data.field));
 
             $.ajax({
-
-                url: '/system/edit/systemUser/1/11/1',
+                url: data.field.id?'/system/edit/systemRole/':'/system/add/systemRole',
                 type: 'post',
                 data: data.field,
                 dataType: 'json',
                 success: function (res) {
-                    if (res.code == 1009 ){
-                        layer.msg(res.msg,{
+
+                        layer.msg(res.msg, {
                             icon: 1
-                            ,time: 1000
-                            ,shade: 0.1
-                        })
+                            , time: 1000
+                            , shade: 0.1
+                        });
                         var iframeIndex = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(iframeIndex);
-                    } else {
-                        layer.msg(res.msg,{shift:6});
-                    }
 
                 }
-            })
+            });
 
-            ;
+
 
             return false;
         });

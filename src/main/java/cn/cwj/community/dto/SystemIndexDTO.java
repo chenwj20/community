@@ -14,5 +14,6 @@ public class SystemIndexDTO {
     private int userCount;
     private int questionCount;
     private int commentCount;
+    private int categoryCount;
     private List<User> users;
 }

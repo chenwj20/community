@@ -52,4 +52,8 @@ public class CategoryService {
         Category category = categoryMapper.selectByPrimaryKey(id);
         return category;
     }
+
+    public int findCategoryCount() {
+        return categoryMapper.selectCount(null);
+    }
 }

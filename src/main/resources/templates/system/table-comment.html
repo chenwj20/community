@@ -164,7 +164,7 @@
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();
                     $.ajax({
-                        url: '/system/comment/del/'+data.id,
+                        url: '/system/comment/del/'+data.id+"/"+data.parentId,
                         type: 'post',
                         dataType: 'json',
                         success: function (res) {

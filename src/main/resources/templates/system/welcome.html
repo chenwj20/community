@@ -84,11 +84,11 @@
                         <div class="panel-body">
                             <div class="panel-title">
                                 <span class="label pull-right layui-bg-green">实时</span>
-                                <h5>订单统计</h5>
+                                <h5>板块统计</h5>
                             </div>
                             <div class="panel-content">
-                                <h1 class="no-margins">1234</h1>
-                                <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> 1234</div>
+                                <h1 class="no-margins"><span th:text="${info.categoryCount}"></span></h1>
+                                <div class="stat-percent font-bold text-gray"><i class="fa fa-commenting"></i> <span th:text="${info.categoryCount}"></span></div>
                                 <small>当前分类总记录数</small>
                             </div>
                         </div>
