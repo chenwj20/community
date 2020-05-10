@@ -48,6 +48,6 @@ public class HotTagTasks {
             offset+= limit;
         }
         hotTagCache.updateTags(priorities);
-        log.info("hotTagSchedule stop {}",new Date());
+
     }
 }

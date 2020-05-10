@@ -35,7 +35,7 @@ public class HotUserTasks {
     @Scheduled(cron="0 16 0 * * ?")//每天凌晨00:16触发
     public void hotQuestionSchedule(){
         List<Question> questions = questionService.findByComments(1, 15);
-        System.out.println(questions);
+        System.out.println("热门问题为："+questions);
         redisUtil.delete("commentCountQuestions");
         for (Question question : questions) {
             redisUtil.addZSet("commentCountQuestions",JSON.toJSONString(question),question.getCommentCount()*3+question.getViewCount());
