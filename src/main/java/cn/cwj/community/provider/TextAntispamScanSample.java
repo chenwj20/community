@@ -17,7 +17,7 @@ import com.aliyuncs.profile.IClientProfile;
 import java.util.*;
 
 /**
- * Created by hyliu on 16/3/2.
+ *
  * 文本检测
  */
 public class TextAntispamScanSample extends BaseSample {

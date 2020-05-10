@@ -16,6 +16,6 @@ public interface QuestionMapper extends Mapper<Question> {
     @Select("SELECT * FROM question WHERE  is_show = #{isShow} AND  title REGEXP #{title} order by ${sort}")
     List<Question> selectQuestionByKeyword(@Param("title") String title,@Param("isShow") Integer isShow,@Param("sort")String sort);
 
-    @Select("SELECT id,title,comment_count FROM question ORDER BY comment_count DESC LIMIT 15")
+    @Select("SELECT id,title,comment_count,view_count FROM question ORDER BY comment_count DESC LIMIT 15")
     List<Question> selectByHot();
 }

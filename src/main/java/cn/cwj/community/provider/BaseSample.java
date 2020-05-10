@@ -14,7 +14,7 @@ public class BaseSample {
     protected static String accessKeyId ;
     protected static String accessKeySecret ;
 
-    protected static String regionId = "cn-shanghai";
+    protected static String regionId = "us-west-1";
 
     @PostConstruct
     public void initParam () {
