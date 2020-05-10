@@ -16,6 +16,6 @@ import java.util.List;
  **/
 @Repository
 public interface UserMapper extends Mapper<User> {
-    @Select("SELECT user.`name`,user.`id`,user.`avatar_url`,COUNT(comment.`id`) comment_counts FROM USER LEFT JOIN COMMENT ON user.`id` = comment.`commentator`GROUP BY comment.`commentator` ORDER BY comment_counts DESC LIMIT 20")
+    @Select("SELECT u.`name`,u.`id`,u.`avatar_url`,COUNT(c.`id`) comment_counts FROM community.`user` u LEFT JOIN community.comment c ON u.`id` = c.`commentator`GROUP BY u.id ORDER BY comment_counts DESC LIMIT 20")
     List<UserDTO> selectByCommentCount();
 }
