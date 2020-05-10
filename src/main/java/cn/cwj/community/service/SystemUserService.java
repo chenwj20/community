@@ -9,7 +9,7 @@ import cn.cwj.community.model.SystemUser;
 import cn.cwj.community.model.SystemuserRole;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import io.swagger.models.auth.In;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

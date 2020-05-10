@@ -12,8 +12,6 @@ import cn.cwj.community.model.User;
 import cn.cwj.community.service.UserService;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

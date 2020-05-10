@@ -5,7 +5,6 @@ import cn.cwj.community.dto.TableDTO;
 import cn.cwj.community.enums.CommonEnum;
 import cn.cwj.community.model.Category;
 import cn.cwj.community.service.CategoryService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
