@@ -50,6 +50,7 @@ public class AuthorizeController {
     @GetMapping("/qqCallback")
     public String callbackQq(@RequestParam(name = "code") String code,
                              @RequestParam(name = "state") String state,
+                             HttpServletRequest request,
                              HttpServletResponse response) {
 
         QQAccessTokenDTO qqAccessTokenDTO = new QQAccessTokenDTO();
@@ -77,6 +78,7 @@ public class AuthorizeController {
             user.setLocation(qqUser.getProvince()+"省"+qqUser.getCity()+"市");
             user.setAccountType("QQ");
             userService.createOrUpdateUser(user);
+            request.getSession().setAttribute("user",user);
             Cookie cookie = new Cookie("token",token);
             cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
             cookie.setPath("/");

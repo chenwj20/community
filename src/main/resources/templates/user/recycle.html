@@ -133,7 +133,7 @@
   function delQues(id) {
     layer.confirm('确定永久删除吗？', function(){
       $.ajax({
-        url:'/question//delete/'+id,
+        url:'/question/delete/'+id,
         type:'get',
         dataType:'json',
         success:function (res) {

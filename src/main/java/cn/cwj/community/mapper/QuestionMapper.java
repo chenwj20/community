@@ -18,4 +18,5 @@ public interface QuestionMapper extends Mapper<Question> {
 
     @Select("SELECT id,title,comment_count,view_count FROM question ORDER BY comment_count DESC LIMIT 15")
     List<Question> selectByHot();
+
 }

@@ -32,4 +32,5 @@ public class User {
     private Integer gender;//0为男，1为女
     private Integer role;
     private Integer status;//0正常，1禁用
+    private Integer del;//0正常，1删除
 }

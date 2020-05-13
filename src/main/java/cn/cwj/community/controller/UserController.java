@@ -42,7 +42,7 @@ public class UserController {
 
         UserDTO userDTO = userService.findByIdMore(id);
         UserOwnDTO userOwnDTO = null;
-        if (user != null && user.getId() == id){
+        if (user != null && user.getId().equals(id)){
             userOwnDTO = userService.findUserEx(userDTO);
         }
         model.addAttribute("userOwnDTO",userOwnDTO);

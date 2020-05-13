@@ -60,7 +60,7 @@ public class VerifyController {
     @PostMapping("/system/password")
     @ResponseBody
     public ResultDTO del(String password){
-        if ("123456".equals(password)){
+        if ("cwj6868".equals(password)){
             return ResultDTO.okOf(CommonEnum.PASSWORD_TRUE);
         }else {
             return ResultDTO.errorOf(CustomizeErrorCode.VERIFY_CODE_ERROR);

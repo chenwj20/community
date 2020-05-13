@@ -6,12 +6,10 @@ import cn.cwj.community.enums.CommentTypeEnum;
 import cn.cwj.community.enums.CommonEnum;
 import cn.cwj.community.exception.CustomizeErrorCode;
 import cn.cwj.community.exception.CustomizeException;
+import cn.cwj.community.model.Category;
 import cn.cwj.community.model.Question;
 import cn.cwj.community.model.User;
-import cn.cwj.community.service.CollectService;
-import cn.cwj.community.service.CommentService;
-import cn.cwj.community.service.QuestionService;
-import cn.cwj.community.service.ZanService;
+import cn.cwj.community.service.*;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,6 +34,8 @@ public class QuestionController {
     CollectService collectService;
     @Autowired
     ZanService zanService;
+    @Autowired
+    CategoryService categoryService;
     @GetMapping("/remove/{id}")
     @ResponseBody
     public ResultDTO removeQuestion(@PathVariable("id") Long id,
@@ -95,7 +95,8 @@ public class QuestionController {
         }
         PageInfo commentPageInfo = commentService.findByParentId(id, CommentTypeEnum.COMMENT_ONE.getType(), pageNum, pageSize,user);
         List <User> zanUsers = questionService.findZanUser(id);
-
+        List<Category> categories = categoryService.selectCategory();
+        model.addAttribute("categories",categories);
         model.addAttribute("zanUsers",zanUsers);
         model.addAttribute("questionDTO",questionDTO);
         model.addAttribute("commentDTOS",commentPageInfo);

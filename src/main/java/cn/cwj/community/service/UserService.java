@@ -22,6 +22,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static cn.cwj.community.enums.LVEnum.LV1;
 
@@ -357,7 +358,7 @@ public class UserService {
         if ("".equals(user.getName())){
             user.setName(null);
         }
-
+        user.setDel(0);
         PageHelper.startPage(pageNum,pageSize);
         List<User> siteUsers = userMapper.select(user);
         PageInfo pageInfo = new PageInfo(siteUsers);
@@ -371,9 +372,26 @@ public class UserService {
     }
 
     public void deleteSiteUserById(Long id) {
-        userMapper.deleteByPrimaryKey(id);
+        User user = SM();
+        user.setId(id);
+        userMapper.updateByPrimaryKey(user);
     }
 
+    /**
+     * 设置被删除用户信息
+     * @param
+     * @return
+     */
+    private User SM(){
+        User user = new User();
+        user.setName("神秘用户");
+        user.setAvatarUrl("http://chebweijun.oss-cn-shenzhen.aliyuncs.com/img/jie/1589099760837f949f851-1d84-42c6-b680-57e2a0a66671bcz.JPG?Expires=1683707761&OSSAccessKeyId=LTAI4Fr3iioRYy8hDnmhenee&Signature=T1oH5Wnk0lGPkQlKhW2FXHNU9W4%3D");
+        user.setBio("来自异世界的用户");
+        user.setLocation("----");
+        user.setLv(99);
+        user.setExperience(6666666);
+        return user;
+    }
     /**
      * 批量删除用户
      * @param ids
@@ -383,7 +401,8 @@ public class UserService {
         Example example = new Example(User.class);
         example.createCriteria()
                 .andIn("id",ids);
-        userMapper.deleteByExample(example);
+        User user = SM();
+        userMapper.updateByExample(user,example);
     }
 
     /**
