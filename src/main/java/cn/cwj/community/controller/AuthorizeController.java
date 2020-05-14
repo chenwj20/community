@@ -77,8 +77,9 @@ public class AuthorizeController {
             user.setAvatarUrl(qqUser.getFigureurl_qq());
             user.setLocation(qqUser.getProvince()+"省"+qqUser.getCity()+"市");
             user.setAccountType("QQ");
-            userService.createOrUpdateUser(user);
-            request.getSession().setAttribute("user",user);
+            Long userId = userService.createOrUpdateUser(user);
+            User newUser = userService.findById(userId);
+            request.getSession().setAttribute("user",newUser);
             Cookie cookie = new Cookie("token",token);
             cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
             cookie.setPath("/");
@@ -107,7 +108,7 @@ public class AuthorizeController {
         GithubUser githubUser = githubProvider.getUser(accessToken);
         System.out.println("user:"+githubUser);
         if (githubUser != null){
-            request.getSession().setAttribute("user",githubUser);
+
             User user = new User();
             user.setToken(UUID.randomUUID().toString());
             user.setName(githubUser.getName());
@@ -115,13 +116,15 @@ public class AuthorizeController {
             user.setAvatarUrl(githubUser.getAvatar_url());
             user.setBio(githubUser.getBto());
             user.setAccountType("github");
-            userService.createOrUpdateUser(user);
+            Long userId = userService.createOrUpdateUser(user);
             Cookie cookie = new Cookie("token", user.getToken());
             cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
             cookie.setPath("/");
             //写入cookie
             response.addCookie(cookie);
-            request.getSession().setAttribute("user",user);
+            User newUser = userService.findById(userId);
+
+            request.getSession().setAttribute("user",newUser);
             return "redirect:/";
             //登入成功
         }else {

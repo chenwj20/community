@@ -206,7 +206,7 @@ public class UserService {
      * 新增或更新用户
      * @param user
      */
-    public void createOrUpdateUser(User user) {
+    public Long createOrUpdateUser(User user) {
         Example example = new Example(User.class);
         example.createCriteria()
                 .andEqualTo("accountType",user.getAccountType())
@@ -219,10 +219,11 @@ public class UserService {
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtModified());
             userMapper.insertSelective(user);
+            return user.getId();
         }else {
             User dbUser = users.get(0);
             if (dbUser.getGmtModified() != null){
-                return;
+                return dbUser.getId();
             }
             log.info("更新 {}",user);
             //更新用户
@@ -236,6 +237,7 @@ public class UserService {
             updateExample.createCriteria()
                     .andEqualTo("id",dbUser.getId());
             userMapper.updateByExampleSelective(updateUser,updateExample);
+            return dbUser.getId();
         }
     }
 
