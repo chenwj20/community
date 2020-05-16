@@ -8,11 +8,12 @@ FreeMi社区
 2. Thymeleaf模板引擎。
 3. 数据访问层：Mybatis，通用mapper。
 4. 数据库：MySql。
-5. 服务器：内置Tomcat。
-6. 前端相关:Jquery,Layui,Bootstrap，Ajax等。
-7. 文件上传：阿里云OOS对象存储。
-8. 富文本编辑器：Editormd。
-9. OAuth2授权登入（QQ、Github）
+5. redis做缓存
+6. 服务器：内置Tomcat。
+7. 前端相关:Jquery,Layui,Bootstrap，Ajax等。
+8. 文件上传：阿里云OOS对象存储。
+9. 富文本编辑器：Editormd。
+10. OAuth2授权登入（QQ、Github）
 
 ## 主要功能
 1. 登入，注册(可用qq，gthub) 
