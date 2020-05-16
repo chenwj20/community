@@ -2,7 +2,7 @@
   <div  class="layui-container">
     <ul id="class" class="layui-clear">
       <li th:class="${type == null?'layui-this':''}"><a href="/">首页</a></li>
-      <li th:each="categorie:${categories}" th:class="${type == 2?'layui-this':''}"><a th:href="${'/category/'+categorie.id+'/page/1'}" th:text="${categorie.category}" th:class="${type == categorie.id?'layui-this':''}"></a></li>
+      <li th:each="categorie:${categories}" th:class="${type == categorie.id?'layui-this':''}"><a th:href="${'/category/'+categorie.id+'/page/1'}" th:text="${categorie.category}" ></a></li>
       <!-- 用户登入后显示 -->
         <li th:if="${session.user!=null}" class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="/user/question">我发表的贴</a></li>
       <li th:if="${session.user!=null}" class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="/user/question/#collection">我收藏的贴</a></li>

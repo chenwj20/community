@@ -20,6 +20,7 @@ import java.util.*;
  *
  * 文本检测
  */
+
 public class TextAntispamScanSample extends BaseSample {
 
     public static boolean checkText(String content) throws Exception {
@@ -44,7 +45,7 @@ public class TextAntispamScanSample extends BaseSample {
 
         tasks.add(task1);
 
-       /* Map<String, Object> task2 = new LinkedHashMap<String, Object>();
+     /*   Map<String, Object> task2 = new LinkedHashMap<String, Object>();
         task2.put("dataId", UUID.randomUUID().toString());
         task2.put("content", "蒙汗药");
 

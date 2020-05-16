@@ -2,24 +2,25 @@ package cn.cwj.community.provider;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Properties;
 
-
+@Component
 public class BaseSample {
     @Autowired
     private Environment env;
     protected static String accessKeyId ;
     protected static String accessKeySecret ;
 
-    protected static String regionId = "us-west-1";
+    protected static String regionId = "cn-beijing";
 
     @PostConstruct
     public void initParam () {
-        accessKeyId = env.getProperty("accessKeyId");
-        accessKeySecret = env.getProperty("accessKeySecret");
+        accessKeyId = env.getProperty("oss.accessKeyId");
+        accessKeySecret = env.getProperty("oss.accessKeySecret");
     }
 /*    static {
         Properties properties = new Properties();
