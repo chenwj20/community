@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 /**
  * @Date 2020/3/6
@@ -53,9 +54,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //3、默认post形式的 /login代表处理登陆
         //开启记住我功能
         http.rememberMe().rememberMeParameter("rememberMe");
+        http.headers().defaultsDisabled().contentTypeOptions();
+//        http.headers().addHeaderWriter(new StaticHeadersWriter("Cache-Control","max-age=2939311"));
         //登陆成功以后，将cookie发给浏览器保存，以后访问页面带上这个cookie，只要通过检查就可以免登陆
         //点击注销会删除cookie
     }
+
 
     //定义认证规则
     @Override

@@ -159,7 +159,11 @@
             <artifactId>aliyun-java-sdk-green</artifactId>
             <version>3.0.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.45</version>
+        </dependency>
     </dependencies>
 <!--    <repositories>-->
 <!--        <repository>-->
@@ -186,22 +190,6 @@
                 <configuration>
                     <fork>true</fork>
                 </configuration>
-
-            </plugin>
-
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>5.2.4</version>
-                <dependencies>
-
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>5.1.45</version>
-                    </dependency>
-
-                </dependencies>
 
             </plugin>
 
