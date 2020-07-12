@@ -9,7 +9,6 @@ import cn.cwj.community.exception.CustomizeErrorCode;
 import cn.cwj.community.model.Category;
 import cn.cwj.community.model.Question;
 import cn.cwj.community.model.User;
-import cn.cwj.community.provider.TextAntispamScanSample;
 import cn.cwj.community.service.CategoryService;
 import cn.cwj.community.service.QuestionService;
 import cn.cwj.community.service.UserService;
@@ -86,10 +85,10 @@ public class PublishController {
         question.setTag(tag);
         question.setCreator(user.getId());
         //内容检测
-        boolean b = TextAntispamScanSample.checkText(question.getTitle() + question.getDescription());
+      /*  boolean b = TextAntispamScanSample.checkText(question.getTitle() + question.getDescription());
         if (b){
             return ResultDTO.errorOf(CustomizeErrorCode.CONTENT_ILLEGAL);
-        }
+        }*/
         questionService.createOrUpdateQuestion(question,user);
         return ResultDTO.okOf();
     }
